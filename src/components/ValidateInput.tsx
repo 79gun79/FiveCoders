@@ -65,7 +65,7 @@ export default function ValidateInput({
       />
       {error && (
         <p
-          className={`mt-2 text-sm text-red-600 font-medium ${
+          className={`mt-2 text-sm text-[#D32F2F] font-medium ${
             error ? "mt-2 visible" : "mt-4 invisible"
           }`}
         >

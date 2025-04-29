@@ -31,7 +31,7 @@ export default function Login() {
           </Button>
           <div className="flex items-center mb-10 text-sm">
             <span className="text-[#484848]">New to gammue?</span>
-            <a href="#" className="ml-1 text-[#2D77FF] hover:underline ">
+            <a href="#" className="ml-1 text-[#51B8B2] hover:underline ">
               Sign Up
             </a>
           </div>
