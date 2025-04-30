@@ -1,1 +1,31 @@
 @import "./tailwind.css";
+:root {
+  --color-main: #51b8b2;
+  --color-sub: #397c79;
+  --color-orange: #ffa552;
+  --color-deep-orange: #ff7043;
+  --color-red-caution: #d32f2f;
+  --color-bg-white: #fafafa;
+  --color-black: #1c1c1c;
+}
+@layer components {
+  .postBorder {
+    @apply border-b border-[#636363] min-w-[740px] p-2;
+  }
+  .textBase {
+    @apply text-[var(--color-black)] text-[14px];
+  }
+  .textH2 {
+    @apply text-[var(--color-black)] font-bold text-[28px];
+  }
+  .textH3 {
+    @apply text-[var(--color-black)] font-semibold text-[24px];
+  }
+  .textH4 {
+    @apply text-[var(--color-black)] font-semibold text-[20px];
+  }
+  .textBase {
+    @apply text-[var(--color-black)] text-[14px];
+  }
+}
+/* 디자인의 글자 쌕 지정 + 글자 크기 */
