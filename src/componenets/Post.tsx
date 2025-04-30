@@ -21,8 +21,8 @@ export default function Post({
             className="w-9 h-9 rounded-full object-cover"
           />
           <div>
-            <p className="text-[#1C1C1C] font-bold text-[18px]">{userName}</p>
-            <p className="text-[#1C1C1C] text-[8px]">{userId}</p>
+            <p className={twMerge("textBase", "text-[18px]")}>{userName}</p>
+            <p className={twMerge("textBase", "text-[8px]")}>{userId}</p>
           </div>
         </div>
         <h3 className="textH3 mb-4">{title}</h3>

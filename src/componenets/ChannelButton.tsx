@@ -2,12 +2,14 @@ import { twMerge } from "tailwind-merge";
 
 export default function ChannelButton({
   bgColor,
-  children,
   isBorder,
+  icon,
+  children,
 }: {
   bgColor?: string;
-  children: string;
   isBorder: boolean;
+  icon: string;
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -18,7 +20,10 @@ export default function ChannelButton({
           isBorder ? "border" : ""
         )}
       >
-        {children}
+        <span className="flex items-center justify-center gap-1">
+          <img src={icon} alt="plus" className="w-4 h-4" />
+          {children}
+        </span>
       </button>
     </>
   );

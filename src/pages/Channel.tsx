@@ -17,11 +17,11 @@ export default function Channel() {
   };
   return (
     <>
-      <div className="relative flex flex-col">
+      <div className="flex flex-col">
         <div
           className={twMerge(
             "postBorder",
-            "mx-auto flex items-center justify-between mb-8 pb-8"
+            "flex items-center justify-between mx-40 mb-8 pb-8"
           )}
         >
           <div className="flex items-center gap-10">
@@ -43,17 +43,27 @@ export default function Channel() {
           </div>
           <div className="flex flex-col items-end gap-2">
             <div className="flex flex-row gap-4">
-              <ChannelButton bgColor="bg-white" isBorder={true}>
+              <ChannelButton
+                bgColor="bg-white"
+                isBorder={true}
+                icon="/vite.svg"
+              >
                 구독
               </ChannelButton>
-              <ChannelButton isBorder={false}>구독중</ChannelButton>
+              <ChannelButton isBorder={false} icon="/vite.svg">
+                구독중
+              </ChannelButton>
             </div>
-            <ChannelButton bgColor="bg-[#E5EBEE]" isBorder={false}>
+            <ChannelButton
+              bgColor="bg-[#E5EBEE]"
+              isBorder={false}
+              icon="/vite.svg"
+            >
               글쓰기
             </ChannelButton>
           </div>
         </div>
-        <div className="mx-auto flex flex-row gap-8">
+        <div className="flex flex-row gap-8 mx-40">
           <div className="flex-1">
             <div className="flex flex-col gap-[42px] w-vw">
               {channelData.posts.map((v) => (
@@ -63,13 +73,13 @@ export default function Channel() {
           </div>
         </div>
         {/* 인기 글 나타내는 부분 일단 절대 위치 지정 */}
-        <aside className="absolute top-0 right-10 w-[225px] p-4 border rounded-[22px] h-fit">
+        {/* <aside className="absolute top-0 right-10 w-[225px] p-4 border rounded-[22px] h-fit">
           <h4 className="textH4 mb-4">인기 글</h4>
           <ul className="text-[var(--color-black)] text-[16px] space-y-1">
             <li>수프림 등장했다</li>
             <li>나는...농이버섯이다...</li>
           </ul>
-        </aside>
+        </aside> */}
       </div>
     </>
   );
