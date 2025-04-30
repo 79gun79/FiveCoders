@@ -19,7 +19,7 @@ export default function Input(props: InputProps) {
   return (
     <input
       type={type}
-      className={twMerge("input-style mt-4", className)}
+      className={twMerge("input-style", className)}
       {...rest}
     />
   );

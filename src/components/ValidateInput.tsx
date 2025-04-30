@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Input from "./Input";
+import { twMerge } from "tailwind-merge";
 
 //email 유효성 검사
 export const validateEmail = (value: string) => {
@@ -37,6 +38,8 @@ type InputValidationProps = {
   value: string;
   onChange: (v: string) => void;
   validate: (v: string) => string;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  className?: string;
 };
 
 export default function ValidateInput({
@@ -45,29 +48,44 @@ export default function ValidateInput({
   value,
   onChange,
   validate,
+  onBlur,
+  className,
 }: InputValidationProps) {
   const [touched, setTouched] = useState(false);
   const error = touched ? validate(value) : "";
 
   return (
     <>
-      <Input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onBlur={() => setTouched(true)}
-        placeholder={placeholder}
-        className={
-          error
-            ? "border border-[#FF7043] bg-red-50 text-[#FF7043] outline-[#FF7043] outline-1 "
-            : ""
-        }
-      />
+      <div>
+        <Input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={(e) => {
+            setTouched(true);
+            if (onBlur) onBlur(e);
+          }}
+          placeholder={placeholder}
+          className={twMerge(
+            error
+              ? "border border-[#FF7043] bg-red-50 text-[#FF7043] outline-[#FF7043] outline-1 "
+              : "",
+            className
+          )}
+        />
+      </div>
+      {/* <p
+        className={twMerge(
+          "h-[20px] text-sm font-medium transition-all",
+          error ? "text-[#D32F2F]" : "text-transparent"
+        )}
+      >
+        {error || "  "}
+      </p> */}
       {error && (
         <p
-          className={`mt-2 text-sm text-[#D32F2F] font-medium ${
-            error ? "mt-2 visible" : "mt-4 invisible"
-          }`}
+          className="mt-2 text-sm text-[#D32F2F] font-medium min-h-[20px] 
+          "
         >
           {error || " "}
         </p>
