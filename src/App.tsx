@@ -1,14 +1,20 @@
-import Login from "./page/Login";
-import SignUp from "./page/SignUp";
+import Channel from "./pages/Channel";
 
 export default function App() {
   return (
     <>
-      <div className="min-h-screen bg-gray-300">
-        <h1 className="text-3xl underline">FiveCoders</h1>
-        <Login />
-        <SignUp />
-      </div>
+      <header className="min-w-screen min-h-[80px] bg-[var(--color-main)]">
+        상단 바
+      </header>
+      <main className="flex">
+        <aside className="w-[280px] min-h-screen bg-[var(--color-sub)]">
+          사이드 바
+        </aside>
+        <section className="w-auto mt-[50px] mx-[160px]">
+          <Channel />
+        </section>
+      </main>
+      <footer></footer>
     </>
   );
 }
