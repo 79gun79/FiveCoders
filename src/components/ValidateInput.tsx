@@ -74,14 +74,6 @@ export default function ValidateInput({
           )}
         />
       </div>
-      {/* <p
-        className={twMerge(
-          "h-[20px] text-sm font-medium transition-all",
-          error ? "text-[#D32F2F]" : "text-transparent"
-        )}
-      >
-        {error || "  "}
-      </p> */}
       {error && (
         <p
           className="mt-2 text-sm text-[#D32F2F] font-medium min-h-[20px] 
