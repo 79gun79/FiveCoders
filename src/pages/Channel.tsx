@@ -1,85 +1,58 @@
 import { twMerge } from "tailwind-merge";
-import ChannelButton from "../componenets/ChannelButton";
-import Post from "../componenets/Post";
-import { dummyData } from "../types/dummyData";
+import PostList from "../components/PostList";
+import { postsData } from "../types/postsData";
+import Button from "../components/Button";
+import { FaPlus, FaStar } from "react-icons/fa";
 
 export default function Channel() {
   const channelData: ChannelType = {
     authRequired: true,
+    posts: postsData,
     channelId: 1,
-    name: "붕괴 스타레일",
-    description: "붕괴 스타레일 2주년!",
-    subscribe: 14,
-    link: "https://hsr.hoyoverse.com/ko-kr/home",
+    name: "FC 온라인",
+    description:
+      "https://media.istockphoto.com/id/1133951413/ko/%EC%82%AC%EC%A7%84/%EC%BC%84-%ED%8C%85-%EC%B4%A8-%ED%8C%A1.jpg?s=2048x2048&w=is&k=20&c=o7oc-GnmnNHETP8_pZOIIwZXwZOYyAa7SeCxTZ5S4_M=",
     createdAt: "",
     updatedAt: "",
-    posts: dummyData,
   };
   return (
     <>
-      <div className="flex flex-col">
-        <div
-          className={twMerge(
-            "postBorder",
-            "flex items-center justify-between mx-40 mb-8 pb-8"
-          )}
-        >
-          <div className="flex items-center gap-10">
+      <div className="flex flex-col min-w-[640px]">
+        <div className="justify-center items-center mb-[30px]">
+          <div className={twMerge("postBottom", "h-[155px] border border-b-0")}>
             <img
-              src="https://cdn.pixabay.com/photo/2021/12/28/14/59/axe-6899518_1280.jpg"
-              alt="channel"
-              className="w-25 h-25 rounded-full object-cover"
+              className="w-full h-full object-cover"
+              src={channelData.description}
             />
-            <div className="flex-col gap-2">
-              <h2 className="textH2">{channelData.name}</h2>
-              <p className={twMerge("textBase", "text-[18px]")}>
-                {channelData.description}
-              </p>
-              <p className="textBase">구독: {channelData.subscribe}</p>
-              <a className="textBase" href={channelData.link}>
-                {channelData.link}
-              </a>
-            </div>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <div className="flex flex-row gap-4">
-              <ChannelButton
-                bgColor="bg-white"
-                isBorder={true}
-                icon="/vite.svg"
-              >
-                구독
-              </ChannelButton>
-              <ChannelButton isBorder={false} icon="/vite.svg">
-                구독중
-              </ChannelButton>
-            </div>
-            <ChannelButton
-              bgColor="bg-[#E5EBEE]"
-              isBorder={false}
-              icon="/vite.svg"
+          <div
+            className={twMerge(
+              "postBottom",
+              "h-[76px] flex items-center border px-[20px]"
+            )}
+          >
+            <h3 className={twMerge("textH3", "font-bold")}>
+              {channelData.name}
+            </h3>
+            <FaStar className="text-[var(--color-sub)] ml-5" size={22} />
+            <div className="flex-grow"></div>
+            <Button
+              className={twMerge(
+                "btn-style",
+                "textBasic",
+                "w-[91px] h-[36px] font-normal px-4 py-2"
+              )}
             >
-              글쓰기
-            </ChannelButton>
+              <FaPlus className="text-white mr-1" size={12} />
+              <span>글쓰기</span>
+            </Button>
           </div>
         </div>
-        <div className="flex flex-row gap-8 mx-40">
-          <div className="flex-1">
-            <div className="flex flex-col gap-[42px] w-vw">
-              {channelData.posts.map((v) => (
-                <Post key={v.id} {...v} />
-              ))}
-            </div>
-          </div>
+        <div className="flex flex-col gap-[30px]">
+          {channelData.posts.map((v) => (
+            <PostList key={v.postId} {...v} />
+          ))}
         </div>
-        {/* 인기 글 나타내는 부분 일단 절대 위치 지정 */}
-        {/* <aside className="absolute top-0 right-10 w-[225px] p-4 border rounded-[22px] h-fit">
-          <h4 className="textH4 mb-4">인기 글</h4>
-          <ul className="text-[var(--color-black)] text-[16px] space-y-1">
-            <li>수프림 등장했다</li>
-            <li>나는...농이버섯이다...</li>
-          </ul>
-        </aside> */}
       </div>
     </>
   );
