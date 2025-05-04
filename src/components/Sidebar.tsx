@@ -1,25 +1,10 @@
 import { useEffect, useState } from "react";
-import { VscHome, VscGlobe } from "react-icons/vsc";
+//import { VscHome, VscGlobe } from "react-icons/vsc";
 import { TiStarFullOutline } from "react-icons/ti";
 
 import placeholderIcon from "../assets/channelImg.svg";
-
-type Channel = {
-  _id: string;
-  name: string;
-  description: string;
-  authRequired: boolean;
-  posts: string[];
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
-
-type ChannelItem = {
-  id: string;
-  name: string;
-  isSubscribe: boolean;
-};
+import globeIcon from "../assets/globe.svg";
+import homeIcon from "../assets/home.svg";
 
 export default function Sidebar() {
   const [channels, setChannels] = useState<Channel[]>([]);
@@ -97,11 +82,11 @@ export default function Sidebar() {
       <nav>
         <ul className="p-3">
           <li className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer">
-            <VscHome className="w-5.5 h-5.5 mr-[13px] " />
+            <img src={homeIcon} className="w-5.5 h-5.5 mr-[13px] " />
             <span className="font-bold">홈</span>
           </li>
           <li className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer">
-            <VscGlobe className="w-5.5 h-5.5 mr-[13px] " />
+            <img src={globeIcon} className="w-5.5 h-5.5 mr-[13px] " />
             <span className="font-bold">커뮤니티</span>
           </li>
         </ul>
