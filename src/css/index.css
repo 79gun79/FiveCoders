@@ -54,6 +54,9 @@
     @apply w-[65px] cursor-pointer border-b-2 text-[20px];
   }
   .community-button {
-    @apply rounded-full py-1 px-3.5 bg-[#e5ebee];
+    @apply inline-flex mr-2;
+  }
+  .community-tab {
+    @apply border-[var(--color-gray3)] hover:border-[var(--color-secondary)] active:border-[var(--color-primary)];
   }
 }
