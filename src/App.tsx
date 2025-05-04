@@ -1,12 +1,19 @@
 import Sidebar from "./components/Sidebar";
+import Channel from "./pages/Channel";
 
 export default function App() {
   return (
     <>
-      <div className="min-h-screen bg-gray-300">
-        <h1 className="text-3xl underline">FiveCoders</h1>
+      <header className="min-w-screen min-h-[80px] bg-[var(--color-main)]">
+        상단 바
+      </header>
+      <main className="flex">
         <Sidebar />
-      </div>
+        <section className="w-auto mt-[50px] mx-[160px]">
+          <Channel />
+        </section>
+      </main>
+      <footer></footer>
     </>
   );
 }
