@@ -3,8 +3,11 @@ import setting from "../assets/icons/Setting.svg";
 import { twMerge } from "tailwind-merge";
 import MyInfo from "../components/MyInfo";
 import MyPost from "../components/MyPost";
+import userData from "../store/UserData";
 
 export default function MyPage() {
+  const userName = userData((state) => state.userName);
+  const userEmail = userData((state) => state.userEmail);
   return (
     <>
       <div className="flex flex-col items-center relative mt-[54px]">
@@ -16,8 +19,8 @@ export default function MyPage() {
               className="rounded-full h-[90px] w-[90px] overflow-hidden object-fill mr-[18px]"
             />
             <div className="inline-block left-[100px] content-center">
-              <span className="block text-[28px]">설월화</span>
-              <span className="block text-[20px]">neung_3@naver.com</span>
+              <span className="block text-[28px]">{userName}</span>
+              <span className="block text-[20px]">{userEmail}</span>
             </div>
             <MyInfo />
             <button className="ml-[81.62px] h-[32px] cursor-pointer">

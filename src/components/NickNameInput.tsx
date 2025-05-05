@@ -1,7 +1,9 @@
 import { useState } from "react";
+import userData from "../store/UserData";
 
 export default function NickNameInput() {
   const [isInputClicked, setIsInputClicked] = useState(false);
+  const userName = userData((state) => state.userName);
   return (
     <>
       <div>
@@ -17,6 +19,7 @@ export default function NickNameInput() {
           placeholder={
             isInputClicked === true ? "" : "2자 이상, 8자 이하로 입력해주세요"
           }
+          defaultValue={userName}
         />
       </div>
     </>
