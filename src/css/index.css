@@ -59,4 +59,14 @@
   .community-tab {
     @apply border-[var(--color-gray3)] hover:border-[var(--color-secondary)] active:border-[var(--color-primary)];
   }
+  .input {
+    @apply border-b-1 w-[80%] my-3.75 placeholder:text-[var(--color-gray4)]
+    focus:outline-none;
+  }
+  .cancel {
+    @apply bg-[var(--color-gray3)] hover:bg-[var(--color-gray5)] cursor-pointer rounded-full px-5 py-2.5;
+  }
+  .apply {
+    @apply bg-[var(--color-primary)] hover:bg-[var(--color-secondary)] px-3.25 py-2.5 text-[var(--color-white)] cursor-pointer rounded-full;
+  }
 }

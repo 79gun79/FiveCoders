@@ -1,5 +1,5 @@
-import MyPage from "./pages/MyPage";
-// import ProfileSetting from "./pages/ProfileSetting";
+// import MyPage from "./pages/MyPage";
+import ProfileSetting from "./pages/ProfileSetting";
 
 export default function App() {
   return (
@@ -12,7 +12,7 @@ export default function App() {
           사이드 바
         </aside>
         <section className="w-[calc(100vw-210px)] mt-[42px]">
-          <MyPage />
+          <ProfileSetting />
         </section>
       </main>
       <footer></footer>

@@ -1,4 +1,10 @@
 import profile from "../assets/imgs/리터.png";
+import CancelBtn from "../components/CancelBtn";
+import CurrentPassWord from "../components/CurrentPassWord";
+import NewCheck from "../components/NewCheck";
+import NewPassword from "../components/NewPassword";
+import ProfileInput from "../components/NickNameInput";
+import SaveBtn from "../components/SaveBtn";
 
 export default function ProfileSetting() {
   return (
@@ -10,49 +16,34 @@ export default function ProfileSetting() {
           <div className="ml-8.5">
             <span className="block text-T01">이메일</span>
             <span className="mt-2.75 block text-T01">neung_3@naver.com</span>
-            <input
-              type="file"
-              className="rounded-xl bg-[var(--color-gray1)] px-2.5"
-            />
+            <div className="h-3.75"></div>
+            <button className="text-ST01 bg-[var(--color-gray1)] py-2.5 px-3 rounded-xl">
+              프로필 사진 변경
+            </button>
           </div>
         </div>
         <div className="mt-13.5">
           <span className="block text-ST01">닉네임</span>
-          <input type="text" className="border-b-1 w-[80%] my-3.75 text-T02" />
+          <ProfileInput />
         </div>
         <div className="mt-6.5">
           <span className="block text-ST01">기존 비밀번호</span>
-          <input
-            type="text"
-            className="border-b-1 w-[80%] my-3.75 text-T02 placeholder:text-T02 placeholder:text-[var(--color-gray4)]"
-            placeholder="현재 비밀번호를 입력해 주세요"
-          />
+          <CurrentPassWord />
         </div>
 
         <div className="mt-6.5">
           <span className="block text-ST01">새 비밀번호</span>
-          <input
-            type="text"
-            className="border-b-1 w-[80%] my-3.75 text-T02 placeholder:text-T02 placeholder:text-[var(--color-gray4)]"
-            placeholder="8자 이상, 16자 이하의 특수문자 포함"
-          />
+          <NewPassword />
         </div>
         <div className="mt-6.5">
           <span className="block text-ST01">새 비밀번호 확인</span>
-          <input
-            type="text"
-            className="border-b-1 w-[80%] my-3.75 text-T02 placeholder:text-T02 placeholder:text-[var(--color-gray4)]"
-            placeholder="비밀번호를 한 번 더 입력해 주세요"
-          />
+          <NewCheck />
         </div>
         <div className="flex w-[80%] justify-end mt-6.75">
-          <button className="bg-[var(--color-gray3)] hover:bg-[var(--color-gray5)] cursor-pointer rounded-full px-5 py-2.5">
-            취소
-          </button>
-          <button className="ml-2 bg-[var(--color-primary)] hover:bg-[var(--color-secondary)] px-3.25 py-2.5 text-T02 text-[var(--color-white)] cursor-pointer rounded-full">
-            저장하기
-          </button>
+          <CancelBtn />
+          <SaveBtn />
         </div>
+        <div className="h-10"></div>
       </div>
     </>
   );
