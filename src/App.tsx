@@ -1,5 +1,5 @@
 import Sidebar from "./components/Sidebar";
-import Channel from "./pages/Channel";
+import CreatePost from "./pages/CreatePost";
 
 export default function App() {
   return (
@@ -10,7 +10,7 @@ export default function App() {
       <main className="flex">
         <Sidebar />
         <section className="w-auto mt-[50px] mx-[160px]">
-          <Channel />
+          <CreatePost />
         </section>
       </main>
       <footer></footer>

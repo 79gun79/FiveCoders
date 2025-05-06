@@ -2,7 +2,9 @@ import { twMerge } from "tailwind-merge";
 import PostList from "../components/PostList";
 import { postsData } from "../types/postsData";
 import Button from "../components/Button";
-import { FaPlus, FaStar } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
+import { TiStarFullOutline } from "react-icons/ti";
+import { useState } from "react";
 
 export default function Channel() {
   const channelData: ChannelType = {
@@ -15,6 +17,8 @@ export default function Channel() {
     createdAt: "",
     updatedAt: "",
   };
+  const [subscribes, setSubscribes] = useState(false); // 채널 구독 상태 관리
+
   return (
     <>
       <div className="flex flex-col min-w-[640px]">
@@ -34,12 +38,21 @@ export default function Channel() {
             <h3 className={twMerge("textH3", "font-bold")}>
               {channelData.name}
             </h3>
-            <FaStar className="text-[var(--color-sub)] ml-5" size={22} />
+            <TiStarFullOutline
+              onClick={() => setSubscribes(!subscribes)}
+              className={twMerge(
+                "ml-5 transition-colors hover:text-[var(--color-main)]",
+                subscribes
+                  ? "text-[var(--color-sub)]"
+                  : "text-[var(--color-gray4)]"
+              )}
+              size={22}
+            />
             <div className="flex-grow"></div>
             <Button
               className={twMerge(
                 "btn-style",
-                "textBasic",
+                "textST1",
                 "w-[91px] h-[36px] font-normal px-4 py-2"
               )}
             >

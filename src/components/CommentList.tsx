@@ -14,7 +14,7 @@ export default function CommentList({
           <img src={coverImage} alt="profile" className="postProfile" />
           <p className="text-base">{userName}</p>
         </div>
-        <p className="textBasic ml-[42px]">{comment}</p>
+        <p className="textST1 ml-[42px]">{comment}</p>
       </div>
     </>
   );

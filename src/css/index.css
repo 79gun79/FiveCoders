@@ -13,19 +13,22 @@
     @apply w-8 h-8 rounded-full object-cover;
   }
   .textBase {
-    @apply text-[var(--color-black)] text-[14px];
+    @apply text-[var(--color-text-black)] text-[14px];
+  }
+  .textH1 {
+    @apply text-[var(--color-text-black)] font-bold text-[32px];
   }
   .textH2 {
-    @apply text-[var(--color-black)] font-bold text-[28px];
+    @apply text-[var(--color-text-black)] font-bold text-[28px];
   }
   .textH3 {
-    @apply text-[var(--color-black)] font-medium text-[24px];
+    @apply text-[var(--color-text-black)] font-medium text-[24px];
   }
   .textH4 {
-    @apply text-[var(--color-black)] font-medium text-[20px];
+    @apply text-[var(--color-text-black)] font-medium text-[20px];
   }
-  .textBasic {
-    @apply text-[var(--color-black)] text-[14px];
+  .textST1 {
+    @apply text-[var(--color-text-black)] text-[14px];
   }
   .item-middle {
     @apply flex items-center justify-center min-h-screen;
@@ -41,16 +44,29 @@
   }
 
   .btn-style-post {
-    @apply bg-white hover:bg-[#f2f2f2] cursor-pointer text-[#929292] w-full h-[54px] flex items-center justify-center py-[12px];
+    @apply bg-white hover:bg-[var(--color-gray1)] cursor-pointer text-[var(--color-gray5)] w-full h-[54px] flex items-center justify-center py-[12px];
   }
   .btn-style-post2 {
-    @apply bg-white hover:bg-[#f2f2f2] cursor-pointer px-6 py-2 text-center;
+    @apply bg-white hover:bg-[var(--color-gray1)] cursor-pointer px-6 py-2 text-center;
   }
   .btn-style-comment {
-    @apply bg-[#e0e0e0] hover:bg-[#bdbdbd] cursor-pointer text-[#616161] rounded-full px-3 py-1;
+    @apply bg-[var(--color-gray3)] hover:bg-[var(--color-gray4)] cursor-pointer text-[var(--color-gray7)] rounded-full px-3 py-1;
   }
   .btn-style-modal {
     @apply bg-[var(--color-main)] hover:bg-[var(--color-sub)] cursor-pointer text-white w-[120px] h-[40px] items-center justify-center rounded-[5px];
   }
+  .btn-style-channelList {
+    @apply bg-white hover:bg-[var(--color-gray1)] cursor-pointer text-[var(--color-gray7)] border border-[var(--color-main)] w-[193px] h-[44px] flex items-center justify-center rounded-3xl;
+  }
+
+  .input-style-head {
+    @apply w-full h-[54px] rounded-xl border border-[var(--color-gray4)] bg-white placeholder-[var(--color-gray5)] focus:border-[var(--color-main)] focus:outline-[var(--color-main)] focus:outline-1;
+  }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */
+
+.ql-editor::before {
+  font-style: normal !important;
+  color: var(--color-gray4) !important;
+}
+/* 텍스트 에디터의 미리보기 글짜 적용을 위한 기본 CSS 사용 */
