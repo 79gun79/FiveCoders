@@ -14,7 +14,7 @@ export default function CreatePost() {
   return (
     <>
       <div className="flex flex-col min-w-[656px] items-start justify-center gap-[26px] mb-[50px]">
-        <h2 className="textH2">글 작성하기</h2>
+        <h2 className="textH2">게시글 작성</h2>
         <Button className="btn-style-channelList mb-[34px]">
           <FaCaretDown className="mr-1" />
           <span className="textST1 text-[var(--color-gray7)]">
@@ -35,7 +35,7 @@ export default function CreatePost() {
               "bg-[var(--color-main)] hover:bg-[var(--color-sub)] h-10 textBasic text-white"
             )}
           >
-            저장하기
+            게시하기
           </Button>
         </div>
       </div>
