@@ -1,11 +1,15 @@
-import profile from "../assets/react.svg";
+import channelImg from "../assets/channelImg.svg";
 
-export default function LoginUser() {
+export default function HeaderLogin() {
 	return (
-		<div className="absolute flex items-center right-8 gap-3">
-			{/* <button className="btn-style w-25 text-black">글쓰기</button> */}
-			<button className="cursor-pointer">
-				<svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} viewBox="0 0 24 24">
+		<div className="absolute right-6 flex items-center gap-3">
+			<button>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width={36}
+					height={36}
+					viewBox="0 0 24 24"
+				>
 					<g fill="none">
 						<path d="m12.594 23.258l-.012.002l-.071.035l-.02.004l-.014-.004l-.071-.036q-.016-.004-.024.006l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.016-.018m.264-.113l-.014.002l-.184.093l-.01.01l-.003.011l.018.43l.005.012l.008.008l.201.092q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.003-.011l.018-.43l-.003-.012l-.01-.01z"></path>
 						<path
@@ -15,9 +19,9 @@ export default function LoginUser() {
 					</g>
 				</svg>
 			</button>
-			<button>
-				<img src={profile} alt="profile" className="rounded-full bg-gray-600" width={38} height={38} />
-			</button>
+			<div>
+				<img src={channelImg} alt="channelImg" />
+			</div>
 		</div>
 	);
 }

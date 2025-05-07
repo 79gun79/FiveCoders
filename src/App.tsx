@@ -1,9 +1,10 @@
-import Topbar from "./components/Topbar";
+import { BrowserRouter } from "react-router";
+import Router from "./router";
 
 export default function App() {
-	return (
-		<>
-			<Topbar />
-		</>
-	);
+  return (
+    <BrowserRouter>
+      <Router />
+    </BrowserRouter>
+  );
 }
