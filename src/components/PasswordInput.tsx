@@ -44,8 +44,6 @@ export default function PasswordInput({
           type="button"
           className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center text-[#757575] hover:text-[#51B8B2] focus:outline-none"
           onClick={() => setVisible((v) => !v)}
-          tabIndex={-1}
-          aria-label={visible ? "비밀번호 숨기기" : "비밀번호 보기"}
         >
           {visible ? (
             <FaEyeSlash className="w-5 h-5" />
