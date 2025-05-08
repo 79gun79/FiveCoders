@@ -5,10 +5,20 @@ import { useState } from "react";
 import PostEditor from "../components/PostEditor";
 import { twMerge } from "tailwind-merge";
 import ChooseCommunity from "../components/ChooseCommunity";
+import { useNavigate } from "react-router";
 
 export default function CreatePost() {
   const [content, setContent] = useState("");
   const [chooseList, setChooseList] = useState(false);
+  const [channel, setChannel] = useState("");
+  const [cIcon, setCIcon] = useState("");
+  const navigate = useNavigate();
+
+  const handleChannelChange = (c1: string, c2: string) => {
+    setChannel(c1);
+    setCIcon(c2);
+    setChooseList(false);
+  };
 
   const handleEditorChange = (value: string) => {
     setContent(value);
@@ -21,23 +31,45 @@ export default function CreatePost() {
         <div className="relative z-30">
           <Button
             onClick={() => setChooseList(!chooseList)}
-            className="btn-style-channelList mb-[34px]"
+            className={twMerge(
+              "btn-style-channelList mb-[34px]",
+              channel === "" ? "" : "justify-start p-4 gap-2"
+            )}
           >
-            <FaCaretDown className="mr-1" />
-            <span className="textST1 text-[var(--color-gray7)]">
-              커뮤니티를 선택하세요
-            </span>
+            {channel === "" ? (
+              <>
+                <FaCaretDown className="mr-1" />
+                <span className="textST1 text-[var(--color-gray7)]">
+                  커뮤니티를 선택하세요
+                </span>
+              </>
+            ) : (
+              <>
+                <img
+                  className={twMerge("postProfile", "w-[20px] h-[20px]")}
+                  src={cIcon}
+                  alt="icon"
+                />
+                <span className="textST1 text-[var(--color-text-black)]">
+                  {channel}
+                </span>
+              </>
+            )}
           </Button>
-          {chooseList && <ChooseCommunity />}
+          {chooseList && <ChooseCommunity onChange={handleChannelChange} />}
         </div>
         <Input className="input-style-head" placeholder="제목을 입력하세요" />
         <PostEditor value={content} onChange={handleEditorChange} />
+
         <div className="w-full flex justify-end gap-4">
           <Button
+            type="reset"
+            onClick={() => navigate("..")}
             className={twMerge("btn-style-comment", "h-10 textBasic px-5")}
           >
             취소
           </Button>
+
           <Button
             type="submit"
             className={twMerge(

@@ -47,8 +47,11 @@ export default function PostList({
       coverImage: placeholderIcon,
       userName: "익명",
     };
-
     setCmts([...cmts, newItem]);
+  };
+
+  const deleteComment = (id: number) => {
+    setCmts((prev) => prev.filter((comment) => comment.commentId !== id));
   };
 
   return (
@@ -128,7 +131,7 @@ export default function PostList({
         {/* 아래는 댓글 컴포넌트를 불러옴 */}
         <div className="flex flex-col">
           {cmts.map((v) => (
-            <CommentList key={v.commentId} {...v} />
+            <CommentList key={v.commentId} {...v} onDelete={deleteComment} />
           ))}
         </div>
         {isCmtForm && <CommentForm addComment={addComment} />}

@@ -7,10 +7,13 @@
     @apply border-b border-[#d9d9d9] min-w-[564px];
   }
   .postBorder {
-    @apply border border-[#d9d9d9] rounded-3xl p-[36px] shadow-md;
+    @apply border border-[#d9d9d9] p-[36px];
   }
   .postProfile {
     @apply w-8 h-8 rounded-full object-cover;
+  }
+  .listBorder {
+    @apply bg-white w-[175px] h-[fit] border border-[var(--color-gray3)] rounded-lg p-[10px] shadow-md;
   }
   .textBase {
     @apply text-[var(--color-text-black)] text-[14px];

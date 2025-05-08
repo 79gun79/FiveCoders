@@ -1,10 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import PostList from "../components/PostList";
 import { postsData } from "../types/postsData";
-import Button from "../components/Button";
 import { FaPlus } from "react-icons/fa";
 import { TiStarFullOutline } from "react-icons/ti";
 import { useState } from "react";
+import { Link } from "react-router";
+import PostList from "../components/PostList";
+import Button from "../components/Button";
 import fcOnline from "../assets/fcOnline.jpg";
 
 export default function Channel() {
@@ -49,16 +50,18 @@ export default function Channel() {
               size={22}
             />
             <div className="flex-grow"></div>
-            <Button
-              className={twMerge(
-                "btn-style",
-                "textST1",
-                "w-[91px] h-[36px] font-normal px-4 py-2"
-              )}
-            >
-              <FaPlus className="text-white mr-1" size={12} />
-              <span>글쓰기</span>
-            </Button>
+            <Link to="create">
+              <Button
+                className={twMerge(
+                  "btn-style",
+                  "textST1",
+                  "w-[91px] h-[36px] font-normal px-4 py-2"
+                )}
+              >
+                <FaPlus className="text-white mr-1" size={12} />
+                <span>글쓰기</span>
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="flex flex-col gap-[30px]">

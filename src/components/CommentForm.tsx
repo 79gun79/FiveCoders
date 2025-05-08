@@ -31,13 +31,7 @@ export default function CommentForm({
             )}
           />
 
-          <div className="flex justify-end gap-2">
-            <Button
-              className={twMerge("btn-style-comment", "text-[14px]")}
-              onClick={() => setComment("")}
-            >
-              취소
-            </Button>
+          <div className="flex justify-end">
             <Button
               className={twMerge(
                 "btn-style-comment",

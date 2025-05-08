@@ -14,3 +14,9 @@ type ChannelItem = {
   name: string;
   isSubscribe: boolean;
 };
+
+type ChannelList = {
+  id: string;
+  name: string;
+  icon: string;
+};
