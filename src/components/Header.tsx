@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Logo from "../assets/GammueLogo.png";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 // import HeaderLogin from "./HeaderLogin";
 import HeaderNotLogin from "./HeaderNotLogin";
 
