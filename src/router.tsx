@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Channel from "./pages/Channel";
 import ChannelList from "./pages/ChannelList";
+import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 
@@ -13,6 +14,7 @@ export default function Router() {
       {/* 레이아웃 적용되지 않는 페이지 */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/search" element={<Search />} />
 
       {/* 레이아웃 적용되는 페이지 그룹 */}
       <Route element={<Layout />}>
