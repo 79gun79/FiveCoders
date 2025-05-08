@@ -80,3 +80,18 @@
 .postBox {
   @apply w-[100%] h-[196px] border-[1px] border-[#d9d9d9] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl;
 }
+
+@layer components {
+  .item-middle {
+    @apply flex items-center justify-center min-h-screen;
+  }
+
+  .btn-style {
+    @apply bg-[#51B8B2] hover:bg-[#539995] cursor-pointer text-white w-full h-11 flex items-center justify-center rounded-full font-semibold px-3 p-3;
+  }
+
+  .input-style {
+    @apply w-full h-11 rounded-4xl px-4 p-3 border border-[#E5EBEE] bg-[#E5EBEE]
+    focus:border-[#51B8B2] focus:outline-[#51B8B2] focus:outline-1;
+  }
+}
