@@ -1,4 +1,4 @@
-type Channel = {
+export type Channel = {
   _id: string;
   name: string;
   description: string;
@@ -7,16 +7,13 @@ type Channel = {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  imageUrl: string;
 };
 
-type ChannelItem = {
+export type ChannelItem = {
   id: string;
   name: string;
   isSubscribe: boolean;
-};
-
-type ChannelList = {
-  id: string;
-  name: string;
-  icon: string;
+  imageUrl: string;
+  genre?: string;
 };
