@@ -1,6 +1,4 @@
 import { BrowserRouter } from "react-router";
-import MyPage from "./pages/MyPage";
-import ProfileSetting from "./pages/ProfileSetting";
 import Router from "./router";
 
 export default function App() {
