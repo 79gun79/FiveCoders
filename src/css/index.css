@@ -60,7 +60,7 @@
     @apply border-[var(--color-gray3)] hover:border-[var(--color-secondary)];
   }
   .community-tab-active {
-    @apply border-[var(--color-primary)] hover:border-[var(--color-secondary)];
+    @apply border-[var(--color-primary)] hover:border-[var(--color-secondary)] text-[var(--color-primary)];
   }
   .input {
     @apply border-b-1 w-[80%] my-3.75 placeholder:text-[var(--color-gray4)]
@@ -74,8 +74,8 @@
   }
 }
 .commentBox {
-  @apply w-[100%] h-[136px] border-[0.3px] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl  shadow-2xl;
+  @apply w-[100%] h-[136px] border-[1px] border-[#d9d9d9] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl;
 }
 .postBox {
-  @apply w-[100%] h-[196px] border-[0.3px] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl  shadow-2xl;
+  @apply w-[100%] h-[196px] border-[1px] border-[#d9d9d9] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl;
 }
