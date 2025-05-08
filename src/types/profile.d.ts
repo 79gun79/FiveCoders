@@ -9,3 +9,17 @@ type UserData = {
   newPassWord: string | null;
   checkPassWord: string | null;
 };
+
+type PostData = {
+  postId: number;
+  authorId: number;
+  title: string;
+  channelId: number;
+};
+
+type CommentData = {
+  commentId: number;
+  authorId: number;
+  comment: string;
+  channelId: number;
+};

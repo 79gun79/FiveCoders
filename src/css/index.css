@@ -51,13 +51,16 @@
     @apply text-[18px] font-bold;
   }
   .button {
-    @apply w-[65px] cursor-pointer border-b-2 text-[20px];
+    @apply w-[80px] cursor-pointer border-b-2 text-[20px];
   }
   .community-button {
     @apply inline-flex mr-2;
   }
   .community-tab {
-    @apply border-[var(--color-gray3)] hover:border-[var(--color-secondary)] active:border-[var(--color-primary)];
+    @apply border-[var(--color-gray3)] hover:border-[var(--color-secondary)];
+  }
+  .community-tab-active {
+    @apply border-[var(--color-primary)] hover:border-[var(--color-secondary)];
   }
   .input {
     @apply border-b-1 w-[80%] my-3.75 placeholder:text-[var(--color-gray4)]
@@ -69,4 +72,10 @@
   .apply {
     @apply bg-[var(--color-primary)] hover:bg-[var(--color-secondary)] px-3.25 py-2.5 text-[var(--color-white)] cursor-pointer rounded-full;
   }
+}
+.commentBox {
+  @apply w-[100%] h-[136px] border-[0.3px] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl  shadow-2xl;
+}
+.postBox {
+  @apply w-[100%] h-[196px] border-[0.3px] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl  shadow-2xl;
 }

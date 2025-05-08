@@ -1,14 +1,11 @@
-import CommnetButton from "./CommentButton";
-import LikeButton from "./LikeButton";
 import profile from "../assets/imgs/기본 프로필.png";
 import userData from "../store/UserData";
 
-export default function MyPost() {
+export default function MyComment() {
   const userName = userData((state) => state.userName);
-
   return (
     <>
-      <div className="block postBox">
+      <div className="block commentBox">
         <div className="flex">
           <img
             src={profile}
@@ -18,16 +15,10 @@ export default function MyPost() {
           <div className="block ml-[8.12px]">
             <span className="block text-H03">{userName}</span>
             <div className="h-[7px]"></div>
-            <span className="block text-ST02">테스트 내용입니다</span>
+            <span className="block text-ST02">내 댓글입니다</span>
           </div>
         </div>
-        <div className="border-1 mt-[45px] border-[var(--color-gray3)]"></div>
-        <div className="mt-5 justify-center content-center flex">
-          <LikeButton />
-          <CommnetButton />
-        </div>
       </div>
-      {/* 게시글 박스 */}
     </>
   );
 }

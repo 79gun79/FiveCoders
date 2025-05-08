@@ -1,13 +1,32 @@
-import profile from "../assets/imgs/리터.png";
+import profile from "../assets/imgs/기본 프로필.png";
 import setting from "../assets/icons/Setting.svg";
 import { twMerge } from "tailwind-merge";
 import MyInfo from "../components/MyInfo";
 import MyPost from "../components/MyPost";
 import userData from "../store/UserData";
+import MyComment from "../components/MyComment";
+import { useState } from "react";
 
 export default function MyPage() {
   const userName = userData((state) => state.userName);
   const userEmail = userData((state) => state.userEmail);
+  const [content, setContent] = useState("최신");
+  const [selectedBtn, setSelectedBtn] = useState("최신");
+
+  const buttonList = ["최신", "내 글", "댓글"];
+
+  const handleContentButton = (e) => {
+    const { name } = e.target;
+    setContent(name);
+    setSelectedBtn(e.currentTarget.innerText);
+  };
+
+  const selectComponent = {
+    최신: [<MyPost />, <MyComment />],
+    "내 글": <MyPost />,
+    댓글: <MyComment />,
+  };
+
   return (
     <>
       <div className="flex flex-col items-center relative mt-[54px]">
@@ -30,21 +49,26 @@ export default function MyPage() {
           {/* 개인 프로필 정보 */}
           <div className="h-[53px]"></div>
           <div className="flex">
-            <button
-              className={twMerge(
-                "button border-[var(--color-primary)] hover:border-[var(--color-secondary)]"
-              )}
-            >
-              최신
-            </button>
-            <button className={twMerge("button community-tab")}>내 글</button>
-            <button className={twMerge("button community-tab")}>댓글</button>
+            {buttonList.map((item) => {
+              return (
+                <button
+                  className={twMerge(
+                    "button " +
+                      (item === selectedBtn
+                        ? "community-tab-active"
+                        : "community-tab")
+                  )}
+                  onClick={handleContentButton}
+                  name={item}
+                >
+                  {item}
+                </button>
+              );
+            })}
             <div className="inline-block w-[100%] border-b-2 border-[var(--color-gray3)]"></div>
             {/* 버튼 에리어 */}
           </div>
-          <MyPost />
-          <MyPost />
-          <MyPost />
+          <div>{content && <div>{selectComponent[content]}</div>}</div>
         </div>
       </div>
     </>
