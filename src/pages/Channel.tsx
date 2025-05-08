@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import { FaPlus } from "react-icons/fa";
 import { TiStarFullOutline } from "react-icons/ti";
 import { useState } from "react";
+import fcOnline from "../assets/fcOnline.jpg";
 
 export default function Channel() {
   const channelData: ChannelType = {
@@ -12,8 +13,7 @@ export default function Channel() {
     posts: postsData,
     channelId: 1,
     name: "FC 온라인",
-    description:
-      "https://media.istockphoto.com/id/1133951413/ko/%EC%82%AC%EC%A7%84/%EC%BC%84-%ED%8C%85-%EC%B4%A8-%ED%8C%A1.jpg?s=2048x2048&w=is&k=20&c=o7oc-GnmnNHETP8_pZOIIwZXwZOYyAa7SeCxTZ5S4_M=",
+    description: fcOnline,
     createdAt: "",
     updatedAt: "",
   };
