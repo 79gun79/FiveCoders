@@ -3,7 +3,7 @@ import { postsData } from "../types/postsData";
 import { FaPlus } from "react-icons/fa";
 import { TiStarFullOutline } from "react-icons/ti";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import PostList from "../components/PostList";
 import Button from "../components/Button";
 import fcOnline from "../assets/fcOnline.jpg";
@@ -19,6 +19,23 @@ export default function Channel() {
     updatedAt: "",
   };
   const [subscribes, setSubscribes] = useState(false); // 채널 구독 상태 관리
+  // const [posts, setPosts] = useState<PostType[]>(channelData.posts);
+
+  // // const addPost = (newComment: string) => {
+  // //   const nextId = posts.length + 1;
+  // //   const newItem: CommentType = {
+  // //     channelId: nextId,
+  // //     comment: newComment,
+  // //     coverImage: placeholderIcon,
+  // //     userName: "익명",
+  // //   };
+  // //   setPosts([...posts, newItem]);
+  // // };
+
+  // // const deletePost = (id: number) => {
+  // //   setPosts((prev) => prev.filter((comment) => comment.channelId !== id));
+  // // };
+  // 게시글 추가, 삭제 기능 구현 중에 있음.
 
   return (
     <>

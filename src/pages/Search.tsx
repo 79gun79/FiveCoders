@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import PostList from "../components/PostList";
 import { postsData } from "../types/postsData";
-import { useSearchParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 export default function Search() {

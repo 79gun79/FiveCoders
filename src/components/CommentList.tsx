@@ -12,7 +12,7 @@ export default function CommentList({
   return (
     <>
       <div
-        className={twMerge("postBottom", "flex flex-col gap-3 px-1 py-[16px]")}
+        className={twMerge("postBottom", "flex flex-col gap-2 px-1 py-[16px]")}
       >
         <div className="flex items-center gap-[10px]">
           <img src={coverImage} alt="profile" className="postProfile" />
@@ -25,7 +25,7 @@ export default function CommentList({
             <HiTrash className="text-[var(--color-gray5)]" size={13} />
           </Button>
         </div>
-        <p className="textST1 ml-[42px]">{comment}</p>
+        <p className="textST1 ml-[42px] text-[var(--color-gray8)]">{comment}</p>
       </div>
     </>
   );

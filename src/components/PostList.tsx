@@ -82,6 +82,7 @@ export default function PostList({
                 >
                   <div className="flex flex-col">
                     <Button
+                      onClick={() => setIsOpen(true)}
                       className={twMerge("btn-style-post2", "text-black")}
                     >
                       수정

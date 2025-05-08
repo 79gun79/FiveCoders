@@ -9,6 +9,9 @@
   .postBorder {
     @apply border border-[#d9d9d9] p-[36px];
   }
+  .postBorder2 {
+    @apply border border-[#d9d9d9] rounded-3xl shadow-md p-[36px];
+  }
   .postProfile {
     @apply w-8 h-8 rounded-full object-cover;
   }

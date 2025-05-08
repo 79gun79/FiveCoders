@@ -5,7 +5,7 @@ import { useState } from "react";
 import PostEditor from "../components/PostEditor";
 import { twMerge } from "tailwind-merge";
 import ChooseCommunity from "../components/ChooseCommunity";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
   const [content, setContent] = useState("");

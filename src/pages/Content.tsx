@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Channel from "./Channel";
 import CreatePost from "./CreatePost";
