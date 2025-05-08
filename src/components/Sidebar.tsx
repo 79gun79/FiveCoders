@@ -42,7 +42,7 @@ export default function Sidebar() {
   }));
 
   return (
-    <aside className="w-[280px] h-screen border-r border-[var(--color-gray4)] bg-white)] flex flex-col">
+    <aside className="w-[280px] h-screen border-r border-[var(--color-gray4)] bg-[var(--color-bg-white)] flex flex-col">
       <nav>
         <ul className="p-3">
           <li
