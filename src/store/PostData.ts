@@ -1,4 +1,4 @@
-export const postData: PostData[] = [
+export const postData: PostType[] = [
   {
     postId: 1,
     authorId: 1,

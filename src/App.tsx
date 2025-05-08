@@ -1,5 +1,7 @@
+import { BrowserRouter } from "react-router";
 import MyPage from "./pages/MyPage";
-// import ProfileSetting from "./pages/ProfileSetting";
+import ProfileSetting from "./pages/ProfileSetting";
+import Router from "./router";
 
 export default function App() {
   return (
@@ -12,7 +14,9 @@ export default function App() {
           사이드 바
         </aside>
         <section className="w-[calc(100vw-210px)] mt-[42px]">
-          <MyPage />
+          <BrowserRouter>
+            <Router />
+          </BrowserRouter>
         </section>
       </main>
       <footer></footer>

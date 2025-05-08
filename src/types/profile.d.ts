@@ -1,4 +1,4 @@
-type UserData = {
+type UserType = {
   userId: number;
   userName: string;
   userEmail: string;
@@ -10,14 +10,14 @@ type UserData = {
   checkPassWord: string | null;
 };
 
-type PostData = {
+type PostType = {
   postId: number;
   authorId: number;
   title: string;
   channelId: number;
 };
 
-type CommentData = {
+type CommentType = {
   commentId: number;
   authorId: number;
   comment: string;

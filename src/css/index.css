@@ -1,4 +1,5 @@
 @import "./tailwind.css";
+@import "./font.css";
 
 :root {
   --color-primary: #51b8b2;

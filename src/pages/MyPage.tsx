@@ -6,6 +6,7 @@ import MyPost from "../components/MyPost";
 import userData from "../store/UserData";
 import MyComment from "../components/MyComment";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export default function MyPage() {
   const userName = userData((state) => state.userName);
@@ -42,9 +43,11 @@ export default function MyPage() {
               <span className="block text-[20px]">{userEmail}</span>
             </div>
             <MyInfo />
-            <button className="ml-[81.62px] h-[32px] cursor-pointer">
-              <img src={setting} alt="setting" />
-            </button>
+            <Link to="/setting">
+              <button className="ml-[81.62px] h-[32px] cursor-pointer">
+                <img src={setting} alt="setting" />
+              </button>
+            </Link>
           </div>
           {/* 개인 프로필 정보 */}
           <div className="h-[53px]"></div>
