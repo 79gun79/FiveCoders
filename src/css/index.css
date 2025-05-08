@@ -147,6 +147,9 @@
   .input-style-head {
     @apply w-full h-[54px] rounded-xl border border-[var(--color-gray4)] bg-white placeholder-[var(--color-gray5)] focus:border-[var(--color-main)] focus:outline-[var(--color-main)] focus:outline-1;
   }
+  .comment{
+    @apply w-100  text-[var(--color-gray5)] cursor-pointer hover:bg-[var(--color-gray1)] flex content-center justify-center
+  }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */
 

@@ -1,10 +1,10 @@
-import CancelBtn from "../components/CancelBtn";
+import { Link } from "react-router";
+import Button from "../components/Button";
 import CurrentPassWord from "../components/CurrentPassWord";
 import NewCheck from "../components/NewCheck";
 import NewPassword from "../components/NewPassword";
 import NickNameInput from "../components/NickNameInput";
 import ProfileUpload from "../components/ProfileUpload";
-import SaveBtn from "../components/SaveBtn";
 
 export default function ProfileSetting() {
   return (
@@ -32,8 +32,12 @@ export default function ProfileSetting() {
           <NewCheck />
         </div>
         <div className="flex w-[80%] justify-end mt-6.75">
-          <CancelBtn />
-          <SaveBtn />
+          <Link to="/mypage">
+            <Button className="cancel text-T02">취소</Button>
+          </Link>
+          <Link to="/mypage">
+            <Button className="ml-2 apply text-T02">저장하기</Button>
+          </Link>
         </div>
         <div className="h-10"></div>
       </div>

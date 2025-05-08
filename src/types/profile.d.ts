@@ -10,7 +10,7 @@ type UserType = {
   checkPassWord: string | null;
 };
 
-type PostType = {
+type PostData = {
   postId: number;
   authorId: number;
   title: string;
