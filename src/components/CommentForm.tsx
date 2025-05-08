@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Button from "./Button";
+import placeholderIcon from "../assets/channelImg.svg";
 
 export default function CommentForm({
   addComment,
@@ -17,12 +18,8 @@ export default function CommentForm({
   return (
     <>
       <div className="flex items-start px-1 py-[20px] gap-[10px]">
-        <img
-          src="https://cdn.pixabay.com/photo/2025/03/20/21/00/vulture-9483838_1280.jpg"
-          alt="profile"
-          className="postProfile"
-        />
-        <div className="flex-1 h-[110px] rounded-xl bg-[#eeeeee] p-4">
+        <img src={placeholderIcon} alt="profile" className="postProfile" />
+        <div className="flex-1 h-[110px] rounded-xl bg-[var(--color-gray2)] p-4">
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -30,17 +27,11 @@ export default function CommentForm({
             rows={2}
             className={twMerge(
               "textBasic",
-              "w-full resize-none outline-none placeholder-[#5a5a5a]"
+              "w-full resize-none outline-none placeholder-[var(--color-gray5)]"
             )}
           />
 
-          <div className="flex justify-end gap-2">
-            <Button
-              className={twMerge("btn-style-comment", "text-[14px]")}
-              onClick={() => setComment("")}
-            >
-              취소
-            </Button>
+          <div className="flex justify-end">
             <Button
               className={twMerge(
                 "btn-style-comment",
