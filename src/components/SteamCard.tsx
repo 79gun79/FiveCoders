@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import SteamIconBig from "../assets/steam-big.svg";
 import SteamIconSm from "../assets/steam-small.svg";
-import { getPlayerSummaries } from "../services/steamApi";
 
 interface SteamPlayer {
   steamid: string;

@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import prof from "../assets/imgs/기본 프로필.png";
+import userData from "../store/UserData";
 
 export default function ProfileUpload() {
   const [Image, setImage] = useState(prof);
+  const userEmail = userData((state) => state.userEmail);
   const fileInput = useRef<HTMLInputElement | null>(null);
 
   const isChanged = (e: React.ChangeEvent<any>) => {
@@ -27,7 +29,7 @@ export default function ProfileUpload() {
       <img src={Image} alt="프로필" className="h-30 w-30 rounded-full" />
       <div className="ml-8.5">
         <span className="block text-T01">이메일</span>
-        <span className="mt-2.75 block text-T01">neung_3@naver.com</span>
+        <span className="mt-2.75 block text-T01">{userEmail}</span>
         <div className="h-3.75"></div>
         <input
           type="file"
