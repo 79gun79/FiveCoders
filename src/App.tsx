@@ -1,7 +1,12 @@
+import { BrowserRouter } from "react-router";
+import Router from "./router";
+
 export default function App() {
   return (
     <>
-      <h1 className="text-3xl underline">FiveCoders</h1>
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
     </>
   );
 }
