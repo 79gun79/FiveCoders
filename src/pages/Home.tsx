@@ -1,7 +1,9 @@
 export default function Home() {
   return (
     <>
-      <h1>Home Component</h1>
+      <div className="mx-[200px]">
+        <h1>Home Component</h1>
+      </div>
     </>
   );
 }

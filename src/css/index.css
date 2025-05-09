@@ -1,6 +1,6 @@
 @import './tailwind.css';
-@import './font.css';
 @import './root.css';
+@import './font.css';
 
 @layer components {
   .postBottom {

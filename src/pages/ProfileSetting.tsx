@@ -43,7 +43,7 @@ export default function ProfileSetting() {
 
   return (
     <>
-      <div className="flex w-195 flex-col content-center items-start justify-start">
+      <div className="mx-[160px] flex w-195 flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
           <ProfileUpload />

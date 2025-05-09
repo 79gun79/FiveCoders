@@ -30,7 +30,7 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mt-[54px] flex flex-col items-center">
+      <div className="relative mx-[160px] mt-[54px] flex flex-col items-center">
         <div>
           <div className="flex">
             <img

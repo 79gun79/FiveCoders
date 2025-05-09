@@ -9,7 +9,7 @@ import Content from './pages/Content';
 import MyPage from './pages/MyPage';
 import ProfileSetting from './pages/ProfileSetting';
 import NotFound from './pages/NotFound';
-import Layout from './components/Layout';
+import Layout from './pages/Layout';
 
 export default function Router() {
   return (
