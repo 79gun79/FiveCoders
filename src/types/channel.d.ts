@@ -3,7 +3,7 @@ export type Channel = {
   name: string;
   description: string;
   authRequired: boolean;
-  posts: string[];
+  posts: PostType[];
   createdAt: string;
   updatedAt: string;
   __v: number;

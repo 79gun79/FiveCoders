@@ -1,98 +1,86 @@
 import { useEffect, useState } from 'react';
 import profileImg from '../assets/channelImg.svg';
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
 import PostList from '../components/PostList';
-import { postsData } from '../types/postsData';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import { client } from '../services/axios';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q');
-
   const [userTab, setUserTab] = useState(true);
   const [searchData, setSearchData] = useState<[UserType | PostType]>();
 
   useEffect(() => {
-    axios(`http://13.125.208.179:5009/search/all/${searchQuery}`) //
+    client(`/search/all/${searchQuery}`) //
       .then((response) => setSearchData(response.data));
-  });
-
-  // 임시
-  const channelData: ChannelType = {
-    authRequired: true,
-    posts: postsData,
-    channelId: 1,
-    name: 'FC 온라인',
-    description:
-      'https://media.istockphoto.com/id/1133951413/ko/%EC%82%AC%EC%A7%84/%EC%BC%84-%ED%8C%85-%EC%B4%A8-%ED%8C%A1.jpg?s=2048x2048&w=is&k=20&c=o7oc-GnmnNHETP8_pZOIIwZXwZOYyAa7SeCxTZ5S4_M=',
-    createdAt: '',
-    updatedAt: '',
-  };
+    setUserTab(true);
+  }, [searchQuery]);
 
   return (
     <>
-      <Header />
-      <main className="flex">
-        <Sidebar />
-        <section className="mx-[160px] mt-[50px] w-full max-w-4xl">
-          <div className="mb-9.5 text-xl">
-            <button
-              className="w-[50%] cursor-pointer border-b-2 border-b-[var(--color-gray3)] disabled:cursor-default disabled:border-b-[var(--color-main)]"
-              onClick={() => setUserTab(true)}
-              disabled={userTab}
-            >
-              사용자
-            </button>
-            <button
-              className="w-[50%] cursor-pointer border-b-2 border-b-[var(--color-gray3)] disabled:cursor-default disabled:border-b-[var(--color-main)]"
-              onClick={() => setUserTab(false)}
-              disabled={!userTab}
-            >
-              게시글
-            </button>
-          </div>
+      <div className="mx-[100px]">
+        <div className="mb-9.5 w-3xl text-xl">
+          <button
+            className="search-tab-style"
+            onClick={() => setUserTab(true)}
+            disabled={userTab}
+          >
+            사용자
+          </button>
+          <button
+            className="search-tab-style"
+            onClick={() => setUserTab(false)}
+            disabled={!userTab}
+          >
+            게시글
+          </button>
+        </div>
 
-          {/* 사용자 검색 */}
-          {userTab &&
-            searchData
-              ?.filter((e) => 'fullName' in e)
-              .map((user) => (
-                <div>
-                  <div
-                    style={{ boxShadow: '0 4px 12px 0 rgba(0, 0, 0, 0.1)' }}
-                    className="relative my-3 flex items-center rounded-3xl px-6 py-7"
-                  >
-                    <img
-                      src={user.image || profileImg}
-                      alt={`${user.fullName}`}
-                      className="mr-6 h-14 w-14"
-                    />
-                    <span className="text-xl font-bold">{user.fullName}</span>
-                    <button className="absolute right-6.5 cursor-pointer rounded-[8px] bg-[var(--color-gray1)] p-2 text-[var(--color-gray8)] hover:bg-[var(--color-main)] hover:text-white">
-                      프로필 보기
-                    </button>
-                  </div>
+        {/* 사용자 검색 */}
+        {userTab &&
+          searchData
+            ?.filter((e) => 'fullName' in e)
+            .map((user) => (
+              <div>
+                <div className="relative my-3 flex items-center rounded-3xl border border-[#d9d9d9] px-6 py-7">
+                  <img
+                    src={user.image || profileImg}
+                    alt={`${user.fullName}`}
+                    className="mr-6 h-14 w-14"
+                  />
+                  <span className="text-xl font-bold">{user.fullName}</span>
+                  <button className="absolute right-6.5 cursor-pointer rounded-[8px] bg-[var(--color-gray1)] p-2 text-[var(--color-gray8)] hover:bg-[var(--color-main)] hover:text-white">
+                    프로필 보기
+                  </button>
                 </div>
-              ))}
-          {userTab &&
-            searchData?.filter((e) => 'fullName' in e).length === 0 && (
-              <div className="text-[18px] font-medium">
-                검색 결과가 없습니다.
-              </div>
-            )}
-
-          {/* 게시글 검색 */}
-          {!userTab &&
-            channelData.posts.map((v) => (
-              <div className="mb-5">
-                <PostList key={v.postId} {...v} />
               </div>
             ))}
-        </section>
-      </main>
-      <footer></footer>
+        {userTab && searchData?.filter((e) => 'fullName' in e).length === 0 && (
+          <div className="text-[18px] font-medium">검색 결과가 없습니다.</div>
+        )}
+
+        {/* 게시글 검색 */}
+        {!userTab &&
+          searchData
+            ?.filter((e) => 'title' in e)
+            .map((post) => (
+              <div className="mb-5">
+                <PostList
+                  key={post.postId}
+                  postId={post.postId}
+                  content={post.content}
+                  userName={'(작업중)'}
+                  image={post.image}
+                  coverImage={post.coverImage || profileImg}
+                  comments={post.comments}
+                />
+              </div>
+            ))}
+
+        {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (
+          <div className="text-[18px] font-medium">검색 결과가 없습니다.</div>
+        )}
+      </div>
     </>
   );
 }

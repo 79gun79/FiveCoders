@@ -1,7 +1,12 @@
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
+import { useNavigate } from 'react-router';
 
 export default function IsLoggedInModal({ onClose }: { onClose: () => void }) {
+  const navigate = useNavigate();
+  const handleConfirm = () => {
+    navigate('/login');
+  };
   return (
     <>
       <div
@@ -27,7 +32,9 @@ export default function IsLoggedInModal({ onClose }: { onClose: () => void }) {
             >
               아니오
             </Button>
-            <Button className="btn-style-modal">예</Button>
+            <Button className="btn-style-modal" onClick={handleConfirm}>
+              예
+            </Button>
           </div>
         </div>
       </div>

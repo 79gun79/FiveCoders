@@ -6,6 +6,7 @@ import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
 import { useNavigate } from 'react-router-dom';
+import { usePostStore } from '../stores/postStore';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
@@ -13,6 +14,7 @@ export default function CreatePost() {
   const [channel, setChannel] = useState('');
   const [cIcon, setCIcon] = useState('');
   const navigate = useNavigate();
+  const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
 
   const handleChannelChange = (c1: string, c2: string) => {
     setChannel(c1);
@@ -24,15 +26,24 @@ export default function CreatePost() {
     setContent(value);
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    createPost(content);
+    navigate('..');
+  };
+
   return (
     <>
-      <form className="mb-[50px] flex min-w-[656px] flex-col items-start justify-center gap-[26px]">
+      <form
+        className="mb-[50px] flex min-w-[656px] flex-col items-start justify-center gap-[26px]"
+        onSubmit={handleSubmit}
+      >
         <h2 className="textH2">게시글 작성</h2>
         <div className="relative z-30">
           <Button
             onClick={() => setChooseList(!chooseList)}
             className={twMerge(
-              'btn-style-channelList mb-[34px]',
+              'btn-style-channelList',
               channel === '' ? '' : 'justify-start gap-2 p-4',
             )}
           >
