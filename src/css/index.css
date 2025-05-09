@@ -16,7 +16,7 @@
     @apply h-8 w-8 rounded-full object-cover;
   }
   .listBorder {
-    @apply h-[fit] w-[175px] rounded-lg border border-[var(--color-gray3)] bg-white p-[10px] shadow-md;
+    @apply h-[fit] w-[fit] rounded-lg border border-[var(--color-gray3)] bg-white p-[10px] shadow-md;
   }
   .textBase {
     @apply text-[14px] text-[var(--color-text-black)];

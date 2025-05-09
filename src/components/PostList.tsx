@@ -57,7 +57,17 @@ export default function PostList({
     allowedSchemes: ['http', 'https', 'data'],
     allowedStyles: {
       '*': {
-        color: [/^red$/, /^blue$/, /^green$/, /^black$/, /^white$/],
+        color: [
+          /^red$/,
+          /^blue$/,
+          /^green$/,
+          /^black$/,
+          /^orange$/,
+          /^yellow$/,
+          /^purple$/,
+          /^pink$/,
+          /^brown$/,
+        ],
       },
     },
   }); // 게시글 등록을 위해 태그 형태로 넘어오는 내용을 가공

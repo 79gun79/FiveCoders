@@ -61,7 +61,7 @@ export default function CreatePost() {
                   src={cIcon}
                   alt="icon"
                 />
-                <span className="textST1 text-[var(--color-text-black)]">
+                <span className="text-[13px] text-[var(--color-text-black)]">
                   {channel}
                 </span>
               </>
