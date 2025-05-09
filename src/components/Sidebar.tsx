@@ -1,45 +1,52 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import { VscHome, VscGlobe } from "react-icons/vsc";
-import { TiStarFullOutline } from "react-icons/ti";
 
-import { Channel, ChannelItem } from "../types/channel";
+import { Channel } from "../types/channel";
 
-import placeholderIcon from "../assets/channelImg.svg";
+import IsLoggedInModal from "./IsLoggedInModal";
+
+import { fetchChannels } from "../services/channelApi";
+import { useAuthStore } from "../stores/authStore";
+
 import globeIcon from "../assets/globe.svg";
 import homeIcon from "../assets/home.svg";
-import { dummyChannels } from "../data/dummyChannels";
+import { TiStarFullOutline } from "react-icons/ti";
+import { getSubscribedChannels } from "../utils/localSubscribe";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [channels, setChannels] = useState<Channel[]>([]);
   const [subscribes, setSubscribes] = useState<string[]>([]);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const toggleSubscride = (id: string) => {
-    setSubscribes((prev) =>
-      prev.includes(id) ? prev.filter((sub) => sub !== id) : [...prev, id]
-    );
-  };
+  //구독한 채널 목록
+  const subscribedChannels = channels.filter((channel) =>
+    subscribes.includes(channel._id)
+  );
 
+  //채널 구독
+  //로그인 O : 구독한 채널 있으면 채널 목록 표시 / 없으면 +커뮤니티 찾기 표시 -> /channels로 리다이렉트
+  //로그인 X : + 커뮤니티 찾기 표시 -> 로그인하세요 모달
   useEffect(() => {
-    const fetchChannels = async () => {
-      try {
-        //API호출 추후 업데이트
-        //임시데이터 사용
-        setChannels(dummyChannels);
-      } catch (error) {
-        console.error("Date load fail :", error);
-      }
-    };
-    fetchChannels();
+    setSubscribes(getSubscribedChannels);
   }, []);
 
-  const channelItem: ChannelItem[] = channels.map((channel) => ({
-    id: channel._id,
-    name: channel.name,
-    imageUrl: channel.imageUrl || placeholderIcon,
-    isSubscribe: subscribes.includes(channel._id),
-  }));
+  useEffect(() => {
+    const getChannels = async () => {
+      try {
+        const data = await fetchChannels();
+        setChannels(data);
+      } catch (error) {
+        console.error("Error: ", error);
+      }
+    };
+    getChannels();
+  }, []);
+
+  //모달 핸들러
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   return (
     <aside className="w-[280px] h-screen border-r border-[var(--color-gray4)] bg-[var(--color-bg-white)] flex flex-col">
@@ -47,14 +54,14 @@ export default function Sidebar() {
         <ul className="p-3">
           <li
             className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
             <img src={homeIcon} className="w-5.5 h-5.5 mr-[13px] " />
             <span className="font-bold">홈</span>
           </li>
           <li
             className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer"
-            onClick={() => navigate('/channellist')}
+            onClick={() => navigate("/channellist")}
           >
             <img src={globeIcon} className="w-5.5 h-5.5 mr-[13px] " />
             <span className="font-bold">커뮤니티</span>
@@ -68,27 +75,46 @@ export default function Sidebar() {
         <h2 className="text-[16px] text-[var(--color-gray8)] px-8 py-2 mt-[25px]">
           즐겨찾는 커뮤니티
         </h2>
-        <ul className="p-2.5">
-          {channelItem.map((item) => (
-            <li
-              key={item.id}
-              className="flex items-center text-[16px] px-5.5 py-2.5 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer"
+        {subscribedChannels.length <= 0 ? (
+          <div className="p-2.5">
+            <span
+              onClick={() => {
+                if (isLoggedIn) {
+                  navigate("/channellist");
+                } else {
+                  openModal();
+                }
+              }}
+              className="block text-[14px]  text-[var(--color-gray6)] px-8 py-2.5  hover:bg-[var(--color-gray2)] cursor-pointer select-none"
             >
-              <div className="w-6 h-6 mr-3 flex-shrink-0 rounded-full overflow-hidden">
-                <img src={item.imageUrl} alt="channelImg" className="w-full h-full object-cover" />
-              </div>
-              <span className="flex-1 text-sm">{item.name}</span>
-              <button onClick={() => toggleSubscride(item.id)}>
-                <TiStarFullOutline
-                  className={`text-[20px] transition-colors ${item.isSubscribe
-                      ? "text-[var(--color-sub)] hover:text-[var(--color-sub)]"
-                      : "text-[var(--color-gray4)] hover:text-[var(--color-sub)]"
-                    }`}
-                />
-              </button>
-            </li>
-          ))}
-        </ul>
+              + 커뮤니티 찾기
+            </span>
+          </div>
+        ) : (
+          <ul className="p-2.5">
+            {subscribedChannels.map((item) => (
+              <li
+                key={item._id}
+                className="flex items-center text-[16px] px-5.5 py-2.5 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer "
+              >
+                <div className="w-6 h-6 mr-3 flex-shrink-0 rounded-full overflow-hidden">
+                  <img
+                    src={item.imageUrl}
+                    alt="channelImg"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="flex-1 text-sm">{item.name}</span>
+                <button>
+                  <TiStarFullOutline
+                    className={`text-[20px] transition-colors ${"text-[var(--color-orange)] hover:text-[var(--color-gray3)]"}`}
+                  />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        {modalOpen && <IsLoggedInModal onClose={closeModal} />}
       </div>
     </aside>
   );
