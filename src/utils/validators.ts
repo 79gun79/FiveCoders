@@ -17,7 +17,7 @@ export const validateUsername = (value: string) => {
 //password  유효성 검사
 export const validatePassword = (value: string) => {
   if (
-    !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?`~])[A-Za-z\d!@#$%^&*()\-_=+\[\]{};:'",.<>/?`~]{8,16}$/.test(
+    !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+[\]{};:'",.<>/?`~])[A-Za-z\d!@#$%^&*()\-_=+[\]{};:'",.<>/?`~]{8,16}$/.test(
       value,
     )
   ) {
