@@ -75,7 +75,7 @@ export default function ChooseCommunity({
       <div
         className={twMerge(
           "listBorder",
-          "absolute right-0 top-13 flex flex-col z-20 text-[12px] font-medium text-[var(--color-text-black)]"
+          "absolute right-0 top-13 flex flex-col z-20 text-[12px] font-medium text-[var(--color-text-black)]",
         )}
       >
         <div className="flex items-center gap-[6px]">

@@ -42,7 +42,7 @@ export default function ValidateInput({
             error
               ? "border border-[#FF7043] bg-red-50 text-[#FF7043] outline-[#FF7043] outline-1 "
               : "",
-            className
+            className,
           )}
         />
       </div>

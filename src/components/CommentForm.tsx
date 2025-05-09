@@ -27,7 +27,7 @@ export default function CommentForm({
             rows={2}
             className={twMerge(
               "textBasic",
-              "w-full resize-none outline-none placeholder-[var(--color-gray5)]"
+              "w-full resize-none outline-none placeholder-[var(--color-gray5)]",
             )}
           />
 
@@ -35,7 +35,7 @@ export default function CommentForm({
             <Button
               className={twMerge(
                 "btn-style-comment",
-                "bg-[var(--color-main)] hover:bg-[var(--color-sub)]  text-white text-[14px]"
+                "bg-[var(--color-main)] hover:bg-[var(--color-sub)]  text-white text-[14px]",
               )}
               onClick={postComment}
             >

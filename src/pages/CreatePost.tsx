@@ -5,7 +5,8 @@ import { useState } from "react";
 import PostEditor from "../components/PostEditor";
 import { twMerge } from "tailwind-merge";
 import ChooseCommunity from "../components/ChooseCommunity";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { usePostStore } from "../stores/postStore";
 
 export default function CreatePost() {
   const [content, setContent] = useState("");
@@ -13,7 +14,7 @@ export default function CreatePost() {
   const [channel, setChannel] = useState("");
   const [cIcon, setCIcon] = useState("");
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
 
   const handleChannelChange = (c1: string, c2: string) => {
     setChannel(c1);
@@ -22,18 +23,13 @@ export default function CreatePost() {
   };
 
   const handleEditorChange = (value: string) => {
-    console.log("Editor Content: ", value);
     setContent(value);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (state && state.createPost) {
-      state.createPost({
-        content,
-      });
-      navigate("..");
-    }
+    createPost(content);
+    navigate("..");
   };
 
   return (
@@ -48,7 +44,7 @@ export default function CreatePost() {
             onClick={() => setChooseList(!chooseList)}
             className={twMerge(
               "btn-style-channelList",
-              channel === "" ? "" : "justify-start p-4 gap-2"
+              channel === "" ? "" : "justify-start p-4 gap-2",
             )}
           >
             {channel === "" ? (
@@ -89,7 +85,7 @@ export default function CreatePost() {
             type="submit"
             className={twMerge(
               "btn-style-comment",
-              "bg-[var(--color-main)] hover:bg-[var(--color-sub)] h-10 textBasic text-white"
+              "bg-[var(--color-main)] hover:bg-[var(--color-sub)] h-10 textBasic text-white",
             )}
           >
             게시하기

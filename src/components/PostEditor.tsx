@@ -32,7 +32,7 @@ export default function PostEditor({
       "p-4",
       "textBasic",
       "text-[var(--color-text-black)]",
-      "leading-[1.5]"
+      "leading-[1.5]",
     );
 
     editor?.setAttribute("data-placeholder", "내용을 입력하세요");
@@ -40,7 +40,7 @@ export default function PostEditor({
     toolbar?.classList.add(
       "rounded-t-xl",
       "border-[var(--color-gray4)]",
-      "bg-white"
+      "bg-white",
     );
 
     container?.classList.add("rounded-b-xl", "border-[var(--color-gray4)]");
@@ -51,7 +51,7 @@ export default function PostEditor({
         theme="snow"
         className={className}
         value={value}
-        onChange={(value) => onChange(value)}
+        onChange={onChange}
         modules={modules}
       />
     </>

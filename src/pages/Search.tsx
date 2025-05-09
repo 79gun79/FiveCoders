@@ -3,9 +3,10 @@ import profileImg from "../assets/channelImg.svg";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import PostList from "../components/PostList";
-import { postsData } from "../types/postsData";
+import { postsData } from "../data/postsData";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import { Channel } from "../types/channel";
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -20,15 +21,16 @@ export default function Search() {
   });
 
   // 임시
-  const channelData: ChannelType = {
-    authRequired: true,
+  const channelData: Channel = {
+    _id: "1",
+    name: "서든어택",
+    description: "슈팅",
+    authRequired: false,
     posts: postsData,
-    channelId: 1,
-    name: "FC 온라인",
-    description:
-      "https://media.istockphoto.com/id/1133951413/ko/%EC%82%AC%EC%A7%84/%EC%BC%84-%ED%8C%85-%EC%B4%A8-%ED%8C%A1.jpg?s=2048x2048&w=is&k=20&c=o7oc-GnmnNHETP8_pZOIIwZXwZOYyAa7SeCxTZ5S4_M=",
     createdAt: "",
     updatedAt: "",
+    __v: 0,
+    imageUrl: "/channelImages/sudden_attack.jpg",
   };
 
   return (

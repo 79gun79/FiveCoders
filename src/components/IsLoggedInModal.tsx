@@ -22,7 +22,7 @@ export default function IsLoggedInModal({ onClose }: { onClose: () => void }) {
               onClick={onClose}
               className={twMerge(
                 "btn-style-modal",
-                "bg-white hover:bg-[var(--color-gray1)] text-[var(--color-text-black)] border border-[var(--color-gray4)]"
+                "bg-white hover:bg-[var(--color-gray1)] text-[var(--color-text-black)] border border-[var(--color-gray4)]",
               )}
             >
               아니오

@@ -1,4 +1,4 @@
-import { commentsData } from "./commentsData";
+import { commentsData } from "../data/commentsData";
 import placeholderIcon from "../assets/channelImg.svg";
 
 export const postsData: PostType[] = [
@@ -6,7 +6,7 @@ export const postsData: PostType[] = [
     postId: 1,
     image: placeholderIcon,
     coverImage: placeholderIcon,
-    title: "골키퍼 AI 또 너프 먹은 것 같지 않음?",
+    content: "골키퍼 AI 또 너프 먹은 것 같지 않음?",
     userName: "피파의노예",
     comments: commentsData,
   },
@@ -14,7 +14,7 @@ export const postsData: PostType[] = [
     postId: 2,
     image: placeholderIcon,
     coverImage: placeholderIcon,
-    title: "골키퍼 AI 또 너프 먹은 것 같지 않음??",
+    content: "골키퍼 AI 또 너프 먹은 것 같지 않음??",
     userName: "코리아음바페",
     comments: commentsData,
   },
@@ -22,7 +22,7 @@ export const postsData: PostType[] = [
     postId: 3,
     image: placeholderIcon,
     coverImage: placeholderIcon,
-    title: "골키퍼 AI 또 너프 먹은 것 같지 않음?!",
+    content: "골키퍼 AI 또 너프 먹은 것 같지 않음?!",
     userName: "반박불가",
     comments: commentsData,
   },

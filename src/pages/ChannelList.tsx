@@ -11,7 +11,7 @@ export default function ChannelList() {
 
   const toggleSubscribe = (id: string) => {
     setSubscribes((prev) =>
-      prev.includes(id) ? prev.filter((sub) => sub !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((sub) => sub !== id) : [...prev, id],
     );
   };
 
@@ -33,7 +33,7 @@ export default function ChannelList() {
       acc[genre].push(item);
       return acc;
     },
-    {}
+    {},
   );
 
   return (
@@ -42,7 +42,6 @@ export default function ChannelList() {
         커뮤니티
         <span className="absolute bottom-[-9px] left-0 w-[97px] h-[4px] bg-[var(--color-main)]" />
       </h1>
-
       {Object.entries(groupedByGenre).map(([genre, items]) => (
         <div key={genre} className="mb-20">
           <h2 className="text-xl font-semibold mb-6">{genre}</h2>

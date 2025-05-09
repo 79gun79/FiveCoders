@@ -7,9 +7,9 @@ import ChannelList from "./pages/ChannelList";
 import Content from "./pages/Content";
 import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
-import Layout from "./components/Layout";
+import Layout from "./pages/Layout";
 
-export default function router() {
+export default function Router() {
   return (
     <Routes>
       {/* 레이아웃 적용되지 않는 페이지 */}

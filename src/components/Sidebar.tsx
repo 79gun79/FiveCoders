@@ -17,7 +17,7 @@ export default function Sidebar() {
 
   const toggleSubscride = (id: string) => {
     setSubscribes((prev) =>
-      prev.includes(id) ? prev.filter((sub) => sub !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((sub) => sub !== id) : [...prev, id],
     );
   };
 
