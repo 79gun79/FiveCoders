@@ -1,4 +1,4 @@
-import channelImg from "../assets/channelImg.svg";
+import channelImg from '../assets/channelImg.svg';
 
 export default function HeaderLogin() {
   return (

@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { commentsData } from "../data/commentsData";
-import placeholderIcon from "../assets/channelImg.svg";
+import { create } from 'zustand';
+import { commentsData } from '../data/commentsData';
+import placeholderIcon from '../assets/channelImg.svg';
 
 export const useCommentStore = create<{
   comments: CommentType[];
@@ -16,7 +16,7 @@ export const useCommentStore = create<{
         commentId: nextId,
         comment: newComment,
         coverImage: placeholderIcon,
-        userName: "익명",
+        userName: '익명',
       };
       return {
         comments: [...state.comments, newItem],

@@ -23,7 +23,7 @@
   }
   figcaption span:before,
   .sadMac:before {
-    content: "";
+    content: '';
     display: block;
     width: 1em;
     height: 1em;

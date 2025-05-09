@@ -1,5 +1,5 @@
-import { TiStarFullOutline } from "react-icons/ti";
-import type { ChannelItem } from "../types/channel";
+import { TiStarFullOutline } from 'react-icons/ti';
+import type { ChannelItem } from '../types/channel';
 
 type ChannelCardProps = ChannelItem & {
   onClick?: () => void;
@@ -16,17 +16,17 @@ export default function ChannelCard({
   return (
     <div
       onClick={onClick}
-      className="relative w-[260px] h-[180px] rounded-[12px] overflow-hidden bg-[var(--color-bg-white)] shadow-md hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+      className="relative h-[180px] w-[260px] cursor-pointer overflow-hidden rounded-[12px] bg-[var(--color-bg-white)] shadow-md transition-shadow duration-300 hover:shadow-xl"
     >
       <img
         src={imageUrl}
         alt={name}
-        className="w-full h-[130px] object-cover"
+        className="h-[130px] w-full object-cover"
       />
 
-      <div className="absolute top-0 left-0 w-full h-[130px] bg-black/30 pointer-events-none" />
+      <div className="pointer-events-none absolute top-0 left-0 h-[130px] w-full bg-black/30" />
 
-      <div className="absolute bottom-0 left-0 w-full h-[50px] bg-[var(--color-bg-white)] flex items-center justify-between px-4">
+      <div className="absolute bottom-0 left-0 flex h-[50px] w-full items-center justify-between bg-[var(--color-bg-white)] px-4">
         <span className="text-sm font-medium text-[var(--color-black)]">
           {name}
         </span>
@@ -40,8 +40,8 @@ export default function ChannelCard({
           <TiStarFullOutline
             className={`text-[20px] transition-colors ${
               isSubscribe
-                ? "text-[var(--color-sub)]"
-                : "text-[var(--color-gray4)] hover:text-[var(--color-sub)]"
+                ? 'text-[var(--color-sub)]'
+                : 'text-[var(--color-gray4)] hover:text-[var(--color-sub)]'
             }`}
           />
         </button>

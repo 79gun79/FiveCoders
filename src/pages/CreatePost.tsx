@@ -1,18 +1,18 @@
-import { FaCaretDown } from "react-icons/fa";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import { useState } from "react";
-import PostEditor from "../components/PostEditor";
-import { twMerge } from "tailwind-merge";
-import ChooseCommunity from "../components/ChooseCommunity";
-import { useNavigate } from "react-router-dom";
-import { usePostStore } from "../stores/postStore";
+import { FaCaretDown } from 'react-icons/fa';
+import Button from '../components/Button';
+import Input from '../components/Input';
+import { useState } from 'react';
+import PostEditor from '../components/PostEditor';
+import { twMerge } from 'tailwind-merge';
+import ChooseCommunity from '../components/ChooseCommunity';
+import { useNavigate } from 'react-router-dom';
+import { usePostStore } from '../stores/postStore';
 
 export default function CreatePost() {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [chooseList, setChooseList] = useState(false);
-  const [channel, setChannel] = useState("");
-  const [cIcon, setCIcon] = useState("");
+  const [channel, setChannel] = useState('');
+  const [cIcon, setCIcon] = useState('');
   const navigate = useNavigate();
   const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
 
@@ -29,13 +29,13 @@ export default function CreatePost() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createPost(content);
-    navigate("..");
+    navigate('..');
   };
 
   return (
     <>
       <form
-        className="flex flex-col min-w-[656px] items-start justify-center gap-[26px] mb-[50px]"
+        className="mb-[50px] flex min-w-[656px] flex-col items-start justify-center gap-[26px]"
         onSubmit={handleSubmit}
       >
         <h2 className="textH2">게시글 작성</h2>
@@ -43,11 +43,11 @@ export default function CreatePost() {
           <Button
             onClick={() => setChooseList(!chooseList)}
             className={twMerge(
-              "btn-style-channelList",
-              channel === "" ? "" : "justify-start p-4 gap-2",
+              'btn-style-channelList',
+              channel === '' ? '' : 'justify-start gap-2 p-4',
             )}
           >
-            {channel === "" ? (
+            {channel === '' ? (
               <>
                 <FaCaretDown className="mr-1" />
                 <span className="textST1 text-[var(--color-gray7)]">
@@ -57,7 +57,7 @@ export default function CreatePost() {
             ) : (
               <>
                 <img
-                  className={twMerge("postProfile", "w-[20px] h-[20px]")}
+                  className={twMerge('postProfile', 'h-[20px] w-[20px]')}
                   src={cIcon}
                   alt="icon"
                 />
@@ -72,11 +72,11 @@ export default function CreatePost() {
         <Input className="input-style-head" placeholder="제목을 입력하세요" />
         <PostEditor value={content} onChange={handleEditorChange} />
 
-        <div className="w-full flex justify-end gap-4">
+        <div className="flex w-full justify-end gap-4">
           <Button
             type="reset"
-            onClick={() => navigate("..")}
-            className={twMerge("btn-style-comment", "h-10 textBasic px-5")}
+            onClick={() => navigate('..')}
+            className={twMerge('btn-style-comment', 'textBasic h-10 px-5')}
           >
             취소
           </Button>
@@ -84,8 +84,8 @@ export default function CreatePost() {
           <Button
             type="submit"
             className={twMerge(
-              "btn-style-comment",
-              "bg-[var(--color-main)] hover:bg-[var(--color-sub)] h-10 textBasic text-white",
+              'btn-style-comment',
+              'textBasic h-10 bg-[var(--color-main)] text-white hover:bg-[var(--color-sub)]',
             )}
           >
             게시하기

@@ -1,17 +1,17 @@
 //email 유효성 검사
 export const validateEmail = (value: string) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-    return "올바르지 않은 이메일입니다.";
+    return '올바르지 않은 이메일입니다.';
   }
-  return "";
+  return '';
 };
 
 //username 유효성 검사
 export const validateUsername = (value: string) => {
   if (!/^[A-Za-z가-힣]{2,8}$/.test(value)) {
-    return "2~8자 이내 영문 또는 한글";
+    return '2~8자 이내 영문 또는 한글';
   }
-  return "";
+  return '';
 };
 
 //password  유효성 검사
@@ -21,7 +21,7 @@ export const validatePassword = (value: string) => {
       value,
     )
   ) {
-    return "8~16자, 영문 숫자 특수문자 모두 포함";
+    return '8~16자, 영문 숫자 특수문자 모두 포함';
   }
-  return "";
+  return '';
 };

@@ -1,8 +1,8 @@
-import { create } from "zustand";
-import { postsData } from "../data/postsData";
-import { commentsData } from "../data/commentsData";
-import placeholderIcon from "../assets/channelImg.svg";
-import { Channel } from "../types/channel";
+import { create } from 'zustand';
+import { postsData } from '../data/postsData';
+import { commentsData } from '../data/commentsData';
+import placeholderIcon from '../assets/channelImg.svg';
+import { Channel } from '../types/channel';
 
 export const usePostStore = create<
   Channel & {
@@ -11,15 +11,15 @@ export const usePostStore = create<
     deletePost: (id: number) => void;
   }
 >((set) => ({
-  _id: "1",
-  name: "FC온라인",
-  description: "슈팅",
+  _id: '1',
+  name: 'FC온라인',
+  description: '슈팅',
   authRequired: false,
   posts: postsData,
-  createdAt: "",
-  updatedAt: "",
+  createdAt: '',
+  updatedAt: '',
   __v: 0,
-  imageUrl: "/channelImages/fc_online.jpg",
+  imageUrl: '/channelImages/fc_online.jpg',
 
   createPost: (newPost: string) =>
     set((state) => {
@@ -29,7 +29,7 @@ export const usePostStore = create<
         image: placeholderIcon,
         coverImage: placeholderIcon,
         content: newPost,
-        userName: "익명",
+        userName: '익명',
         comments: commentsData,
       };
       return {

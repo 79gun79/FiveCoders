@@ -1,4 +1,4 @@
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 type OnlyLiterals<T> = T extends string
   ? string extends T
@@ -7,19 +7,19 @@ type OnlyLiterals<T> = T extends string
   : never;
 
 type ReactInputType = OnlyLiterals<
-  React.InputHTMLAttributes<HTMLInputElement>["type"]
+  React.InputHTMLAttributes<HTMLInputElement>['type']
 >;
 
-type InputProps = Omit<React.ComponentPropsWithoutRef<"input">, "type"> & {
-  type?: Exclude<ReactInputType, "radio" | "checkbox" | "range">;
+type InputProps = Omit<React.ComponentPropsWithoutRef<'input'>, 'type'> & {
+  type?: Exclude<ReactInputType, 'radio' | 'checkbox' | 'range'>;
 };
 
 export default function Input(props: InputProps) {
-  const { className, type = "text", ...rest } = props;
+  const { className, type = 'text', ...rest } = props;
   return (
     <input
       type={type}
-      className={twMerge("input-style", className)}
+      className={twMerge('input-style', className)}
       {...rest}
     />
   );

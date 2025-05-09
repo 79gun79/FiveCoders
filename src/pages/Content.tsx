@@ -1,6 +1,6 @@
-import { Route, Routes } from "react-router-dom";
-import Channel from "./Channel";
-import CreatePost from "./CreatePost";
+import { Route, Routes } from 'react-router-dom';
+import Channel from './Channel';
+import CreatePost from './CreatePost';
 
 export default function Content() {
   return (
