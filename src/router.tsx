@@ -1,15 +1,15 @@
-import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Search from "./pages/Search";
-import Home from "./pages/Home";
-import Channel from "./pages/Channel";
-import ChannelList from "./pages/ChannelList"
-import Content from "./pages/Content";
-import MyPage from "./pages/MyPage";
-import ProfileSetting from "./pages/ProfileSetting";
-import NotFound from "./pages/NotFound";
-import Layout from "./components/Layout";
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import Search from './pages/Search';
+import Home from './pages/Home';
+import Channel from './pages/Channel';
+import ChannelList from './pages/ChannelList';
+import Content from './pages/Content';
+import MyPage from './pages/MyPage';
+import ProfileSetting from './pages/ProfileSetting';
+import NotFound from './pages/NotFound';
+import Layout from './components/Layout';
 
 export default function Router() {
   return (

@@ -1,35 +1,36 @@
 import { useState } from 'react';
-import Input from './Input';
+import SettingInput from './SettingInput';
 import { twMerge } from 'tailwind-merge';
 
-type InputType = 'email' | 'number' | 'password' | 'text';
+type InputType = 'text';
 
-type InputValidationProps = {
+type PasswordInputProps = {
   type?: InputType;
-  placeholder?: string;
   value: string;
   onChange: (v: string) => void;
   validate: (v: string) => string;
+  placeholder?: string;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
-  className?: string;
+  className: string;
 };
 
-export default function ValidateInput({
-  type = 'text',
-  placeholder,
+export default function ValidatePasswordInput({
+  type,
   value,
   onChange,
   validate,
+  placeholder = '비밀번호',
   onBlur,
   className,
-}: InputValidationProps) {
+}: PasswordInputProps) {
   const [touched, setTouched] = useState(false);
+
   const error = touched ? validate(value) : '';
 
   return (
-    <>
-      <div>
-        <Input
+    <div>
+      <div className="relative">
+        <SettingInput
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -39,18 +40,18 @@ export default function ValidateInput({
           }}
           placeholder={placeholder}
           className={twMerge(
-            error
-              ? 'border border-[#FF7043] bg-red-50 text-[#FF7043] outline-1 outline-[#FF7043]'
-              : '',
+            `${error ? 'bg-red-50 text-[#FF7043]' : ''}`,
             className,
           )}
         />
       </div>
-      {error && (
-        <p className="mt-2 min-h-[20px] text-sm font-medium text-[#D32F2F]">
-          {error || ' '}
-        </p>
-      )}
-    </>
+      <p
+        className={`mt-[-10px] text-sm font-medium text-[#D32F2F] ${
+          error ? '' : 'invisible'
+        }`}
+      >
+        {error || ' '}
+      </p>
+    </div>
   );
 }

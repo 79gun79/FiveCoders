@@ -1,4 +1,4 @@
-import SteamCard from "../components/SteamCard";
+import SteamCard from '../components/SteamCard';
 
 export default function Home() {
   return (

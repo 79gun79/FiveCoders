@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function NewPassword() {
   const [isInputClicked, setIsInputClicked] = useState(false);
@@ -7,7 +7,7 @@ export default function NewPassword() {
       <div>
         <input
           type="text"
-          className="input text-T02"
+          className="input text-T02 w-185"
           onFocus={() => {
             setIsInputClicked(true);
           }}
@@ -16,8 +16,8 @@ export default function NewPassword() {
           }}
           placeholder={
             isInputClicked === true
-              ? ""
-              : "8자 이상, 16자 이하 특수문자를 포함하여 입력해 주세요"
+              ? ''
+              : '8자 이상, 16자 이하 특수문자를 포함하여 입력해 주세요'
           }
         />
       </div>

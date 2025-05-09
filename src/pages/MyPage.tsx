@@ -1,20 +1,20 @@
-import profile from "../assets/imgs/기본 프로필.png";
-import setting from "../assets/icons/Setting.svg";
-import { twMerge } from "tailwind-merge";
-import MyInfo from "../components/MyInfo";
-import MyPost from "../components/MyPost";
-import userData from "../store/UserData";
-import MyComment from "../components/MyComment";
-import { useState } from "react";
-import { Link } from "react-router";
+import profile from '../assets/imgs/기본 프로필.png';
+import setting from '../assets/icons/Setting.svg';
+import { twMerge } from 'tailwind-merge';
+import MyInfo from '../components/MyInfo';
+import MyPost from '../components/MyPost';
+import userData from '../types/UserData';
+import MyComment from '../components/MyComment';
+import { useState } from 'react';
+import { Link } from 'react-router';
 
 export default function MyPage() {
   const userName = userData((state) => state.userName);
   const userEmail = userData((state) => state.userEmail);
-  const [content, setContent] = useState("최신");
-  const [selectedBtn, setSelectedBtn] = useState("최신");
+  const [content, setContent] = useState('최신');
+  const [selectedBtn, setSelectedBtn] = useState('최신');
 
-  const buttonList = ["최신", "내 글", "댓글"];
+  const buttonList = ['최신', '내 글', '댓글'];
 
   const handleContentButton = (e) => {
     const { name } = e.target;
@@ -24,21 +24,21 @@ export default function MyPage() {
 
   const selectComponent = {
     최신: [<MyPost />, <MyComment />],
-    "내 글": <MyPost />,
+    '내 글': <MyPost />,
     댓글: <MyComment />,
   };
 
   return (
     <>
-      <div className="flex flex-col items-center relative mt-[54px]">
+      <div className="relative mt-[54px] flex flex-col items-center">
         <div>
           <div className="flex">
             <img
               src={profile}
               alt="profile"
-              className="rounded-full h-[90px] w-[90px] overflow-hidden object-fill mr-[18px]"
+              className="mr-[18px] size-[90px] overflow-hidden rounded-full object-fill"
             />
-            <div className="inline-block left-[100px] content-center">
+            <div className="left-[100px] inline-block content-center">
               <span className="block text-[28px]">{userName}</span>
               <span className="block text-[20px]">{userEmail}</span>
             </div>
@@ -56,10 +56,10 @@ export default function MyPage() {
               return (
                 <button
                   className={twMerge(
-                    "button " +
+                    'button ' +
                       (item === selectedBtn
-                        ? "community-tab-active"
-                        : "community-tab")
+                        ? 'community-tab-active'
+                        : 'community-tab'),
                   )}
                   onClick={handleContentButton}
                   name={item}
@@ -77,3 +77,4 @@ export default function MyPage() {
     </>
   );
 }
+// 불러오는 포스트와 댓글은 시간 순서로 정렬하도록 추후 수정

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export default function CurrentPassWord() {
   const [isInputClicked, setIsInputClicked] = useState(false);
@@ -7,7 +7,7 @@ export default function CurrentPassWord() {
       <div>
         <input
           type="text"
-          className="input text-T02"
+          className="input textT2 w-185"
           onFocus={() => {
             setIsInputClicked(true);
           }}
@@ -15,7 +15,7 @@ export default function CurrentPassWord() {
             setIsInputClicked(false);
           }}
           placeholder={
-            isInputClicked === true ? "" : "현재 비밀번호를 입력해 주세요"
+            isInputClicked === true ? '' : '현재 비밀번호를 입력해 주세요'
           }
         />
       </div>

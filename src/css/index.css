@@ -1,52 +1,74 @@
-@import "./tailwind.css";
-@import "./font.css";
-
-:root {
-  --color-primary: #51b8b2;
-  --color-secondary: #397c79;
-  --color-orange: #ffa552;
-  --color-deep-orange: #ff7043;
-  --color-caution: #d32f2f;
-  --color-bg-white: #ffffff;
-  --color-black: #1c1c1c;
-  --color-white: #fafafa;
-  --color-gray1: #f5f5f5;
-  --color-gray2: #eeeeee;
-  --color-gray3: #e0e0e0;
-  --color-gray4: #bdbdbd;
-  --color-gray5: #9e9e9e;
-  --color-gray6: #757575;
-  --color-gray7: #616161;
-  --color-gray8: #585858;
-}
+@import './tailwind.css';
+@import './font.css';
+@import './root.css';
 
 @layer components {
-  .text-H01 {
-    @apply text-[32px] font-bold;
+  .postBottom {
+    @apply min-w-[564px] border-b border-[#d9d9d9];
   }
-  .text-H02 {
-    @apply text-[28px] font-bold;
+  .postBorder {
+    @apply border border-[#d9d9d9] p-[36px];
   }
-  .text-H03 {
-    @apply text-[24px] font-medium;
+  .postBorder2 {
+    @apply rounded-3xl border border-[#d9d9d9] p-[36px] shadow-md;
   }
-  .text-H04 {
-    @apply text-[20px] font-medium;
+  .postProfile {
+    @apply h-8 w-8 rounded-full object-cover;
   }
-  .text-T01 {
-    @apply text-[18px];
+  .listBorder {
+    @apply h-[fit] w-[175px] rounded-lg border border-[var(--color-gray3)] bg-white p-[10px] shadow-md;
   }
-  .text-T02 {
-    @apply text-[16px];
+  .textBase {
+    @apply text-[14px] text-[var(--color-text-black)];
   }
-  .text-ST01 {
-    @apply text-[14px];
+  .textH1 {
+    @apply text-[32px] font-bold text-[var(--color-text-black)];
   }
-  .text-ST02 {
-    @apply text-[12px];
+  .textH2 {
+    @apply text-[28px] font-bold text-[var(--color-text-black)];
   }
-  .text-ST03 {
-    @apply text-[10px];
+  .textH3 {
+    @apply text-[24px] font-medium text-[var(--color-text-black)];
+  }
+  .textH4 {
+    @apply text-[20px] font-medium text-[var(--color-text-black)];
+  }
+  .textST1 {
+    @apply text-[14px] text-[var(--color-text-black)];
+  }
+  .item-middle {
+    @apply flex min-h-screen items-center justify-center;
+  }
+
+  .btn-style {
+    @apply flex h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[var(--color-main)] p-3 px-3 font-semibold text-white hover:bg-[#539995];
+  }
+
+  .input-style {
+    @apply h-11 w-full rounded-4xl border border-[#E5EBEE] bg-[#E5EBEE] p-3 px-4 focus:border-[#51B8B2] focus:outline-1 focus:outline-[#51B8B2];
+  }
+
+  .btn-style-post {
+    @apply flex h-[54px] w-full cursor-pointer items-center justify-center bg-white py-[12px] text-[var(--color-gray5)] hover:bg-[var(--color-gray1)];
+  }
+  .btn-style-post2 {
+    @apply cursor-pointer bg-white px-6 py-2 text-center hover:bg-[var(--color-gray1)];
+  }
+  .btn-style-comment {
+    @apply cursor-pointer rounded-full bg-[var(--color-gray3)] px-3 py-1 text-[var(--color-gray7)] hover:bg-[var(--color-gray4)];
+  }
+  .btn-style-modal {
+    @apply h-[40px] w-[120px] cursor-pointer items-center justify-center rounded-[5px] bg-[var(--color-main)] text-white hover:bg-[var(--color-sub)];
+  }
+  .btn-style-channelList {
+    @apply flex h-[44px] w-[193px] cursor-pointer items-center justify-center rounded-3xl border border-[var(--color-main)] bg-white text-[var(--color-gray7)] hover:bg-[var(--color-gray1)];
+  }
+
+  .input-style-head {
+    @apply h-[54px] w-full rounded-xl border border-[var(--color-gray4)] bg-white placeholder-[var(--color-gray5)] focus:border-[var(--color-main)] focus:outline-1 focus:outline-[var(--color-main)];
+  }
+  .comment {
+    @apply flex w-100 cursor-pointer content-center justify-center text-[var(--color-gray5)] hover:bg-[var(--color-gray1)];
   }
   .number {
     @apply text-[18px] font-bold;
@@ -55,100 +77,28 @@
     @apply w-[80px] cursor-pointer border-b-2 text-[20px];
   }
   .community-button {
-    @apply inline-flex mr-2;
+    @apply mr-2 inline-flex;
   }
   .community-tab {
-    @apply border-[var(--color-gray3)] hover:border-[var(--color-secondary)];
+    @apply border-[var(--color-gray3)] hover:border-[var(--color-sub)];
   }
   .community-tab-active {
-    @apply border-[var(--color-primary)] hover:border-[var(--color-secondary)] text-[var(--color-primary)];
+    @apply border-[var(--color-main)] text-[var(--color-main)] hover:border-[var(--color-sub)];
   }
   .input {
-    @apply border-b-1 w-[80%] my-3.75 placeholder:text-[var(--color-gray4)]
-    focus:outline-none;
+    @apply my-3.75 w-[80%] border-b-1 placeholder:text-[var(--color-gray4)] focus:outline-none;
   }
   .cancel {
-    @apply bg-[var(--color-gray3)] hover:bg-[var(--color-gray5)] cursor-pointer rounded-full px-5 py-2.5;
+    @apply cursor-pointer rounded-full bg-[var(--color-gray3)] px-5 py-2.5 hover:bg-[var(--color-gray5)];
   }
   .apply {
-    @apply bg-[var(--color-primary)] hover:bg-[var(--color-secondary)] px-3.25 py-2.5 text-[var(--color-white)] cursor-pointer rounded-full;
+    @apply cursor-pointer rounded-full bg-[var(--color-main)] px-3.25 py-2.5 text-[var(--color-white)] hover:bg-[var(--color-sub)];
   }
-}
-.commentBox {
-  @apply w-[100%] h-[136px] border-[1px] border-[#d9d9d9] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl;
-}
-.postBox {
-  @apply w-[100%] h-[196px] border-[1px] border-[#d9d9d9] mt-[40px] pt-[20px] px-[23.35px] rounded-3xl;
-}
-
-@layer components {
-  .postBottom {
-    @apply border-b border-[#d9d9d9] min-w-[564px];
+  .commentBox {
+    @apply mt-[40px] h-[136px] w-[100%] border-[1px] border-[#d9d9d9] px-[23.35px] pt-[20px];
   }
-  .postBorder {
-    @apply border border-[#d9d9d9] p-[36px];
-  }
-  .postBorder2 {
-    @apply border border-[#d9d9d9] rounded-3xl shadow-md p-[36px];
-  }
-  .postProfile {
-    @apply w-8 h-8 rounded-full object-cover;
-  }
-  .listBorder {
-    @apply bg-white w-[175px] h-[fit] border border-[var(--color-gray3)] rounded-lg p-[10px] shadow-md;
-  }
-  .textBase {
-    @apply text-[var(--color-text-black)] text-[14px];
-  }
-  .textH1 {
-    @apply text-[var(--color-text-black)] font-bold text-[32px];
-  }
-  .textH2 {
-    @apply text-[var(--color-text-black)] font-bold text-[28px];
-  }
-  .textH3 {
-    @apply text-[var(--color-text-black)] font-medium text-[24px];
-  }
-  .textH4 {
-    @apply text-[var(--color-text-black)] font-medium text-[20px];
-  }
-  .textST1 {
-    @apply text-[var(--color-text-black)] text-[14px];
-  }
-  .item-middle {
-    @apply flex items-center justify-center min-h-screen;
-  }
-
-  .btn-style {
-    @apply bg-[var(--color-main)] hover:bg-[#539995] cursor-pointer text-white w-full h-11 flex items-center justify-center rounded-full font-semibold px-3 p-3;
-  }
-
-  .input-style {
-    @apply w-full h-11 rounded-4xl px-4 p-3 border border-[#E5EBEE] bg-[#E5EBEE]
-    focus:border-[#51B8B2] focus:outline-[#51B8B2] focus:outline-1;
-  }
-
-  .btn-style-post {
-    @apply bg-white hover:bg-[var(--color-gray1)] cursor-pointer text-[var(--color-gray5)] w-full h-[54px] flex items-center justify-center py-[12px];
-  }
-  .btn-style-post2 {
-    @apply bg-white hover:bg-[var(--color-gray1)] cursor-pointer px-6 py-2 text-center;
-  }
-  .btn-style-comment {
-    @apply bg-[var(--color-gray3)] hover:bg-[var(--color-gray4)] cursor-pointer text-[var(--color-gray7)] rounded-full px-3 py-1;
-  }
-  .btn-style-modal {
-    @apply bg-[var(--color-main)] hover:bg-[var(--color-sub)] cursor-pointer text-white w-[120px] h-[40px] items-center justify-center rounded-[5px];
-  }
-  .btn-style-channelList {
-    @apply bg-white hover:bg-[var(--color-gray1)] cursor-pointer text-[var(--color-gray7)] border border-[var(--color-main)] w-[193px] h-[44px] flex items-center justify-center rounded-3xl;
-  }
-
-  .input-style-head {
-    @apply w-full h-[54px] rounded-xl border border-[var(--color-gray4)] bg-white placeholder-[var(--color-gray5)] focus:border-[var(--color-main)] focus:outline-[var(--color-main)] focus:outline-1;
-  }
-  .comment{
-    @apply w-100  text-[var(--color-gray5)] cursor-pointer hover:bg-[var(--color-gray1)] flex content-center justify-center
+  .postBox {
+    @apply mt-[40px] h-[196px] w-[100%] border-[1px] border-[#d9d9d9] px-[23.35px] pt-[20px];
   }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */

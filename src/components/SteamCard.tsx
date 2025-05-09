@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import SteamIconBig from "../assets/steam-big.svg";
-import SteamIconSm from "../assets/steam-small.svg";
+import { useEffect, useState } from 'react';
+import SteamIconBig from '../assets/steam-big.svg';
+import SteamIconSm from '../assets/steam-small.svg';
 
 interface SteamPlayer {
   steamid: string;
@@ -9,7 +9,7 @@ interface SteamPlayer {
   profileurl: string;
 }
 
-const steamId = "76561198972680084";
+const steamId = '76561198972680084';
 export default function SteamCard() {
   //const [card, setCard] = useState<SteamPlayer[]>([]);
   const [card, setCard] = useState<SteamPlayer | null>(null);
@@ -21,29 +21,29 @@ export default function SteamCard() {
   if (!card) return <div>Loading</div>;
   return (
     <>
-      <div className="w-[260px] h-[160px] rounded-xl bg-gradient-to-r from-[#141E30] to-[#243B55] overflow-hidden relative">
+      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#141E30] to-[#243B55]">
         <div className="flex items-center px-4 py-3.5">
           <img
             src={SteamIconSm}
             alt="steamIcon"
-            className="w-[24px] h-[24px] select-none"
+            className="h-[24px] w-[24px] select-none"
             draggable={false}
           />
-          <h1 className="font-semibold text-[14px] text-white ml-2">STEAM</h1>
+          <h1 className="ml-2 text-[14px] font-semibold text-white">STEAM</h1>
         </div>
         <img
           src={SteamIconBig}
           alt="steamIcon"
-          className="absolute left-[107px] top-0 w-[174px] h-[174px] select-none"
+          className="absolute top-0 left-[107px] h-[174px] w-[174px] select-none"
           draggable={false}
         />
         <img
-          className="w-[64px] h-[64px] ml-[27px] rounded-xl"
+          className="ml-[27px] h-[64px] w-[64px] rounded-xl"
           src={card.avatarfull}
         />
 
-        <div className="absolute right-18 top-1/2 -translate-y-1/2 z-30">
-          <div className="text-white text-[12px] font-semibold space-y-1 mt-1.5">
+        <div className="absolute top-1/2 right-18 z-30 -translate-y-1/2">
+          <div className="mt-1.5 space-y-1 text-[12px] font-semibold text-white">
             <h1 className="text-[14px]">{card.personaname}</h1>
             <div className="flex">
               <span>게임</span>

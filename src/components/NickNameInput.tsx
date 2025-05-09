@@ -1,5 +1,5 @@
-import { useState } from "react";
-import userData from "../store/UserData";
+import { useState } from 'react';
+import userData from '../types/UserData';
 
 export default function NickNameInput() {
   const [isInputClicked, setIsInputClicked] = useState(false);
@@ -9,7 +9,7 @@ export default function NickNameInput() {
       <div>
         <input
           type="text"
-          className="input text-T02"
+          className="input text-T02 w-185"
           onFocus={() => {
             setIsInputClicked(true);
           }}
@@ -17,7 +17,7 @@ export default function NickNameInput() {
             setIsInputClicked(false);
           }}
           placeholder={
-            isInputClicked === true ? "" : "2자 이상, 8자 이하로 입력해주세요"
+            isInputClicked === true ? '' : '2자 이상, 8자 이하로 입력해주세요'
           }
           defaultValue={userName}
         />

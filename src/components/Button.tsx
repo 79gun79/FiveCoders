@@ -1,12 +1,12 @@
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 type ButtonProps = {
   className?: string;
-} & React.ComponentPropsWithoutRef<"button">;
+} & React.ComponentPropsWithoutRef<'button'>;
 
 export default function Button({
-  className = "",
-  type = "button",
+  className = '',
+  type = 'button',
   disabled,
   children,
   ...rest
@@ -15,7 +15,7 @@ export default function Button({
     <button
       type={type}
       disabled={disabled}
-      className={twMerge("text-base", className)}
+      className={twMerge('text-base', className)}
       {...rest}
     >
       {children}

@@ -1,42 +1,85 @@
-import { Link } from "react-router";
-import Button from "../components/Button";
-import CurrentPassWord from "../components/CurrentPassWord";
-import NewCheck from "../components/NewCheck";
-import NewPassword from "../components/NewPassword";
-import NickNameInput from "../components/NickNameInput";
-import ProfileUpload from "../components/ProfileUpload";
+import { Link } from 'react-router';
+import Button from '../components/Button';
+import CurrentPassWord from '../components/CurrentPassWord';
+import ProfileUpload from '../components/ProfileUpload';
+import { validatePassword, validateUsername } from '../utils/validators';
+import userData from '../types/UserData';
+import { useState } from 'react';
+import ValidateNickNameInput from '../components/ValidateNickNameInput ';
+import { twMerge } from 'tailwind-merge';
+import ValidatePasswordInput from '../components/ValidatePasswordInput';
 
 export default function ProfileSetting() {
+  const userName = userData((state) => state.userName);
+  const [username, setUsername] = useState(userName);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const validateConfirmPassword = (value: string) => {
+    if (value !== password) {
+      return '비밀번호가 일치하지 않습니다.';
+    }
+    return '';
+  };
+
+  const isFormValid =
+    username &&
+    password &&
+    confirmPassword &&
+    !validateUsername(username) &&
+    !validatePassword(password) &&
+    password === confirmPassword;
+
   return (
     <>
-      <div className="flex-col content-center justify-start ml-40 mt-12">
-        <span className="text-H02">프로필 설정</span>
-        <div className="flex mt-12.5 content-center items-center">
+      <div className="flex w-195 flex-col content-center items-start justify-start">
+        <span className="textH2">프로필 설정</span>
+        <div className="mt-12.5 flex content-center items-center">
           <ProfileUpload />
         </div>
         <div className="mt-13.5">
-          <span className="block text-ST01">닉네임</span>
-          <NickNameInput />
+          <span className="textST1 block">닉네임</span>
+          <ValidateNickNameInput
+            value={username}
+            onChange={setUsername}
+            validate={validateUsername}
+            placeholder="2자 이상, 8자 이하로 입력해주세요"
+            className={twMerge('input text-T02 w-185')}
+          />
         </div>
         <div className="mt-6.5">
-          <span className="block text-ST01">기존 비밀번호</span>
+          <span className="textST1 block">기존 비밀번호</span>
           <CurrentPassWord />
         </div>
 
         <div className="mt-6.5">
-          <span className="block text-ST01">새 비밀번호</span>
-          <NewPassword />
+          <span className="textST1 block">새 비밀번호</span>
+          <ValidatePasswordInput
+            value={password}
+            onChange={setPassword}
+            validate={validatePassword}
+            placeholder="비밀번호"
+            className={twMerge('input text-T02 w-185')}
+          />
         </div>
         <div className="mt-6.5">
-          <span className="block text-ST01">새 비밀번호 확인</span>
-          <NewCheck />
+          <span className="textST1 block">새 비밀번호 확인</span>
+          <ValidatePasswordInput
+            value={confirmPassword}
+            onChange={setConfirmPassword}
+            validate={validateConfirmPassword}
+            placeholder="비밀번호 확인"
+            className={twMerge('input text-T02 w-185')}
+          />
         </div>
-        <div className="flex w-[80%] justify-end mt-6.75">
+        <div className="mt-6.75 flex w-[95%] justify-end">
           <Link to="/mypage">
-            <Button className="cancel text-T02">취소</Button>
+            <Button className="cancel textT2">취소</Button>
           </Link>
           <Link to="/mypage">
-            <Button className="ml-2 apply text-T02">저장하기</Button>
+            <Button className="apply textT2 ml-2" disabled={!isFormValid}>
+              저장하기
+            </Button>
           </Link>
         </div>
         <div className="h-10"></div>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Input from './Input';
 import { twMerge } from 'tailwind-merge';
+import SettingInput from './SettingInput';
 
-type InputType = 'email' | 'number' | 'password' | 'text';
+type InputType = 'text';
 
 type InputValidationProps = {
   type?: InputType;
@@ -14,40 +14,44 @@ type InputValidationProps = {
   className?: string;
 };
 
-export default function ValidateInput({
+export default function ValidateNickNameInput({
   type = 'text',
-  placeholder,
   value,
   onChange,
-  validate,
   onBlur,
+  validate,
   className,
 }: InputValidationProps) {
   const [touched, setTouched] = useState(false);
   const error = touched ? validate(value) : '';
+  const [isInputClicked, setIsInputClicked] = useState(false);
 
   return (
     <>
       <div>
-        <Input
+        <SettingInput
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={() => {
+            setIsInputClicked(true);
+          }}
           onBlur={(e) => {
+            setIsInputClicked(false);
             setTouched(true);
             if (onBlur) onBlur(e);
           }}
-          placeholder={placeholder}
+          placeholder={
+            isInputClicked === true ? '' : '2자 이상, 8자 이하로 입력해주세요'
+          }
           className={twMerge(
-            error
-              ? 'border border-[#FF7043] bg-red-50 text-[#FF7043] outline-1 outline-[#FF7043]'
-              : '',
+            error ? 'bg-red-50 text-[#FF7043]' : '',
             className,
           )}
         />
       </div>
       {error && (
-        <p className="mt-2 min-h-[20px] text-sm font-medium text-[#D32F2F]">
+        <p className="mt-[-10px] min-h-[20px] text-sm font-medium text-[#D32F2F]">
           {error || ' '}
         </p>
       )}
