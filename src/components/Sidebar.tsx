@@ -47,14 +47,14 @@ export default function Sidebar() {
         <ul className="p-3">
           <li
             className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
             <img src={homeIcon} className="w-5.5 h-5.5 mr-[13px] " />
             <span className="font-bold">홈</span>
           </li>
           <li
             className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer"
-            onClick={() => navigate('/channellist')}
+            onClick={() => navigate("/channellist")}
           >
             <img src={globeIcon} className="w-5.5 h-5.5 mr-[13px] " />
             <span className="font-bold">커뮤니티</span>
@@ -75,15 +75,20 @@ export default function Sidebar() {
               className="flex items-center text-[16px] px-5.5 py-2.5 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer"
             >
               <div className="w-6 h-6 mr-3 flex-shrink-0 rounded-full overflow-hidden">
-                <img src={item.imageUrl} alt="channelImg" className="w-full h-full object-cover" />
+                <img
+                  src={item.imageUrl}
+                  alt="channelImg"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="flex-1 text-sm">{item.name}</span>
               <button onClick={() => toggleSubscride(item.id)}>
                 <TiStarFullOutline
-                  className={`text-[20px] transition-colors ${item.isSubscribe
+                  className={`text-[20px] transition-colors ${
+                    item.isSubscribe
                       ? "text-[var(--color-sub)] hover:text-[var(--color-sub)]"
                       : "text-[var(--color-gray4)] hover:text-[var(--color-sub)]"
-                    }`}
+                  }`}
                 />
               </button>
             </li>
