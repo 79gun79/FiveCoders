@@ -68,6 +68,10 @@
   .input-style-head {
     @apply w-full h-[54px] rounded-xl border border-[var(--color-gray4)] bg-white placeholder-[var(--color-gray5)] focus:border-[var(--color-main)] focus:outline-[var(--color-main)] focus:outline-1;
   }
+
+  .search-tab-style {
+    @apply w-[50%] border-b-2 border-b-[var(--color-gray3)] cursor-pointer disabled:border-b-4 disabled:font-bold disabled:text-[var(--color-main)] disabled:border-b-[var(--color-main)] disabled:cursor-default;
+  }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */
 

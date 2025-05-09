@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Logo from "../assets/GammueLogo.png";
 import { Link, useNavigate } from "react-router-dom";
-// import HeaderLogin from "./HeaderLogin";
+import HeaderLogin from "./HeaderLogin";
 import HeaderNotLogin from "./HeaderNotLogin";
+import { useAuthStore } from "../stores/authStore";
 
 export default function Header() {
   const [searchInput, setSearchInput] = useState("");
@@ -63,8 +64,11 @@ export default function Header() {
           </button>
         )}
       </form>
-      {/* <HeaderLogin /> */}
-      <HeaderNotLogin />
+      {useAuthStore.getState().isLoggedIn ? (
+        <HeaderLogin />
+      ) : (
+        <HeaderNotLogin />
+      )}
     </header>
   );
 }
