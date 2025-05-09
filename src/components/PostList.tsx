@@ -1,13 +1,13 @@
-import { twMerge } from "tailwind-merge";
-import Button from "./Button";
-import CommentList from "./CommentList";
-import { FaEllipsisV } from "react-icons/fa";
-import { BiSolidLike } from "react-icons/bi";
-import { AiFillMessage } from "react-icons/ai";
-import { useEffect, useRef, useState } from "react";
-import CommentForm from "./CommentForm";
-import IsLoggedInModal from "./IsLoggedInModal";
-import placeholderIcon from "../assets/channelImg.svg";
+import { twMerge } from 'tailwind-merge';
+import Button from './Button';
+import CommentList from './CommentList';
+import { FaEllipsisV } from 'react-icons/fa';
+import { BiSolidLike } from 'react-icons/bi';
+import { AiFillMessage } from 'react-icons/ai';
+import { useEffect, useRef, useState } from 'react';
+import CommentForm from './CommentForm';
+import IsLoggedInModal from './IsLoggedInModal';
+import placeholderIcon from '../assets/channelImg.svg';
 
 export default function PostList({
   coverImage,
@@ -33,8 +33,8 @@ export default function PostList({
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []); // 외부 버튼을 눌러도 꺼지게끔 구성
 
   const [cmts, setCmts] = useState<CommentType[]>(comments);
@@ -45,7 +45,7 @@ export default function PostList({
       commentId: nextId,
       comment: newComment,
       coverImage: placeholderIcon,
-      userName: "익명",
+      userName: '익명',
     };
     setCmts([...cmts, newItem]);
   };
@@ -57,15 +57,15 @@ export default function PostList({
   return (
     <>
       <div className="postBorder">
-        <div className={twMerge("postBottom", "pb-9")}>
-          <div className="flex items-center gap-[10px] mb-4">
+        <div className={twMerge('postBottom', 'pb-9')}>
+          <div className="mb-4 flex items-center gap-[10px]">
             <img src={coverImage} alt="profile" className="postProfile" />
             <p className="text-base">{userName}</p>
             <div className="flex-grow"></div>
             <div className="relative" ref={refDrop}>
               <Button
                 onClick={() => setShowDrop(!showDrop)}
-                className={twMerge("btn-style-post", "w-[37px] h-fit")}
+                className={twMerge('btn-style-post', 'h-fit w-[37px]')}
               >
                 <FaEllipsisV
                   className="text-[var(--color-text-black)]"
@@ -76,22 +76,22 @@ export default function PostList({
               {showDrop && (
                 <div
                   className={twMerge(
-                    "postBorder",
-                    "absolute right-0 mt-2 w-20 p-0 rounded-lg overflow-hidden"
+                    'postBorder',
+                    'absolute right-0 mt-2 w-20 overflow-hidden rounded-lg p-0',
                   )}
                 >
                   <div className="flex flex-col">
                     <Button
                       onClick={() => setIsOpen(true)}
-                      className={twMerge("btn-style-post2", "text-black")}
+                      className={twMerge('btn-style-post2', 'text-black')}
                     >
                       수정
                     </Button>
                     <Button
                       onClick={() => setIsOpen(true)}
                       className={twMerge(
-                        "btn-style-post2",
-                        "text-[var(--color-red-caution)]"
+                        'btn-style-post2',
+                        'text-[var(--color-red-caution)]',
                       )}
                     >
                       삭제
@@ -104,13 +104,13 @@ export default function PostList({
           <h4 className="textH4 pretendard">{title}</h4>
         </div>
         <div
-          className={twMerge("postBottom", "flex items-center justify-around")}
+          className={twMerge('postBottom', 'flex items-center justify-around')}
         >
           <Button
             onClick={() => setLiked(!liked)}
             className={twMerge(
-              "btn-style-post",
-              liked ? "text-[var(--color-main)]" : "text-[var(--color-gray5)]"
+              'btn-style-post',
+              liked ? 'text-[var(--color-main)]' : 'text-[var(--color-gray5)]',
             )}
           >
             <BiSolidLike className="mr-1" size={13} />
@@ -119,10 +119,10 @@ export default function PostList({
           <Button
             onClick={() => setCmtForm(!isCmtForm)}
             className={twMerge(
-              "btn-style-post",
+              'btn-style-post',
               isCmtForm
-                ? "text-[var(--color-main)]"
-                : "text-[var(--color-gray5)]"
+                ? 'text-[var(--color-main)]'
+                : 'text-[var(--color-gray5)]',
             )}
           >
             <AiFillMessage className="mr-1" size={13} />
