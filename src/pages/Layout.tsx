@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
+import { Outlet } from 'react-router-dom';
+import Header from '../components/Header';
+import Sidebar from '../components/Sidebar';
 
 export default function Layout() {
   return (
@@ -8,7 +8,7 @@ export default function Layout() {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="w-auto mt-[50px] mx-[160px]">
+        <main className="mt-[50px] w-auto">
           <Outlet />
         </main>
       </div>

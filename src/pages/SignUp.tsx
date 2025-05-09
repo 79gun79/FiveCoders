@@ -1,28 +1,28 @@
-import { useState } from "react";
-import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
 import {
   validateEmail,
   validateUsername,
   validatePassword,
-} from "../utils/validators";
-import PasswordInput from "../components/PasswordInput";
-import ValidateInput from "../components/ValidateInput";
-import { client } from "../services/axios";
-import axios from "axios";
+} from '../utils/validators';
+import PasswordInput from '../components/PasswordInput';
+import ValidateInput from '../components/ValidateInput';
+import { client } from '../services/axios';
+import axios from 'axios';
 
 export default function SignUp() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   //비밀 번호 확인 일치 검사
   const validateConfirmPassword = (value: string) => {
     if (value !== password) {
-      return "비밀번호가 일치하지 않습니다.";
+      return '비밀번호가 일치하지 않습니다.';
     }
-    return "";
+    return '';
   };
 
   const navigate = useNavigate();
@@ -42,35 +42,35 @@ export default function SignUp() {
   const signUpHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await client.post("/signup", {
+      const { data } = await client.post('/signup', {
         fullName: username,
         email,
         password,
       });
-      navigate("/login");
+      navigate('/login');
     } catch (error) {
       //console.log(error);
       if (axios.isAxiosError(error)) {
         const message = error.response?.data;
         if (
-          typeof message === "string" &&
-          message.includes("The email address is already being used.")
+          typeof message === 'string' &&
+          message.includes('The email address is already being used.')
         ) {
-          alert("이미 가입된 이메일입니다.");
+          alert('이미 가입된 이메일입니다.');
         } else {
-          alert(message || "회원가입 실패");
+          alert(message || '회원가입 실패');
         }
       } else {
-        alert("예상치 못한 오류 발생");
+        alert('예상치 못한 오류 발생');
       }
     }
   };
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gray-400">
-        <div className=" bg-white rounded-3xl shadow-lg p-10 w-full max-w-md">
-          <h1 className="text-3xl font-extrabold text-center mb-8">
+      <div className="flex min-h-screen items-center justify-center bg-gray-400">
+        <div className="w-full max-w-md rounded-3xl bg-white p-10 shadow-lg">
+          <h1 className="mb-8 text-center text-3xl font-extrabold">
             회원 가입
           </h1>
           <form className="space-y-4" onSubmit={signUpHandler}>
@@ -102,19 +102,19 @@ export default function SignUp() {
             <Button
               type="submit"
               disabled={!isFormValid}
-              className="btn-style mt-8 mb-4 disabled:bg-(--color-gray3 "
+              className="btn-style disabled:bg-(--color-gray3 mt-8 mb-4"
             >
               가입하기
             </Button>
           </form>
-          <div className="flex items-center mb-10 text-sm">
+          <div className="mb-10 flex items-center text-sm">
             <span className="text-(--color-gray8)">이미 회원이신가요?</span>
             <a
               href="#"
-              className="ml-1 text-(--color-main) hover:underline "
+              className="ml-1 text-(--color-main) hover:underline"
               onClick={(e) => {
                 e.preventDefault();
-                navigate("/login");
+                navigate('/login');
               }}
             >
               로그인
