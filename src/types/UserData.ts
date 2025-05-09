@@ -3,7 +3,7 @@ import { postData } from './PostData';
 
 const postNum = postData.length;
 
-const userData = create<UserType>(() => ({
+const userData = create<UserData>(() => ({
   userId: 1,
   userName: '설월화',
   userEmail: 'seolwolwha@naver.com',

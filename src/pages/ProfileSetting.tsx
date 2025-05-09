@@ -11,13 +11,22 @@ import ValidatePasswordInput from '../components/ValidatePasswordInput';
 
 export default function ProfileSetting() {
   const userName = userData((state) => state.userName);
+  const userPassWord = userData((state) => state.myPassWord);
   const [username, setUsername] = useState(userName);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password) {
       return '비밀번호가 일치하지 않습니다.';
+    }
+    return '';
+  };
+
+  const validateCurrentPassword = (value: string) => {
+    if (value !== userPassWord) {
+      return '비밀번호가 다릅니다';
     }
     return '';
   };
@@ -49,7 +58,13 @@ export default function ProfileSetting() {
         </div>
         <div className="mt-6.5">
           <span className="textST1 block">기존 비밀번호</span>
-          <CurrentPassWord />
+          <ValidatePasswordInput
+            value={currentPassword}
+            onChange={setCurrentPassword}
+            validate={validateCurrentPassword}
+            placeholder="현재 비밀번호를 입력해 주세요"
+            className={twMerge('input text-T02 w-185')}
+          />
         </div>
 
         <div className="mt-6.5">
@@ -58,7 +73,7 @@ export default function ProfileSetting() {
             value={password}
             onChange={setPassword}
             validate={validatePassword}
-            placeholder="비밀번호"
+            placeholder="8자 이상, 16자 이하 특수문자를 포함하여 입력해 주세요"
             className={twMerge('input text-T02 w-185')}
           />
         </div>
@@ -68,7 +83,7 @@ export default function ProfileSetting() {
             value={confirmPassword}
             onChange={setConfirmPassword}
             validate={validateConfirmPassword}
-            placeholder="비밀번호 확인"
+            placeholder="새 비밀번호를 한 번 더 입력해 주세요"
             className={twMerge('input text-T02 w-185')}
           />
         </div>

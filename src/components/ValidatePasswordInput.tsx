@@ -19,13 +19,15 @@ export default function ValidatePasswordInput({
   value,
   onChange,
   validate,
-  placeholder = '비밀번호',
+  placeholder,
   onBlur,
   className,
 }: PasswordInputProps) {
   const [touched, setTouched] = useState(false);
 
   const error = touched ? validate(value) : '';
+
+  const [isInputClicked, setIsInputClicked] = useState(false);
 
   return (
     <div>
@@ -34,11 +36,19 @@ export default function ValidatePasswordInput({
           type={type}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={() => {
+            setIsInputClicked(true);
+          }}
           onBlur={(e) => {
             setTouched(true);
             if (onBlur) onBlur(e);
+            setIsInputClicked(false);
           }}
-          placeholder={placeholder}
+          placeholder={
+            isInputClicked === true
+              ? ''
+              : placeholder
+          }
           className={twMerge(
             `${error ? 'bg-red-50 text-[#FF7043]' : ''}`,
             className,
