@@ -1,11 +1,12 @@
-import { useState } from "react";
-import Logo from "../assets/GammueLogo.png";
-import { Link, useNavigate } from "react-router-dom";
-// import HeaderLogin from "./HeaderLogin";
-import HeaderNotLogin from "./HeaderNotLogin";
+import { useState } from 'react';
+import Logo from '../assets/GammueLogo.png';
+import { Link, useNavigate } from 'react-router-dom';
+import HeaderLogin from './HeaderLogin';
+import HeaderNotLogin from './HeaderNotLogin';
+import { useAuthStore } from '../stores/authStore';
 
 export default function Header() {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
   const searchNavigate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,17 +14,17 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b border-[var(--color-gray4)] bg-white flex justify-center items-center">
-      <Link to={"/"} className="absolute left-8 cursor-pointer">
-        <img src={Logo} alt="Logo" className="w-40 h-20 object-cover" />
+    <header className="flex items-center justify-center border-b border-[var(--color-gray4)] bg-white">
+      <Link to={'/'} className="absolute left-8 cursor-pointer">
+        <img src={Logo} alt="Logo" className="h-20 w-40 object-cover" />
       </Link>
       <form
-        className="flex items-center relative w-[560px] my-4"
+        className="relative my-4 flex w-[560px] items-center"
         onSubmit={searchNavigate}
       >
         <input
           type="text"
-          className="w-full px-4 py-2.5 border-2 border-[#51B8B2] focus:outline-[#51B8B2] focus:outline-1 rounded-4xl bg-white"
+          className="w-full rounded-4xl border-2 border-[#51B8B2] bg-white px-4 py-2.5 focus:outline-1 focus:outline-[#51B8B2]"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
@@ -47,7 +48,7 @@ export default function Header() {
           <button
             type="button"
             className="absolute right-11 cursor-pointer"
-            onClick={() => setSearchInput("")}
+            onClick={() => setSearchInput('')}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -56,15 +57,18 @@ export default function Header() {
               viewBox="0 0 24 24"
             >
               <path
-                fill={"var(--color-gray5)"}
+                fill={'var(--color-gray5)'}
                 d="M12 4c-4.419 0-8 3.582-8 8s3.581 8 8 8s8-3.582 8-8s-3.581-8-8-8m3.707 10.293a.999.999 0 1 1-1.414 1.414L12 13.414l-2.293 2.293a.997.997 0 0 1-1.414 0a1 1 0 0 1 0-1.414L10.586 12L8.293 9.707a.999.999 0 1 1 1.414-1.414L12 10.586l2.293-2.293a.999.999 0 1 1 1.414 1.414L13.414 12z"
               ></path>
             </svg>
           </button>
         )}
       </form>
-      {/* <HeaderLogin /> */}
-      <HeaderNotLogin />
+      {useAuthStore.getState().isLoggedIn ? (
+        <HeaderLogin />
+      ) : (
+        <HeaderNotLogin />
+      )}
     </header>
   );
 }
