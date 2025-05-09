@@ -100,6 +100,10 @@
   .postBox {
     @apply mt-[40px] h-[196px] w-[100%] border-[1px] border-[#d9d9d9] px-[23.35px] pt-[20px];
   }
+
+  .search-tab-style {
+    @apply w-[50%] cursor-pointer border-b-2 border-b-[var(--color-gray3)] disabled:cursor-default disabled:border-b-4 disabled:border-b-[var(--color-main)] disabled:font-bold disabled:text-[var(--color-main)];
+  }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */
 
