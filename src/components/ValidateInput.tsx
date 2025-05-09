@@ -1,8 +1,8 @@
-import { useState } from "react";
-import Input from "./Input";
-import { twMerge } from "tailwind-merge";
+import { useState } from 'react';
+import Input from './Input';
+import { twMerge } from 'tailwind-merge';
 
-type InputType = "email" | "number" | "password" | "text";
+type InputType = 'email' | 'number' | 'password' | 'text';
 
 type InputValidationProps = {
   type?: InputType;
@@ -15,7 +15,7 @@ type InputValidationProps = {
 };
 
 export default function ValidateInput({
-  type = "text",
+  type = 'text',
   placeholder,
   value,
   onChange,
@@ -24,7 +24,7 @@ export default function ValidateInput({
   className,
 }: InputValidationProps) {
   const [touched, setTouched] = useState(false);
-  const error = touched ? validate(value) : "";
+  const error = touched ? validate(value) : '';
 
   return (
     <>
@@ -40,18 +40,15 @@ export default function ValidateInput({
           placeholder={placeholder}
           className={twMerge(
             error
-              ? "border border-[#FF7043] bg-red-50 text-[#FF7043] outline-[#FF7043] outline-1 "
-              : "",
-            className
+              ? 'border border-[#FF7043] bg-red-50 text-[#FF7043] outline-1 outline-[#FF7043]'
+              : '',
+            className,
           )}
         />
       </div>
       {error && (
-        <p
-          className="mt-2 text-sm text-[#D32F2F] font-medium min-h-[20px] 
-          "
-        >
-          {error || " "}
+        <p className="mt-2 min-h-[20px] text-sm font-medium text-[#D32F2F]">
+          {error || ' '}
         </p>
       )}
     </>
