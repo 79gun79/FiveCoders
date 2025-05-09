@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
 import Button from '../components/Button';
-import CurrentPassWord from '../components/CurrentPassWord';
 import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
 import userData from '../types/UserData';
@@ -32,12 +31,15 @@ export default function ProfileSetting() {
   };
 
   const isFormValid =
-    username &&
-    password &&
-    confirmPassword &&
-    !validateUsername(username) &&
-    !validatePassword(password) &&
-    password === confirmPassword;
+    (username &&
+      currentPassword &&
+      !validateCurrentPassword(currentPassword)) ||
+    (currentPassword &&
+      !validateCurrentPassword(currentPassword) &&
+      password &&
+      confirmPassword &&
+      !validatePassword(password) &&
+      password === confirmPassword);
 
   return (
     <>
