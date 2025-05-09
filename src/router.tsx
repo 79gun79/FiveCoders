@@ -9,7 +9,7 @@ import Search from "./pages/Search";
 import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 
-export default function Router() {
+export default function router() {
   return (
     <Routes>
       {/* 레이아웃 적용되지 않는 페이지 */}
