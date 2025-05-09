@@ -10,11 +10,15 @@ import IsLoggedInModal from "./IsLoggedInModal";
 import placeholderIcon from "../assets/channelImg.svg";
 
 export default function PostList({
+  postId,
   coverImage,
   title,
   userName,
   comments,
-}: PostType) {
+  deletePost,
+}: PostType & {
+  deletePost: (id: number) => void;
+}) {
   const [liked, setLiked] = useState(false); // 좋아요 상태관리
   const [isCmtForm, setCmtForm] = useState(false); // 댓글창 상태관리
   const [isOpen, setIsOpen] = useState(false); // 모달창 상태 관리
@@ -88,7 +92,7 @@ export default function PostList({
                       수정
                     </Button>
                     <Button
-                      onClick={() => setIsOpen(true)}
+                      onClick={() => deletePost(postId)}
                       className={twMerge(
                         "btn-style-post2",
                         "text-[var(--color-red-caution)]"

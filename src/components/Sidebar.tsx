@@ -78,7 +78,7 @@ export default function Sidebar() {
   }));
 
   return (
-    <aside className="w-[280px] h-screen border-r border-[var(--color-gray4)] bg-white)] flex flex-col">
+    <aside className="sticky top-0 w-[280px] h-screen border-r border-[var(--color-gray4)] bg-white)] flex flex-col">
       <nav>
         <ul className="p-3">
           <li className="flex items-center px-6 py-3 rounded-xl hover:bg-[var(--color-gray2)] cursor-pointer">

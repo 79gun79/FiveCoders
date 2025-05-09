@@ -6,8 +6,6 @@ import Home from "./pages/Home";
 import Content from "./pages/Content";
 import Search from "./pages/Search";
 
-//post는 퍼블리싱용 게시판 글 라우트 주소입니다.
-
 export default function router() {
   return (
     <Routes>

@@ -51,7 +51,7 @@ export default function PostEditor({
         theme="snow"
         className={className}
         value={value}
-        onChange={onChange}
+        onChange={(value) => onChange(value)}
         modules={modules}
       />
     </>

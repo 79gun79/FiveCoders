@@ -5,7 +5,7 @@ import { useState } from "react";
 import PostEditor from "../components/PostEditor";
 import { twMerge } from "tailwind-merge";
 import ChooseCommunity from "../components/ChooseCommunity";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
   const [content, setContent] = useState("");
@@ -13,6 +13,7 @@ export default function CreatePost() {
   const [channel, setChannel] = useState("");
   const [cIcon, setCIcon] = useState("");
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const handleChannelChange = (c1: string, c2: string) => {
     setChannel(c1);
@@ -21,18 +22,32 @@ export default function CreatePost() {
   };
 
   const handleEditorChange = (value: string) => {
+    console.log("Editor Content: ", value);
     setContent(value);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (state && state.createPost) {
+      state.createPost({
+        content,
+      });
+      navigate("..");
+    }
   };
 
   return (
     <>
-      <form className="flex flex-col min-w-[656px] items-start justify-center gap-[26px] mb-[50px]">
+      <form
+        className="flex flex-col min-w-[656px] items-start justify-center gap-[26px] mb-[50px]"
+        onSubmit={handleSubmit}
+      >
         <h2 className="textH2">게시글 작성</h2>
         <div className="relative z-30">
           <Button
             onClick={() => setChooseList(!chooseList)}
             className={twMerge(
-              "btn-style-channelList mb-[34px]",
+              "btn-style-channelList",
               channel === "" ? "" : "justify-start p-4 gap-2"
             )}
           >
