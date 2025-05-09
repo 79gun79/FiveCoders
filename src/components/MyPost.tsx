@@ -1,10 +1,10 @@
 import profile from '../assets/imgs/기본 프로필.png';
-import userData from '../types/UserData';
+import userData from '../data/UserData';
 import Button from './Button';
 import { AiFillMessage } from 'react-icons/ai';
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
-import { postData } from '../types/PostData';
+import { postData } from '../data/PostData';
 
 export default function MyPost() {
   const userName = userData((state) => state.userName);

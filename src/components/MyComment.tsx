@@ -1,6 +1,6 @@
 import profile from '../assets/imgs/기본 프로필.png';
-import { CommentData } from '../types/CommentData';
-import userData from '../types/UserData';
+import { CommentData } from '../data/CommentData';
+import userData from '../data/UserData';
 
 export default function MyComment() {
   const userName = userData((state) => state.userName);

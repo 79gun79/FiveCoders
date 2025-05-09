@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import Button from '../components/Button';
 import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
-import userData from '../types/UserData';
+import userData from '../data/UserData';
 import { useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
@@ -34,7 +34,8 @@ export default function ProfileSetting() {
     (username &&
       currentPassword &&
       !validateCurrentPassword(currentPassword)) ||
-    (currentPassword &&
+    (username &&
+      currentPassword &&
       !validateCurrentPassword(currentPassword) &&
       password &&
       confirmPassword &&

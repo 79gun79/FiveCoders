@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import userData from '../types/UserData';
+import userData from '../data/UserData';
 
 export default function MyInfo() {
   const myPost = userData((state) => state.myPost);

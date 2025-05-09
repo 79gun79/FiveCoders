@@ -1,4 +1,4 @@
-import userData from '../types/UserData';
+import userData from '../data/UserData';
 
 //email 유효성 검사
 export const validateEmail = (value: string) => {

@@ -3,7 +3,7 @@ import setting from '../assets/icons/Setting.svg';
 import { twMerge } from 'tailwind-merge';
 import MyInfo from '../components/MyInfo';
 import MyPost from '../components/MyPost';
-import userData from '../types/UserData';
+import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
 import { useState } from 'react';
 import { Link } from 'react-router';

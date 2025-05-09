@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
-import userData from '../types/UserData';
+import userData from '../data/UserData';
 
 export default function ProfileUpload() {
   const [Image, setImage] = useState(prof);
