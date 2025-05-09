@@ -44,11 +44,7 @@ export default function ValidatePasswordInput({
             if (onBlur) onBlur(e);
             setIsInputClicked(false);
           }}
-          placeholder={
-            isInputClicked === true
-              ? ''
-              : placeholder
-          }
+          placeholder={isInputClicked === true ? '' : placeholder}
           className={twMerge(
             `${error ? 'bg-red-50 text-[#FF7043]' : ''}`,
             className,
