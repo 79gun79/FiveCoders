@@ -16,7 +16,6 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
   //비밀 번호 확인 일치 검사
   const validateConfirmPassword = (value: string) => {
     if (value !== password) {
