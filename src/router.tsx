@@ -1,10 +1,10 @@
-import { Routes, Route } from "react-router";
-import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
-import Channel from "./pages/Channel";
-import NotFound from "./pages/NotFound";
-import Home from "./pages/Home";
-import Post from "./pages/Post";
+import { Routes, Route } from 'react-router';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import Channel from './pages/Channel';
+import NotFound from './pages/NotFound';
+import Home from './pages/Home';
+import Post from './pages/Post';
 
 //post는 퍼블리싱용 게시판 글 라우트 주소입니다.
 

@@ -1,4 +1,4 @@
-import { twMerge } from "tailwind-merge";
+import { twMerge } from 'tailwind-merge';
 
 export default function CommentList({
   comment,
@@ -8,7 +8,7 @@ export default function CommentList({
   return (
     <>
       <div
-        className={twMerge("postBottom", "flex flex-col gap-3 px-1 py-[16px]")}
+        className={twMerge('postBottom', 'flex flex-col gap-3 px-1 py-[16px]')}
       >
         <div className="flex items-center gap-[10px]">
           <img src={coverImage} alt="profile" className="postProfile" />

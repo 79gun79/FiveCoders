@@ -1,11 +1,11 @@
-import { twMerge } from "tailwind-merge";
-import Button from "./Button";
+import { twMerge } from 'tailwind-merge';
+import Button from './Button';
 
 export default function IsLoggedInModal() {
   return (
     <>
-      <div className="bg-white w-[400px] p-8 ">
-        <div className="text-center mb-[32px]">
+      <div className="w-[400px] bg-white p-8">
+        <div className="mb-[32px] text-center">
           <p className="text-[18px] font-medium">
             로그인이 필요한 서비스입니다
           </p>
@@ -14,8 +14,8 @@ export default function IsLoggedInModal() {
         <div className="flex items-center justify-center gap-3">
           <Button
             className={twMerge(
-              "btn-style-modal",
-              "bg-white hover:bg-[#f2f2f2] text-[var(--color-black)] border border-[#bdbdbd]"
+              'btn-style-modal',
+              'border border-[#bdbdbd] bg-white text-[var(--color-black)] hover:bg-[#f2f2f2]',
             )}
           >
             아니오
