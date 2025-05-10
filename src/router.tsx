@@ -1,11 +1,13 @@
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Search from './pages/Search';
 import Home from './pages/Home';
 import Channel from './pages/Channel';
 import ChannelList from './pages/ChannelList';
 import Content from './pages/Content';
-import Search from './pages/Search';
+import MyPage from './pages/MyPage';
+import ProfileSetting from './pages/ProfileSetting';
 import NotFound from './pages/NotFound';
 import Layout from './pages/Layout';
 
@@ -22,6 +24,8 @@ export default function Router() {
         <Route path="/channel" element={<Channel />} />
         <Route path="/channellist" element={<ChannelList />} />
         <Route path="/content/*" element={<Content />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/setting" element={<ProfileSetting />} />
         <Route path="/search" element={<Search />} />
       </Route>
 
