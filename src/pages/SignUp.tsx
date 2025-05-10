@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '../components/Button';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import {
   validateEmail,
   validateUsername,
@@ -8,13 +8,14 @@ import {
 } from '../utils/validators';
 import PasswordInput from '../components/PasswordInput';
 import ValidateInput from '../components/ValidateInput';
+import { client } from '../services/axios';
+import axios from 'axios';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  //const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
   //비밀 번호 확인 일치 검사
   const validateConfirmPassword = (value: string) => {
     if (value !== password) {
@@ -25,6 +26,45 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
+  //모든 입력이 유효한지
+  const isFormValid =
+    username &&
+    email &&
+    password &&
+    confirmPassword &&
+    !validateUsername(username) &&
+    !validateEmail(email) &&
+    !validatePassword(password) &&
+    password === confirmPassword;
+
+  //회원가입 핸들러
+  const signUpHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const { data } = await client.post('/signup', {
+        fullName: username,
+        email,
+        password,
+      });
+      navigate('/login');
+    } catch (error) {
+      //console.log(error);
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data;
+        if (
+          typeof message === 'string' &&
+          message.includes('The email address is already being used.')
+        ) {
+          alert('이미 가입된 이메일입니다.');
+        } else {
+          alert(message || '회원가입 실패');
+        }
+      } else {
+        alert('예상치 못한 오류 발생');
+      }
+    }
+  };
+
   return (
     <>
       <div className="flex min-h-screen items-center justify-center bg-gray-400">
@@ -32,7 +72,7 @@ export default function SignUp() {
           <h1 className="mb-8 text-center text-3xl font-extrabold">
             회원 가입
           </h1>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={signUpHandler}>
             <ValidateInput
               value={username}
               onChange={setUsername}
@@ -58,15 +98,19 @@ export default function SignUp() {
               validate={validateConfirmPassword}
               placeholder="비밀번호 확인"
             />
+            <Button
+              type="submit"
+              disabled={!isFormValid}
+              className="btn-style disabled:bg-(--color-gray3 mt-8 mb-4"
+            >
+              가입하기
+            </Button>
           </form>
-          <Button type="submit" className="btn-style mt-8 mb-4">
-            가입하기
-          </Button>
           <div className="mb-10 flex items-center text-sm">
-            <span className="text-[#484848]">이미 회원이신가요?</span>
+            <span className="text-(--color-gray8)">이미 회원이신가요?</span>
             <a
               href="#"
-              className="ml-1 text-[#51B8B2] hover:underline"
+              className="ml-1 text-(--color-main) hover:underline"
               onClick={(e) => {
                 e.preventDefault();
                 navigate('/login');
