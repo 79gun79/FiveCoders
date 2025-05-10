@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <header className="flex items-center justify-center border-b border-[var(--color-gray4)] bg-white">
       <Link to={'/'} className="absolute left-8 cursor-pointer">
-        <img src={Logo} alt="Logo" className="h-20 w-40 object-cover" />
+        <img src={Logo} alt="Logo" className="w-40" />
       </Link>
       <form
         className="relative my-4 flex w-[560px] items-center"
