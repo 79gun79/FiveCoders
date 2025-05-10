@@ -18,7 +18,7 @@
   .listBorder {
     @apply h-[fit] w-[fit] rounded-lg border border-[var(--color-gray3)] bg-white p-[10px] shadow-md;
   }
-  .textBase {
+  .textBasic {
     @apply text-[14px] text-[var(--color-text-black)];
   }
   .textH1 {
