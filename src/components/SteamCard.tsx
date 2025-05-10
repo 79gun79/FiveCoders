@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import SteamIconBig from '../assets/steam-big.svg';
 import SteamIconSm from '../assets/steam-small.svg';
-import { getPlayerSummaries } from '../services/steamApi';
+import { getOwnedGames, getPlayerSummaries } from '../services/steamApi';
 
 interface SteamPlayer {
   steamid: string;
@@ -10,20 +10,51 @@ interface SteamPlayer {
   profileurl: string;
 }
 
+interface GameInfo {
+  appid: number;
+  name: string;
+  playtime_forever: number; //분 단위
+  game_count: number;
+}
+
+//임시로 저의스팀아이디를 공개합니다 ..ㅎ
 const steamId = '76561198972680084';
+
 export default function SteamCard() {
-  //const [card, setCard] = useState<SteamPlayer[]>([]);
   const [card, setCard] = useState<SteamPlayer | null>(null);
+  const [games, setGames] = useState<number>(0);
+  const [totalPlaytime, setTotalPlaytime] = useState<number>(0);
+
   useEffect(() => {
-    getPlayerSummaries([steamId]).then((players) => {
-      setCard(players[0]);
-    });
+    const fetchData = async () => {
+      try {
+        //프로필 정보 조회
+        const players = await getPlayerSummaries([steamId]);
+        setCard(players[0]);
+
+        //보유 게임 수 조회
+        const ownedGames = await getOwnedGames(steamId);
+        setGames(ownedGames.game_count);
+
+        //전체 플레이 타임
+        const total = ownedGames.games.reduce(
+          (acc: number, game: GameInfo) => acc + game.playtime_forever,
+          0,
+        );
+        setTotalPlaytime(total);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
   }, []);
+
   if (!card) return <div>Loading</div>;
   return (
     <>
       <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#141E30] to-[#243B55]">
-        <div className="flex items-center px-4 py-3.5">
+        <div className="flex items-center px-4 py-4">
           <img
             src={SteamIconSm}
             alt="steamIcon"
@@ -43,16 +74,16 @@ export default function SteamCard() {
           src={card.avatarfull}
         />
 
-        <div className="absolute top-1/2 right-18 z-30 -translate-y-1/2">
+        <div className="absolute top-1/2 right-14 z-30 -translate-y-1/2">
           <div className="mt-1.5 space-y-1 text-[12px] font-semibold text-white">
-            <h1 className="text-[14px]">{card.personaname}</h1>
+            <h1 className="text-[15px]">{card.personaname}</h1>
             <div className="flex">
-              <span>게임</span>
-              <span className="ml-2">35</span>
+              <span>보유한 게임</span>
+              <span className="ml-2">{games}</span>
             </div>
             <div className="flex">
-              <span>업적</span>
-              <span className="ml-2">125</span>
+              <span>총 플레이타임</span>
+              <span className="ml-2">{(totalPlaytime / 60).toFixed(0)}</span>
             </div>
           </div>
         </div>

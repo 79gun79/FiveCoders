@@ -90,10 +90,7 @@ export default function PostList({
                 >
                   <div className="flex flex-col">
                     <Button
-<<<<<<< HEAD
-=======
                       onClick={() => setIsOpen(true)}
->>>>>>> dev
                       className={twMerge('btn-style-post2', 'text-black')}
                     >
                       수정
@@ -124,11 +121,7 @@ export default function PostList({
             onClick={() => setLiked(!liked)}
             className={twMerge(
               'btn-style-post',
-<<<<<<< HEAD
-              liked ? 'text-[var(--color-main)]' : 'text-[#929292]',
-=======
               liked ? 'text-[var(--color-main)]' : 'text-[var(--color-gray5)]',
->>>>>>> dev
             )}
           >
             <BiSolidLike className="mr-1" size={13} />
@@ -138,13 +131,9 @@ export default function PostList({
             onClick={() => setCmtForm(!isCmtForm)}
             className={twMerge(
               'btn-style-post',
-<<<<<<< HEAD
-              isCmtForm ? 'text-[var(--color-main)]' : 'text-[#929292]',
-=======
               isCmtForm
                 ? 'text-[var(--color-main)]'
                 : 'text-[var(--color-gray5)]',
->>>>>>> dev
             )}
           >
             <AiFillMessage className="mr-1" size={13} />
