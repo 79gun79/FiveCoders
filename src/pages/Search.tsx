@@ -62,7 +62,7 @@ export default function Search() {
         {/* 게시글 검색 */}
         {!userTab &&
           searchData
-            ?.filter((e) => 'title' in e)
+            ?.filter((e) => 'content' in e)
             .map((post) => (
               <div className="mb-5">
                 <PostList

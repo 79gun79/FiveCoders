@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Home from './pages/Home';
-import Channel from './pages/Channel';
 import ChannelList from './pages/ChannelList';
 import Content from './pages/Content';
 import Search from './pages/Search';
@@ -19,7 +18,6 @@ export default function Router() {
       {/* 레이아웃 적용되는 페이지 그룹 */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/channel" element={<Channel />} />
         <Route path="/channellist" element={<ChannelList />} />
         <Route path="/content/*" element={<Content />} />
         <Route path="/search" element={<Search />} />
