@@ -4,7 +4,7 @@ import placeholderIcon from '../assets/channelImg.svg';
 export const postsData: PostType[] = [
   {
     postId: 1,
-    image: placeholderIcon,
+    image: '',
     coverImage: placeholderIcon,
     content: '안녕하세요! 환영합니다',
     userName: '운영자',

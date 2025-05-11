@@ -74,19 +74,17 @@ export default function Search() {
         {/* 게시글 검색 */}
         {!userTab &&
           searchData
-            ?.filter((e) => 'content' in e)
-            .map((post) => (
-              <div className="mb-5">
-                <PostList
-                  key={post.postId}
-                  postId={post.postId}
-                  content={post.content}
-                  userName={'(작업중)'}
-                  image={post.image}
-                  coverImage={post.coverImage || profileImg}
-                  comments={post.comments}
-                />
-              </div>
+            ?.filter((e) => 'title' in e)
+            .map((post, index) => (
+              <SearchPost
+                key={post._id}
+                postId={index}
+                content={post.title}
+                userName={post.author}
+                image={post.image}
+                coverImage={post.coverImage || profileImg}
+                comments={post.comments}
+              />
             ))}
 
         {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (

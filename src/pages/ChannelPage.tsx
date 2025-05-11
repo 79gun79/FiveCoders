@@ -32,6 +32,8 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
 
   return (
     <>
+      <h1 className="textH1">채널 {channelId}</h1>
+      {/* 확인을 위한 용도로, 다음 PR에서는 사라질 예정 */}
       <div className="mb-[50px] flex min-w-[640px] flex-col">
         <div className="mb-[30px] items-center justify-center">
           <div className={twMerge('postBottom', 'h-[155px] border border-b-0')}>
@@ -77,7 +79,6 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
             <PostList key={v.postId} {...v} />
           ))}
         </div>
-        <h1>{channelId}</h1>
       </div>
     </>
   );
