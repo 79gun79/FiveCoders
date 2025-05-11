@@ -25,7 +25,7 @@ export const usePostStore = create<PostStore>((set) => ({
       const nextId = state.allPosts[channelId].length + 1;
       const newItem: PostType = {
         postId: nextId,
-        image: placeholderIcon,
+        image: '',
         coverImage: placeholderIcon,
         content: newPost,
         userName: '익명',
