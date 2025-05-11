@@ -5,7 +5,7 @@ import { useState } from 'react';
 import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../stores/postStore';
 
 export default function CreatePost() {
@@ -15,6 +15,7 @@ export default function CreatePost() {
   const [cIcon, setCIcon] = useState('');
   const navigate = useNavigate();
   const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
+  const { id } = useParams();
 
   const handleChannelChange = (c1: string, c2: string) => {
     setChannel(c1);
@@ -28,8 +29,8 @@ export default function CreatePost() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createPost(content);
-    navigate('..');
+    createPost(id as string, content);
+    navigate(`/channel/${id}`);
   };
 
   return (
@@ -75,7 +76,7 @@ export default function CreatePost() {
         <div className="flex w-full justify-end gap-4">
           <Button
             type="reset"
-            onClick={() => navigate('..')}
+            onClick={() => navigate(`/channel/${id}`)}
             className={twMerge('btn-style-comment', 'textBasic h-10 px-5')}
           >
             취소
