@@ -17,6 +17,7 @@ export default function PostList({
   coverImage,
   content,
   userName,
+  image,
 }: PostType) {
   const [liked, setLiked] = useState(false); // 좋아요 상태관리
   const [isCmtForm, setCmtForm] = useState(false); // 댓글창 상태관리
@@ -121,6 +122,13 @@ export default function PostList({
               )}
             </div>
           </div>
+          {image && (
+            <img
+              src={image}
+              alt={postId.toString()}
+              className="mb-4 max-w-[694px]"
+            />
+          )}
           <div
             className="textH4"
             dangerouslySetInnerHTML={{ __html: cleanContent }}
