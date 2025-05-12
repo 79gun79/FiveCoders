@@ -1,6 +1,6 @@
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface PostEditorProps {
   className?: string;
@@ -13,6 +13,7 @@ export default function PostEditor({
   value,
   onChange,
 }: PostEditorProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const modules = {
     toolbar: {
       container: [
@@ -61,13 +62,21 @@ export default function PostEditor({
   }, [value]);
   return (
     <>
-      <ReactQuill
-        theme="snow"
-        className={className}
-        value={value}
-        onChange={onChange}
-        modules={modules}
-      />
+      <div
+        className={`rounded-xl transition-all ${
+          isFocused ? 'commentBorder' : ''
+        }`}
+      >
+        <ReactQuill
+          theme="snow"
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className={className}
+          value={value}
+          onChange={onChange}
+          modules={modules}
+        />
+      </div>
     </>
   );
 }
