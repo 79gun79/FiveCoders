@@ -76,7 +76,7 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
         </div>
         <div className="postShadow flex flex-col gap-[30px]">
           {posts.map((v) => (
-            <PostList key={v.postId} {...v} />
+            <PostList key={v._id} {...v} />
           ))}
         </div>
       </div>
