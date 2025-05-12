@@ -13,22 +13,23 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
   const [subscribes, setSubscribes] = useState(false); // 채널 구독 상태 관리
   const [isChannel, setChannel] = useState<Channel | null>(null);
   const navigate = useNavigate();
-  const { allPosts, loadPosts } = usePostStore();
+  const { allPosts } = usePostStore();
 
   useEffect(() => {
     const loadChannel = dummyChannels.find((v) => v._id === channelId) || null;
 
     if (!loadChannel) {
       navigate('/notfound', { replace: true });
-    } else {
-      setChannel(loadChannel);
-      loadPosts(channelId);
+      return;
     }
-  }, [channelId, navigate, loadPosts]);
+    setChannel(loadChannel);
+  }, [channelId, navigate]);
 
   if (!isChannel) {
     return null;
   }
+
+  const posts = allPosts[channelId] ?? [];
 
   return (
     <>
@@ -75,7 +76,7 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
           </div>
         </div>
         <div className="flex flex-col gap-[30px]">
-          {(allPosts[channelId] || []).map((v) => (
+          {posts.map((v) => (
             <PostList key={v.postId} {...v} />
           ))}
         </div>

@@ -8,7 +8,11 @@ import { dummyChannels } from '../data/dummyChannels';
 export default function ChooseCommunity({
   onChange,
 }: {
-  onChange: (c1: string, c2: string) => void;
+  onChange: (
+    channelName: string,
+    channelIcon: string,
+    channelId: string,
+  ) => void;
 }) {
   const [channels, setChannels] = useState<Channel[]>([]);
 
@@ -28,22 +32,7 @@ export default function ChooseCommunity({
           <TiStarFullOutline className="text-[var(--color-sub)]" size={17} />
           <span className="leading-[30px]">즐겨찾는 커뮤니티</span>
         </div>
-        <ul className="gap-[7px] px-1 pb-[10px] text-[13px] font-normal">
-          {/* {channels.map((v) => (
-            <li
-              key={v._id}
-              className="flex items-center gap-2"
-              onClick={() => onChange(v.name, v.imageUrl)}
-            >
-              <img
-                className={twMerge('postProfile', 'h-[20px] w-[20px]')}
-                src={v.imageUrl}
-                alt="icon"
-              />
-              <span className="leading-[30px]">{v.name}</span>
-            </li>
-          ))} */}
-        </ul>
+        <ul className="gap-[7px] px-1 pb-[10px] text-[13px] font-normal"></ul>
         <hr className="mr-[20px] border border-[var(--color-gray3)]" />
         <div className="mt-1 flex items-center gap-[6px]">
           <IoIosList className="text-black" size={17} />
@@ -53,8 +42,8 @@ export default function ChooseCommunity({
           {channels.map((v) => (
             <li
               key={v._id}
-              className="flex items-center gap-2"
-              onClick={() => onChange(v.name, v.imageUrl)}
+              className="flex cursor-pointer items-center gap-2"
+              onClick={() => onChange(v.name, v.imageUrl, v._id)}
             >
               <img
                 className={twMerge('postProfile', 'h-[20px] w-[20px]')}

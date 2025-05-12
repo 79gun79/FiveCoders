@@ -2,27 +2,20 @@ import { create } from 'zustand';
 import { postsData } from '../data/postsData';
 import { commentsData } from '../data/commentsData';
 import placeholderIcon from '../assets/channelImg.svg';
+import { dummyChannels } from '../data/dummyChannels';
 
 export const usePostStore = create<PostStore>((set) => ({
-  allPosts: {},
-
-  loadPosts: (channelId: string) =>
-    set((state) => {
-      if (!state.allPosts[channelId]) {
-        // 기존에 로딩된 적이 없으면 초기값 설정
-        return {
-          allPosts: {
-            ...state.allPosts,
-            [channelId]: postsData,
-          },
-        };
-      }
-      return state;
-    }),
+  allPosts: dummyChannels.reduce(
+    (acc, cur) => {
+      acc[cur._id] = [...postsData];
+      return acc;
+    },
+    {} as Record<string, PostType[]>,
+  ),
 
   createPost: (channelId: string, newPost: string) =>
     set((state) => {
-      const nextId = state.allPosts[channelId].length + 1;
+      const nextId = state.allPosts[channelId]?.length + 1;
       const newItem: PostType = {
         postId: nextId,
         image: '',

@@ -16,7 +16,6 @@ type PostType = {
 
 type PostStore = {
   allPosts: Record<string, PostType[]>;
-  loadPosts: (channelId: string) => void;
   createPost: (channelId: string, newPost: string) => void;
   deletePost: (channelId: string, postId: number) => void;
 };
