@@ -3,28 +3,28 @@ import { client } from '../services/axios';
 import PostList from './PostList';
 
 export default function SearchPost({
-  postId,
-  content,
-  userName,
+  _id,
+  title,
+  author,
   image,
-  coverImage,
   comments,
-}: PostType) {
+  ...rest
+}: Post) {
   const [userInfo, setUserInfo] = useState<UserType>();
 
   useEffect(() => {
-    client(`/users/${userName}`).then((res) => setUserInfo(res.data));
+    client(`/users/${author}`).then((res) => setUserInfo(res.data));
   }, []);
 
   return (
     <div className="mb-5">
       <PostList
-        postId={postId}
-        userName={userInfo?.fullName || '(알 수 없음)'}
-        content={content}
+        _id={_id}
         image={image}
-        coverImage={coverImage}
+        title={title}
+        author={userInfo?.fullName || '(알 수 없음)'}
         comments={comments}
+        {...rest}
       />
     </div>
   );
