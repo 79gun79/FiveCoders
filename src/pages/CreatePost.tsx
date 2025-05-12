@@ -10,6 +10,7 @@ import { usePostStore } from '../stores/postStore';
 import { dummyChannels } from '../data/dummyChannels';
 
 export default function CreatePost() {
+  const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [chooseList, setChooseList] = useState(false);
 
@@ -45,13 +46,47 @@ export default function CreatePost() {
     setContent(value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const isEmptyContent = (content: string) => {
+    const text = content.replace(/<[^>]*>?/gm, '').trim();
+    return text === '';
+  }; // 내용 유효성 검사
+
+  const handleCancel = async () => {
+    if (!isEmptyContent(content) || title) {
+      if (
+        !window.confirm('작성 중인 내용이 있습니다. 작성을 그만하시겠습니까?')
+      )
+        return;
+    }
+    try {
+      await navigate(`/channel/${id}`);
+    } catch {
+      alert('동작 중에 오류가 발생했습니다. 다시 시도 해주세요!');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (cId) {
-      createPost(cId, content);
+    if (!cId) {
+      alert('채널을 선택해주세요!');
+      return;
+    }
+    if (title === '') {
+      alert('게시글 제목이 누락되었습니다. 작성해주세요!');
+      return;
+    }
+    if (isEmptyContent(content)) {
+      alert('내용이 누락되었습니다. 작성해주세요!');
+      return;
+    }
+    if (!window.confirm('게시글을 등록하시겠습니까?')) return;
+
+    try {
+      await createPost(cId as string, title + content);
+      alert('게시글이 등록 되었습니다.');
       navigate(`/channel/${cId}`);
-    } else {
-      alert('채널이 선택되지 않았습니다');
+    } catch {
+      alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -92,13 +127,20 @@ export default function CreatePost() {
           </Button>
           {chooseList && <ChooseCommunity onChange={handleChannelChange} />}
         </div>
-        <Input className="input-style-head" placeholder="제목을 입력하세요" />
+        <Input
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          className="input-style-head"
+          placeholder="제목을 입력하세요"
+        />
         <PostEditor value={content} onChange={handleEditorChange} />
 
         <div className="flex w-full justify-end gap-4">
           <Button
             type="reset"
-            onClick={() => navigate(`/channel/${id}`)}
+            onClick={handleCancel}
             className={twMerge('btn-style-comment', 'textBasic h-10 px-5')}
           >
             취소

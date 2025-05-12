@@ -36,6 +36,9 @@
   .textH4 {
     @apply text-[20px] font-medium text-[var(--color-text-black)];
   }
+  .textT1 {
+    @apply text-[18px] text-[var(--color-text-black)];
+  }
   .textST1 {
     @apply text-[14px] text-[var(--color-text-black)];
   }

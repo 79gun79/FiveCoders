@@ -19,6 +19,15 @@ export default function PostList({
   userName,
   image,
 }: PostType) {
+  const parseContent = (content: string) => {
+    const regex = /<p>/i;
+    const [title, ...rest] = content.split(regex);
+    const body = rest.length > 0 ? `<p>${rest.join('<p>')}` : '';
+
+    return { title: title.trim(), body };
+  };
+  const { title, body } = parseContent(content); // (제목 + 내용) 분리
+
   const [liked, setLiked] = useState(false); // 좋아요 상태관리
   const [isCmtForm, setCmtForm] = useState(false); // 댓글창 상태관리
   const [isOpen, setIsOpen] = useState(false); // 모달창 상태 관리
@@ -46,7 +55,7 @@ export default function PostList({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const cleanContent = sanitizeHtml(content, {
+  const cleanContent = sanitizeHtml(body, {
     allowedTags: ['p', 'strong', 'em', 'u', 's', 'a', 'img', 'span'],
     allowedAttributes: {
       strong: ['style'],
@@ -129,8 +138,9 @@ export default function PostList({
               className="mb-4 max-w-[694px]"
             />
           )}
+          <div className={twMerge('textH4', 'font-bold')}>{title}</div>
           <div
-            className="textH4"
+            className="textT1 mt-3"
             dangerouslySetInnerHTML={{ __html: cleanContent }}
           ></div>
         </div>

@@ -30,6 +30,7 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
   }
 
   const posts = allPosts[channelId] ?? [];
+  console.log(posts);
 
   return (
     <>
