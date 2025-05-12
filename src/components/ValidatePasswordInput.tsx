@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SettingInput from './SettingInput';
 import { twMerge } from 'tailwind-merge';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 type InputType = 'text';
 
@@ -15,7 +16,6 @@ type PasswordInputProps = {
 };
 
 export default function ValidatePasswordInput({
-  type,
   value,
   onChange,
   validate,
@@ -23,6 +23,7 @@ export default function ValidatePasswordInput({
   onBlur,
   className,
 }: PasswordInputProps) {
+  const [visible, setVisible] = useState(false);
   const [touched, setTouched] = useState(false);
 
   const error = touched ? validate(value) : '';
@@ -33,7 +34,7 @@ export default function ValidatePasswordInput({
     <div>
       <div className="relative">
         <SettingInput
-          type={type}
+          type={visible ? 'text' : 'password'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={() => {
@@ -50,6 +51,17 @@ export default function ValidatePasswordInput({
             className,
           )}
         />
+        <button
+          type="button"
+          className="absolute top-1/2 right-4 flex -translate-y-1/2 items-center text-[#757575] hover:text-[#51B8B2] focus:outline-none"
+          onClick={() => setVisible((v) => !v)}
+        >
+          {visible ? (
+            <FaEyeSlash className="h-5 w-5" />
+          ) : (
+            <FaEye className="h-5 w-5" />
+          )}
+        </button>
       </div>
       <p
         className={`mt-[-10px] text-sm font-medium text-[#D32F2F] ${
