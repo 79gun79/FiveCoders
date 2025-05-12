@@ -7,6 +7,7 @@ import { useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
+import Tooltip from '../components/Tooltip';
 
 export default function ProfileSetting() {
   const userName = userData((state) => state.userName);
@@ -50,7 +51,12 @@ export default function ProfileSetting() {
           <ProfileUpload />
         </div>
         <div className="mt-13.5">
-          <span className="textST1 block">닉네임</span>
+          <div className="flex items-center">
+            <span className="textST1 block">닉네임</span>
+            <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요">
+              <button>?</button>
+            </Tooltip>
+          </div>
           <ValidateNickNameInput
             value={username}
             onChange={setUsername}
