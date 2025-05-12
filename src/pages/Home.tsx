@@ -1,3 +1,4 @@
+import DiscordCard from '../components/DiscordCard';
 import SteamCard from '../components/SteamCard';
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
       <div className="mx-[200px]">
         <h1>Home Component</h1>
         <SteamCard />
+        <DiscordCard />
       </div>
     </>
   );
