@@ -17,7 +17,21 @@ export default function PostEditor({
     toolbar: {
       container: [
         ['bold', 'italic', 'strike', 'underline', 'image'],
-        [{ color: ['black', 'red', 'blue'] }],
+        [
+          {
+            color: [
+              'red',
+              'orange',
+              'yellow',
+              'green',
+              'blue',
+              'purple',
+              'pink',
+              'brown',
+              'black',
+            ],
+          },
+        ],
       ],
     },
   };
