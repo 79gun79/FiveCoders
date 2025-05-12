@@ -22,7 +22,7 @@ export default function CommentList({
             onClick={() => onDelete(commentId)}
             className={twMerge('btn-style-post', 'h-fit w-[37px]')}
           >
-            <HiTrash className="text-[var(--color-gray5)]" size={13} />
+            <HiTrash className="text-[var(--color-gray4)]" size={13} />
           </Button>
         </div>
         <p className="textST1 ml-[42px] text-[var(--color-gray8)]">{comment}</p>

@@ -10,6 +10,7 @@ import IsLoggedInModal from './IsLoggedInModal';
 import sanitizeHtml from 'sanitize-html';
 import { usePostStore } from '../stores/postStore';
 import { useCommentStore } from '../stores/commentStore';
+import { useParams } from 'react-router-dom';
 
 export default function PostList({
   postId,
@@ -27,6 +28,7 @@ export default function PostList({
 
   const { deletePost } = usePostStore(); // 전역 게시글 관리에서 게시글 삭제 기능 가져오기
   const { comments, addComment, deleteComment } = useCommentStore();
+  const { id } = useParams();
 
   const handleClickOutside = (e: MouseEvent) => {
     // 바깥을 클릭하면 드랍메뉴 닫아짐
@@ -58,7 +60,17 @@ export default function PostList({
     allowedSchemes: ['http', 'https', 'data'],
     allowedStyles: {
       '*': {
-        color: [/^red$/, /^blue$/, /^green$/, /^black$/, /^white$/],
+        color: [
+          /^red$/,
+          /^blue$/,
+          /^green$/,
+          /^black$/,
+          /^orange$/,
+          /^yellow$/,
+          /^purple$/,
+          /^pink$/,
+          /^brown$/,
+        ],
       },
     },
   }); // 게시글 등록을 위해 태그 형태로 넘어오는 내용을 가공
@@ -97,7 +109,7 @@ export default function PostList({
                       수정
                     </Button>
                     <Button
-                      onClick={() => deletePost(postId)}
+                      onClick={() => deletePost(id as string, postId)}
                       className={twMerge(
                         'btn-style-post2',
                         'text-[var(--color-red-caution)]',

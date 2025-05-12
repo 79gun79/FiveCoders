@@ -19,7 +19,7 @@ export default function CommentForm({
     <>
       <div className="flex items-start gap-[10px] px-1 py-[20px]">
         <img src={placeholderIcon} alt="profile" className="postProfile" />
-        <div className="h-[110px] flex-1 rounded-xl bg-[var(--color-gray2)] p-4">
+        <div className="h-[110px] flex-1 rounded-xl bg-[var(--color-gray1)] p-4">
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -27,7 +27,7 @@ export default function CommentForm({
             rows={2}
             className={twMerge(
               'textBasic',
-              'w-full resize-none placeholder-[var(--color-gray5)] outline-none',
+              'w-full resize-none placeholder-[var(--color-gray4)] outline-none',
             )}
           />
 
