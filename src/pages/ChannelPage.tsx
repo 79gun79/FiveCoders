@@ -30,13 +30,12 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
   }
 
   const posts = allPosts[channelId] ?? [];
+  console.log(posts);
 
   return (
     <>
-      <h1 className="textH1">채널 {channelId}</h1>
-      {/* 확인을 위한 용도로, 다음 PR에서는 사라질 예정 */}
       <div className="mb-[50px] flex min-w-[640px] flex-col">
-        <div className="mb-[30px] items-center justify-center">
+        <div className="postShadow mb-[30px] items-center justify-center">
           <div className={twMerge('postBottom', 'h-[155px] border border-b-0')}>
             <img
               className="h-full w-full object-cover"
@@ -75,9 +74,9 @@ export default function ChannelPage({ channelId }: { channelId: string }) {
             </Link>
           </div>
         </div>
-        <div className="flex flex-col gap-[30px]">
+        <div className="postShadow flex flex-col gap-[30px]">
           {posts.map((v) => (
-            <PostList key={v.postId} {...v} />
+            <PostList key={v._id} {...v} />
           ))}
         </div>
       </div>

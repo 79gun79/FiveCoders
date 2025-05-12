@@ -12,13 +12,16 @@ import { usePostStore } from '../stores/postStore';
 import { useCommentStore } from '../stores/commentStore';
 import { useParams } from 'react-router-dom';
 
-export default function PostList({
-  postId,
-  coverImage,
-  content,
-  userName,
-  image,
-}: PostType) {
+export default function PostList({ _id, image, title, author }: Post) {
+  const parseContent = (content: string) => {
+    const regex = /<p>/i;
+    const [head, ...rest] = content.split(regex);
+    const body = rest.length > 0 ? `<p>${rest.join('<p>')}` : '';
+
+    return { head: head.trim(), body };
+  };
+  const { head, body } = parseContent(title); // (제목 + 내용) 분리
+
   const [liked, setLiked] = useState(false); // 좋아요 상태관리
   const [isCmtForm, setCmtForm] = useState(false); // 댓글창 상태관리
   const [isOpen, setIsOpen] = useState(false); // 모달창 상태 관리
@@ -46,7 +49,7 @@ export default function PostList({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const cleanContent = sanitizeHtml(content, {
+  const cleanContent = sanitizeHtml(body, {
     allowedTags: ['p', 'strong', 'em', 'u', 's', 'a', 'img', 'span'],
     allowedAttributes: {
       strong: ['style'],
@@ -80,8 +83,8 @@ export default function PostList({
       <div className="postBorder">
         <div className={twMerge('postBottom', 'pb-9')}>
           <div className="mb-4 flex items-center gap-[10px]">
-            <img src={coverImage} alt="profile" className="postProfile" />
-            <p className="text-base">{userName}</p>
+            <img src={image} alt="profile" className="postProfile" />
+            <p className="text-base">{author}</p>
             <div className="flex-grow"></div>
             <div className="relative" ref={refDrop}>
               <Button
@@ -109,7 +112,12 @@ export default function PostList({
                       수정
                     </Button>
                     <Button
-                      onClick={() => deletePost(id as string, postId)}
+                      onClick={() => {
+                        if (!window.confirm('해당 게시글을 삭제하시겠습니까?'))
+                          return;
+                        deletePost(id as string, _id);
+                        alert('게시글이 삭제 되었습니다.');
+                      }}
                       className={twMerge(
                         'btn-style-post2',
                         'text-[var(--color-red-caution)]',
@@ -122,15 +130,17 @@ export default function PostList({
               )}
             </div>
           </div>
+
+          <div className={twMerge('textH4', 'font-bold')}>{head}</div>
           {image && (
             <img
               src={image}
-              alt={postId.toString()}
-              className="mb-4 max-w-[694px]"
+              alt={_id.toString()}
+              className="mt-3 max-w-[564px] object-contain"
             />
           )}
           <div
-            className="textH4"
+            className="textT1 mt-3"
             dangerouslySetInnerHTML={{ __html: cleanContent }}
           ></div>
         </div>
