@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
 import profileImg from '../assets/channelImg.svg';
-import PostList from '../components/PostList';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { client } from '../services/axios';
+import SearchPost from '../components/SearchPost';
+
+type SearchPostType = {
+  _id: string;
+  title: string; // content
+  author: string; // --> userName
+  image: string;
+  coverImage: string;
+  comments: CommentType[];
+};
 
 export default function Search() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q');
   const [userTab, setUserTab] = useState(true);
-  const [searchData, setSearchData] = useState<[UserType | PostType]>();
+  const [searchData, setSearchData] = useState<[UserType | SearchPostType]>();
 
   useEffect(() => {
     client(`/search/all/${searchQuery}`) //
@@ -18,7 +27,7 @@ export default function Search() {
 
   return (
     <>
-      <div className="mx-[100px]">
+      <div className="mx-[200px]">
         <div className="mb-9.5 w-3xl text-xl">
           <button
             className="search-tab-style"
@@ -42,16 +51,19 @@ export default function Search() {
             ?.filter((e) => 'fullName' in e)
             .map((user) => (
               <div>
-                <div className="relative my-3 flex items-center rounded-3xl border border-[#d9d9d9] px-6 py-7">
+                <div className="relative my-3 flex items-center border border-[#d9d9d9] px-6 py-7">
                   <img
                     src={user.image || profileImg}
                     alt={`${user.fullName}`}
                     className="mr-6 h-14 w-14"
                   />
                   <span className="text-xl font-bold">{user.fullName}</span>
-                  <button className="absolute right-6.5 cursor-pointer rounded-[8px] bg-[var(--color-gray1)] p-2 text-[var(--color-gray8)] hover:bg-[var(--color-main)] hover:text-white">
+                  <Link
+                    to={'/mypage'}
+                    className="absolute right-6.5 cursor-pointer rounded-[8px] bg-[var(--color-gray1)] p-2 text-[var(--color-gray8)] hover:bg-[var(--color-main)] hover:text-white"
+                  >
                     프로필 보기
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -63,18 +75,16 @@ export default function Search() {
         {!userTab &&
           searchData
             ?.filter((e) => 'title' in e)
-            .map((post) => (
-              <div className="mb-5">
-                <PostList
-                  key={post.postId}
-                  postId={post.postId}
-                  content={post.content}
-                  userName={'(작업중)'}
-                  image={post.image}
-                  coverImage={post.coverImage || profileImg}
-                  comments={post.comments}
-                />
-              </div>
+            .map((post, index) => (
+              <SearchPost
+                key={post._id}
+                postId={index}
+                content={post.title}
+                userName={post.author}
+                image={post.image}
+                coverImage={post.coverImage || profileImg}
+                comments={post.comments}
+              />
             ))}
 
         {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (

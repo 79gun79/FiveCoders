@@ -1,25 +1,44 @@
 import { FaCaretDown } from 'react-icons/fa';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { usePostStore } from '../stores/postStore';
+import { dummyChannels } from '../data/dummyChannels';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
   const [chooseList, setChooseList] = useState(false);
-  const [channel, setChannel] = useState('');
+
+  const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
+  const [cId, setCId] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
+  const { id } = useParams();
 
-  const handleChannelChange = (c1: string, c2: string) => {
-    setChannel(c1);
-    setCIcon(c2);
+  useEffect(() => {
+    const currentChannel = dummyChannels.find((v) => v._id === id);
+    if (currentChannel) {
+      setCName(currentChannel.name);
+      setCIcon(currentChannel.imageUrl);
+      setCId(currentChannel._id);
+    }
+  }, [id]);
+
+  const handleChannelChange = (
+    channelName: string,
+    channelIcon: string,
+    channelId: string,
+  ) => {
+    setCName(channelName);
+    setCIcon(channelIcon);
     setChooseList(false);
+    setCId(channelId);
   };
 
   const handleEditorChange = (value: string) => {
@@ -28,8 +47,12 @@ export default function CreatePost() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createPost(content);
-    navigate('..');
+    if (cId) {
+      createPost(cId, content);
+      navigate(`/channel/${cId}`);
+    } else {
+      alert('채널이 선택되지 않았습니다');
+    }
   };
 
   return (
@@ -44,10 +67,10 @@ export default function CreatePost() {
             onClick={() => setChooseList(!chooseList)}
             className={twMerge(
               'btn-style-channelList',
-              channel === '' ? '' : 'justify-start gap-2 p-4',
+              cName === '' ? '' : 'justify-start gap-2 p-4',
             )}
           >
-            {channel === '' ? (
+            {cName === '' ? (
               <>
                 <FaCaretDown className="mr-1" />
                 <span className="textST1 text-[var(--color-gray7)]">
@@ -61,8 +84,8 @@ export default function CreatePost() {
                   src={cIcon}
                   alt="icon"
                 />
-                <span className="textST1 text-[var(--color-text-black)]">
-                  {channel}
+                <span className="text-[13px] text-[var(--color-text-black)]">
+                  {cName}
                 </span>
               </>
             )}
@@ -75,7 +98,7 @@ export default function CreatePost() {
         <div className="flex w-full justify-end gap-4">
           <Button
             type="reset"
-            onClick={() => navigate('..')}
+            onClick={() => navigate(`/channel/${id}`)}
             className={twMerge('btn-style-comment', 'textBasic h-10 px-5')}
           >
             취소
