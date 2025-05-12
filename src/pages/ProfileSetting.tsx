@@ -131,7 +131,7 @@ export default function ProfileSetting() {
             className={twMerge('input text-T02 w-185')}
           />
         </div>
-        <div className="mt-6.75 flex w-[95%] justify-end">
+        <div className="mt-6.75 flex w-[100%] content-end items-end justify-end">
           <Link to="/mypage">
             <Button className="cancel textT2">취소</Button>
           </Link>
