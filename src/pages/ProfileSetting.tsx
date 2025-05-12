@@ -20,8 +20,20 @@ export default function ProfileSetting() {
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const validateConfirmPassword = (value: string) => {
-    if (value !== password) {
+    if (value !== password && value !== '') {
       return '비밀번호가 일치하지 않습니다.';
+    }
+  };
+
+  const validateNewPassword = (value: string) => {
+    const isPassword = validatePassword(value);
+    if (isPassword === '8~16자, 영문 숫자 특수문자 모두 포함' && value !== '') {
+      return '8~16자, 영문 숫자 특수문자 모두 포함';
+    } else if (
+      isPassword !== '8~16자, 영문 숫자 특수문자 모두 포함' &&
+      value === currentPassword
+    ) {
+      return '새 비밀번호를 입력해 주세요';
     }
   };
 
@@ -34,19 +46,23 @@ export default function ProfileSetting() {
   const isFormValid =
     (username &&
       currentPassword &&
-      !validateCurrentPassword(currentPassword)) ||
+      !validateCurrentPassword(currentPassword) &&
+      password === '') ||
     (username &&
       currentPassword &&
       !validateCurrentPassword(currentPassword) &&
       password &&
       confirmPassword &&
       !validatePassword(password) &&
-      password === confirmPassword);
+      password === confirmPassword &&
+      !validateNewPassword(password));
 
   const notify = () => {
     if (isFormValid === true) {
       toast.success('저장되었습니다', { closeButton: false });
       setCurrentPassword('');
+      setPassword('');
+      setConfirmPassword('');
       setButtonDisabled(true);
       const timer = setTimeout(() => {
         setButtonDisabled(false);
@@ -100,7 +116,7 @@ export default function ProfileSetting() {
           <ValidatePasswordInput
             value={password}
             onChange={setPassword}
-            validate={validatePassword}
+            validate={validateNewPassword}
             placeholder="8자 이상, 16자 이하 영문 대소문자와 특수문자를 포함하여 입력해 주세요"
             className={twMerge('input text-T02 w-185')}
           />
