@@ -28,7 +28,7 @@ export default function ProfileSetting() {
   const validateNewPassword = (value: string) => {
     const isPassword = validatePassword(value);
     if (isPassword === '8~16자, 영문 숫자 특수문자 모두 포함' && value !== '') {
-      return '8~16자, 영문 숫자 특수문자 모두 포함';
+      return '8~16자, 영문 대소문자와 숫자, 특수문자 모두 포함해주세요';
     } else if (
       isPassword !== '8~16자, 영문 숫자 특수문자 모두 포함' &&
       value === currentPassword
@@ -117,7 +117,7 @@ export default function ProfileSetting() {
             value={password}
             onChange={setPassword}
             validate={validateNewPassword}
-            placeholder="8자 이상, 16자 이하 영문 대소문자와 특수문자를 포함하여 입력해 주세요"
+            placeholder="8자 이상, 16자 이하 영문 대소문자와 숫자, 특수문자를 포함하여 입력해 주세요"
             className={twMerge('input text-T02 w-185')}
           />
         </div>
