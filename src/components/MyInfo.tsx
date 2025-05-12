@@ -1,11 +1,14 @@
 import { twMerge } from 'tailwind-merge';
-import userData from '../data/UserData';
 
-export default function MyInfo() {
-  const myPost = userData((state) => state.myPost);
-  const myFollower = userData((state) => state.myFollower);
-  const myFollowing = userData((state) => state.myFollowing);
-
+export default function MyInfo({
+  myPost,
+  myFollowing,
+  myFollower,
+}: {
+  myPost: number;
+  myFollowing: number;
+  myFollower: number;
+}) {
   return (
     <>
       <div className="ml-[46px] inline-grid content-center">

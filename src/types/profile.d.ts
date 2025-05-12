@@ -11,31 +11,41 @@ type UserData = {
 };
 
 type PostData = {
-  postId: number;
-  authorId: number;
+  id: string;
+  author: string;
   title: string;
-  channelId: number;
+  update: Date;
 };
 
 type CommentData = {
-  commentId: number;
-  authorId: number;
+  id: string;
+  author: string;
   comment: string;
-  channelId: number;
+  update: Date;
 };
 
-type MyPostData = {
-  channelId: number;
-  authorId: number;
-  title: PostData[];
+type MyFollowing = {
+  id: string;
+  user: string;
+  update: Date;
 };
 
-type MyCommentData = {
-  authorId: number;
-  comment: CommentData[];
+type MyFollower = {
+  id: string;
+  user: string;
+  update: string;
 };
 
 type Tooltip = {
   content: string;
   children: React.ReactNode;
+};
+
+type dfData = {
+  serverId: string;
+  characterId: string;
+  characterName: string;
+  level: string;
+  jobGrowName: string;
+  fame: number;
 };

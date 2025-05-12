@@ -3,16 +3,45 @@ import setting from '../assets/icons/Setting.svg';
 import { twMerge } from 'tailwind-merge';
 import MyInfo from '../components/MyInfo';
 import MyPost from '../components/MyPost';
-import userData from '../data/UserData';
+// import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import { UserAPI } from '../services/UserAPI';
 
 export default function MyPage() {
-  const userName = userData((state) => state.userName);
-  const userEmail = userData((state) => state.userEmail);
+  const [userName, setUserName] = useState<string>();
+  const [userEmail, setUserEmail] = useState<string>();
+  const [userPost, setUserPost] = useState<PostData[]>([]);
+  const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
+  const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
+
+  const fetchUserName = async () => {
+    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
+    setUserName(result.data.fullName);
+  };
+
+  const fetchUserEmail = async () => {
+    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
+    setUserEmail(result.data.email);
+  };
+
+  const fetchUserPost = async () => {
+    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
+    setUserPost(result.data.posts);
+  };
+
+  const fetchUserFollowing = async () => {
+    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
+    setUserFollowing(result.data.following);
+  };
+
+  const fetchUserFollower = async () => {
+    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
+    setUserFollower(result.data.followers);
+  };
 
   const buttonList = ['최신', '내 글', '댓글'];
 
@@ -28,6 +57,14 @@ export default function MyPage() {
     댓글: <MyComment />,
   };
 
+  useEffect(() => {
+    fetchUserName();
+    fetchUserEmail();
+    fetchUserPost();
+    fetchUserFollowing();
+    fetchUserFollower();
+  }, []);
+
   return (
     <>
       <div className="relative mx-[160px] mt-[54px] flex flex-col items-center">
@@ -42,7 +79,11 @@ export default function MyPage() {
               <span className="block text-[28px]">{userName}</span>
               <span className="block text-[20px]">{userEmail}</span>
             </div>
-            <MyInfo />
+            <MyInfo
+              myPost={userPost.length}
+              myFollowing={userFollowing.length}
+              myFollower={userFollower.length}
+            />
             <Link to="/setting">
               <button className="ml-[81.62px] h-[32px] cursor-pointer">
                 <img src={setting} alt="setting" />
