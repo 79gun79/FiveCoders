@@ -30,17 +30,17 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mx-[160px] mt-[54px] flex flex-col items-center">
+      <div className="relative mx-[160px] mt-[15px] flex flex-col items-center">
         <div>
           <div className="flex">
             <img
               src={profile}
               alt="profile"
-              className="mr-[18px] size-[90px] overflow-hidden rounded-full object-fill"
+              className="mr-[18px] size-[80px] overflow-hidden rounded-full object-fill"
             />
             <div className="left-[100px] inline-block content-center">
-              <span className="block text-[28px]">{userName}</span>
-              <span className="block text-[20px]">{userEmail}</span>
+              <span className="block text-[24px]">{userName}</span>
+              <span className="block text-[18px] text-[var(--color-gray7)]">{userEmail}</span>
             </div>
             <MyInfo />
             <Link to="/setting">
