@@ -2,7 +2,6 @@ import { Link } from 'react-router';
 import Button from '../components/Button';
 import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
-import userData from '../data/UserData';
 import { useEffect, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
@@ -12,12 +11,15 @@ import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 
 export default function ProfileSetting() {
-  const userPassWord = userData((state) => state.myPassWord);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  // const userPassWord = userData((state) => state.myPassWord);
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [userPassWord, setUserPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const userId = '680b2cb73fc74c12d94141ad';
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -79,20 +81,24 @@ export default function ProfileSetting() {
   };
 
   useEffect(() => {
-    client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+    client(`/users/${userId}`).then((response) =>
       setUsername(response.data.fullName),
     );
-    client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
-      setCurrentPassword(response.data.password),
+    client(`/users/${userId}`).then((response) =>
+      setUserPassword(response.data.password),
     );
-  });
+    console.log(userPassWord);
+    client(`/users/${userId}`).then((response) => {
+      setUserEmail(response.data.email);
+    });
+  }, []);
 
   return (
     <>
       <div className="mx-50 flex flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
-          <ProfileUpload />
+          <ProfileUpload userEmail={userEmail} />
         </div>
         <div className="mt-13.5">
           <div className="flex items-center">
@@ -144,7 +150,6 @@ export default function ProfileSetting() {
           <Link to="/mypage">
             <Button className="cancel textT2">취소</Button>
           </Link>
-          {/* <Link to="/mypage"> */}
           <Button
             className="apply textT2 ml-2 disabled:bg-[var(--color-gray8)]"
             disabled={buttonDisabled}
@@ -160,7 +165,6 @@ export default function ProfileSetting() {
             transition={Slide}
             closeOnClick={false}
           />
-          {/* </Link> */}
         </div>
         <div className="h-10"></div>
       </div>

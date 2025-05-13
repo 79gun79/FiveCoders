@@ -1,10 +1,8 @@
 import { useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
-import userData from '../data/UserData';
 
-export default function ProfileUpload() {
+export default function ProfileUpload({ userEmail }: { userEmail: string }) {
   const [Image, setImage] = useState(prof);
-  const userEmail = userData((state) => state.userEmail);
   const fileInput = useRef<HTMLInputElement | null>(null);
 
   const isChanged = (e: React.ChangeEvent<any>) => {

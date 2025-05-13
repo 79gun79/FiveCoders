@@ -18,11 +18,8 @@ export default function MyPage() {
   const [userComment, setUserComment] = useState<CommentData[]>([]);
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
-  const [userId, setUserId] = useState<string>();
-
-  // const fetchUserId = {
-  //   const result = await client
-  // }
+  const userId = '680b2cb73fc74c12d94141ad';
+  // userId를 불러오는 방법 찾기
 
   const buttonList = ['최신', '내 글', '댓글'];
 
@@ -44,24 +41,22 @@ export default function MyPage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        client(`/users/login`).then((response) => setUserId(response.data._id));
-        console.log(userId);
-        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+        client(`/users/${userId}`).then((response) =>
           setUserName(response.data.fullName),
         );
-        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+        client(`/users/${userId}`).then((response) =>
           setUserPost(response.data.posts),
         );
-        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+        client(`/users/${userId}`).then((response) =>
           setUserEmail(response.data.email),
         );
-        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+        client(`/users/${userId}`).then((response) =>
           setUserFollower(response.data.followers),
         );
-        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+        client(`/users/${userId}`).then((response) =>
           setUserFollowing(response.data.following),
         );
-        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+        client(`/users/${userId}`).then((response) =>
           setUserComment(response.data.comments),
         );
       } catch (error) {
@@ -69,7 +64,7 @@ export default function MyPage() {
       }
     };
     getUser();
-  }, [userId]);
+  }, []);
 
   return (
     <>
