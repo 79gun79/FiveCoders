@@ -4,20 +4,11 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { client } from '../services/axios';
 import SearchPost from '../components/SearchPost';
 
-type SearchPostType = {
-  _id: string;
-  title: string; // content
-  author: string; // --> userName
-  image: string;
-  coverImage: string;
-  comments: CommentType[];
-};
-
 export default function Search() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q');
   const [userTab, setUserTab] = useState(true);
-  const [searchData, setSearchData] = useState<[UserType | SearchPostType]>();
+  const [searchData, setSearchData] = useState<[UserType | Post]>();
 
   useEffect(() => {
     client(`/search/all/${searchQuery}`) //
@@ -28,7 +19,7 @@ export default function Search() {
   return (
     <>
       <div className="mx-[200px]">
-        <div className="mb-9.5 w-3xl text-xl">
+        <div className="mb-9.5 w-[690px] text-xl">
           <button
             className="search-tab-style"
             onClick={() => setUserTab(true)}
@@ -75,17 +66,7 @@ export default function Search() {
         {!userTab &&
           searchData
             ?.filter((e) => 'title' in e)
-            .map((post, index) => (
-              <SearchPost
-                key={post._id}
-                postId={index}
-                content={post.title}
-                userName={post.author}
-                image={post.image}
-                coverImage={post.coverImage || profileImg}
-                comments={post.comments}
-              />
-            ))}
+            .map((post) => <SearchPost key={post._id} {...post} />)}
 
         {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (
           <div className="text-[18px] font-medium">검색 결과가 없습니다.</div>

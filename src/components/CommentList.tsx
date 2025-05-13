@@ -1,6 +1,7 @@
 import { HiTrash } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
+import { CommentType } from '../types/post';
 
 export default function CommentList({
   commentId,

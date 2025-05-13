@@ -34,3 +34,8 @@ type MyCommentData = {
   authorId: number;
   comment: CommentData[];
 };
+
+type Tooltip = {
+  content: string;
+  children: React.ReactNode;
+};

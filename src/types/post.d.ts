@@ -5,18 +5,22 @@ type CommentType = {
   userName: string;
 };
 
-type PostType = {
-  postId: number;
-  content: string;
-  image: string; // 파일 이미지
-  coverImage: string; // 유저 이미지
-  userName: string;
+type Post = {
+  _id: string;
+  image: string;
+  imagePublicId: string;
+  title: string;
+  channel: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+  likes: string[];
   comments: CommentType[];
 };
 
 type PostStore = {
-  allPosts: Record<string, PostType[]>;
+  allPosts: Record<string, Post[]>;
   createPost: (channelId: string, newPost: string) => void;
-  deletePost: (channelId: string, postId: number) => void;
+  deletePost: (channelId: string, postId: string) => void;
 };
 // 모든 게시글들을 관리하기 위한 전역상태의 타입

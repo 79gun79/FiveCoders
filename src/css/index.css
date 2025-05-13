@@ -15,6 +15,9 @@
   .postProfile {
     @apply h-8 w-8 rounded-full object-cover;
   }
+  .postShadow {
+    @apply transition-shadow duration-500 hover:shadow-md;
+  }
   .listBorder {
     @apply h-[fit] w-[fit] rounded-lg border border-[var(--color-gray3)] bg-white p-[10px] shadow-md;
   }
@@ -32,6 +35,9 @@
   }
   .textH4 {
     @apply text-[20px] font-medium text-[var(--color-text-black)];
+  }
+  .textT1 {
+    @apply text-[18px] text-[var(--color-text-black)];
   }
   .textST1 {
     @apply text-[14px] text-[var(--color-text-black)];
@@ -70,6 +76,9 @@
   .comment {
     @apply flex w-100 cursor-pointer content-center justify-center text-[var(--color-gray5)] hover:bg-[var(--color-gray1)];
   }
+  .commentBorder {
+    @apply border-[#51B8B2] outline-1 outline-[#51B8B2];
+  }
   .number {
     @apply text-[18px] font-bold;
   }
@@ -103,6 +112,31 @@
 
   .search-tab-style {
     @apply w-[50%] cursor-pointer border-b-2 border-b-[var(--color-gray3)] disabled:cursor-default disabled:border-b-4 disabled:border-b-[var(--color-main)] disabled:font-bold disabled:text-[var(--color-main)];
+  }
+  .tooltip-wrapper {
+    display: inline-block;
+    position: relative;
+  }
+
+  .tooltip-content {
+    position: absolute;
+    top: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .cautionMsg {
+    @apply mt-[-20px] text-sm text-[var(--color-red-caution)];
   }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */

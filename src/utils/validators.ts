@@ -35,3 +35,9 @@ export const validateCurrentPassword = (value: string) => {
   }
   return '';
 };
+
+// ReactQuil 에디터 내용 유효성 검사
+export const validateEmptyContent = (value: string) => {
+  const text = value.replace(/<[^>]*>?/gm, '').trim();
+  return text === '';
+};
