@@ -14,10 +14,9 @@ export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
   const [userEmail, setUserEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-  const [userPassWord, setUserPassword] = useState<string>('');
+  // const [userPassWord, setUserPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const userId = '680b2cb73fc74c12d94141ad';
 
@@ -31,28 +30,22 @@ export default function ProfileSetting() {
     const isPassword = validatePassword(value);
     if (isPassword === '8~16자, 영문 숫자 특수문자 모두 포함' && value !== '') {
       return '8~16자, 영문 대소문자와 숫자, 특수문자 모두 포함해주세요';
-    } else if (
-      isPassword !== '8~16자, 영문 숫자 특수문자 모두 포함' &&
-      value === currentPassword
-    ) {
-      return '새 비밀번호를 입력해 주세요';
     }
   };
 
-  const validateCurrentPassword = (value: string) => {
-    if (value !== userPassWord && value !== '') {
-      return '비밀번호가 다릅니다';
+  const validateNickName = (value: string) => {
+    const isNickName = validateUsername(value);
+    if (isNickName === '2~8자 이내 영문 또는 한글' && value !== '') {
+      return '2~8자 이내 영문 또는 한글로 입력해주세요';
+    } else if (isNickName === '2~8자 이내 영문 또는 한글' && value === '') {
+      return '변경하실 닉네임을 입력해 주세요';
     }
   };
 
   const isFormValid =
+    (username && !validateUsername(username) && password === '') ||
     (username &&
-      currentPassword &&
-      !validateCurrentPassword(currentPassword) &&
-      password === '') ||
-    (username &&
-      currentPassword &&
-      !validateCurrentPassword(currentPassword) &&
+      !validateUsername(username) &&
       password &&
       confirmPassword &&
       !validatePassword(password) &&
@@ -62,7 +55,6 @@ export default function ProfileSetting() {
   const notify = () => {
     if (isFormValid === true) {
       toast.success('저장되었습니다', { closeButton: false });
-      setCurrentPassword('');
       setPassword('');
       setConfirmPassword('');
       setButtonDisabled(true);
@@ -81,16 +73,11 @@ export default function ProfileSetting() {
   };
 
   useEffect(() => {
-    client(`/users/${userId}`).then((response) =>
-      setUsername(response.data.fullName),
+    client(`/users/${userId}`).then(
+      (response) => (
+        setUsername(response.data.fullName), setUserEmail(response.data.email)
+      ),
     );
-    client(`/users/${userId}`).then((response) =>
-      setUserPassword(response.data.password),
-    );
-    console.log(userPassWord);
-    client(`/users/${userId}`).then((response) => {
-      setUserEmail(response.data.email);
-    });
   }, []);
 
   return (
@@ -110,22 +97,11 @@ export default function ProfileSetting() {
           <ValidateNickNameInput
             value={username}
             onChange={setUsername}
-            validate={validateUsername}
+            validate={validateNickName}
             placeholder="2자 이상, 8자 이하로 입력해주세요"
             className={twMerge('input text-T02 w-185')}
           />
         </div>
-        <div className="mt-6.5">
-          <span className="textST1 block">기존 비밀번호</span>
-          <ValidatePasswordInput
-            value={currentPassword}
-            onChange={setCurrentPassword}
-            validate={validateCurrentPassword}
-            placeholder="현재 비밀번호를 입력해 주세요"
-            className={twMerge('input text-T02 w-185')}
-          />
-        </div>
-
         <div className="mt-6.5">
           <span className="textST1 block">새 비밀번호</span>
           <ValidatePasswordInput

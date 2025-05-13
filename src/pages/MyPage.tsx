@@ -41,23 +41,15 @@ export default function MyPage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        client(`/users/${userId}`).then((response) =>
-          setUserName(response.data.fullName),
-        );
-        client(`/users/${userId}`).then((response) =>
-          setUserPost(response.data.posts),
-        );
-        client(`/users/${userId}`).then((response) =>
-          setUserEmail(response.data.email),
-        );
-        client(`/users/${userId}`).then((response) =>
-          setUserFollower(response.data.followers),
-        );
-        client(`/users/${userId}`).then((response) =>
-          setUserFollowing(response.data.following),
-        );
-        client(`/users/${userId}`).then((response) =>
-          setUserComment(response.data.comments),
+        client(`/users/${userId}`).then(
+          (response) => (
+            setUserName(response.data.fullName),
+            setUserPost(response.data.posts),
+            setUserEmail(response.data.email),
+            setUserFollower(response.data.followers),
+            setUserFollowing(response.data.following),
+            setUserComment(response.data.comments)
+          ),
         );
       } catch (error) {
         console.error('Error: ', error);

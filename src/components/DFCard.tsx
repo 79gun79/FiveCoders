@@ -1,25 +1,30 @@
 import { useEffect, useState } from 'react';
-import { dfAPI } from '../services/dfAPI';
+import { getUser } from '../services/dfAPI';
 
-const DF_API_KEY = import.meta.env.VITE_DF_KEY;
 const myServer = 'hilder';
 const myNickname = '활쏘는설월화';
 const myCharacterId = 'd484c38866b960b1db8cc912a01fe594';
 
 export default function DFCard() {
   // const [server, setServer] = useState<string>();
-  const [nickname, setNickname] = useState<string>();
+  // const [nickname, setNickname] = useState<string>();
+  const [myFame, setMyFame] = useState<number>();
+  const [myJob, setMyJob] = useState<string>();
+  const [level, setLevel] = useState<number>();
   // const [characterId, setCharacterId] = useState<string>();
 
-  const fetchData = async () => {
-    const result = await dfAPI.get(
-      `df/servers/${myServer}/characters/${myNickname}&apikey=${DF_API_KEY}`,
-    );
-    setNickname(result.data.userName);
-    console.log(result);
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const player = await getUser(myServer, myNickname);
+        console.log(player);
+        setMyFame(player.fame);
+        setMyJob(player.jobGrowName);
+        setLevel(player.level);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -30,7 +35,10 @@ export default function DFCard() {
         src={`https://img-api.neople.co.kr/df/servers/${myServer}/characters/${myCharacterId}?zoom=1`}
         alt=""
       />
-      <span>{nickname}</span>
+      <span>{myNickname}</span>
+      <span>{myFame}</span>
+      <span>{myJob}</span>
+      <span>{level}</span>
     </>
   );
 }
