@@ -41,13 +41,19 @@ export default function DFCard() {
     <>
       <h1>dfCard Component</h1>
       <div className="relative flex h-[160px] w-[260px] justify-start overflow-hidden rounded-xl border-1 bg-red-200 bg-gradient-to-r from-[#141E30] to-[#243B55] p-[10px]">
-        <img src={logo_small} className="absolute w-[35px]" alt="미니로고" />
+        <img src={logo_small} className="w-[50px] " alt="미니로고" />
         <img
           src={`https://img-api.neople.co.kr/df/servers/${serverId}/characters/${characterId}?zoom=1`}
           alt=""
-          className="h-[130px]"
+          className=" border-1 border-red-500"
         />
-        <div className="block text-white">
+        <img
+          src={logo_big}
+          className="absolute top-15 left-[100px] size-[80%] select-none"
+          draggable={false}
+          alt="던파로고"
+        />
+        <div className="block">
           <span className="block">{charName}</span>
           <span className="block">{server}</span>
           <span className="block">명성치: {myFame}</span>
