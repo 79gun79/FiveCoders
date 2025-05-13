@@ -1,14 +1,7 @@
 import axios from 'axios';
 
 const DF_API_KEY = import.meta.env.VITE_DF_KEY;
-
-export const dfAPI = axios.create({
-  baseURL: 'https://api.neople.co.kr/',
-  headers: {
-    accept: 'application/json',
-    Authorization: `Bearer ${DF_API_KEY}`,
-  },
-});
+console.log(DF_API_KEY)
 
 // export const DFCharacterInfo = async (
 //   characterName: string,

@@ -3,17 +3,17 @@ import Button from '../components/Button';
 import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
 import userData from '../data/UserData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
 import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
+import { client } from '../services/axios';
 
 export default function ProfileSetting() {
-  const userName = userData((state) => state.userName);
   const userPassWord = userData((state) => state.myPassWord);
-  const [username, setUsername] = useState(userName);
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
@@ -77,6 +77,15 @@ export default function ProfileSetting() {
       return () => clearTimeout(timer);
     }
   };
+
+  useEffect(() => {
+    client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+      setUsername(response.data.fullName),
+    );
+    client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+      setCurrentPassword(response.data.password),
+    );
+  });
 
   return (
     <>

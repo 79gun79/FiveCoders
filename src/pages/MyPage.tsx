@@ -7,7 +7,7 @@ import MyPost from '../components/MyPost';
 import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { UserAPI } from '../services/UserAPI';
+import { client } from '../services/axios';
 
 export default function MyPage() {
   const [userName, setUserName] = useState<string>();
@@ -15,33 +15,14 @@ export default function MyPage() {
   const [userPost, setUserPost] = useState<PostData[]>([]);
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
+  const [userComment, setUserComment] = useState<CommentData[]>([]);
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
+  const [userId, setUserId] = useState<string>();
 
-  const fetchUserName = async () => {
-    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
-    setUserName(result.data.fullName);
-  };
-
-  const fetchUserEmail = async () => {
-    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
-    setUserEmail(result.data.email);
-  };
-
-  const fetchUserPost = async () => {
-    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
-    setUserPost(result.data.posts);
-  };
-
-  const fetchUserFollowing = async () => {
-    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
-    setUserFollowing(result.data.following);
-  };
-
-  const fetchUserFollower = async () => {
-    const result = await UserAPI.get('/users/680b2cb73fc74c12d94141ad');
-    setUserFollower(result.data.followers);
-  };
+  // const fetchUserId = {
+  //   const result = await client
+  // }
 
   const buttonList = ['최신', '내 글', '댓글'];
 
@@ -52,18 +33,43 @@ export default function MyPage() {
   };
 
   const selectComponent = {
-    최신: [<MyPost />, <MyComment />],
-    '내 글': <MyPost />,
-    댓글: <MyComment />,
+    최신: [
+      <MyPost userName={userName} myPost={userPost} />,
+      <MyComment userName={userName} userComment={userComment} />,
+    ],
+    '내 글': <MyPost userName={userName} myPost={userPost} />,
+    댓글: <MyComment userName={userName} userComment={userComment} />,
   };
 
   useEffect(() => {
-    fetchUserName();
-    fetchUserEmail();
-    fetchUserPost();
-    fetchUserFollowing();
-    fetchUserFollower();
-  }, []);
+    const getUser = async () => {
+      try {
+        client(`/users/login`).then((response) => setUserId(response.data._id));
+        console.log(userId);
+        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+          setUserName(response.data.fullName),
+        );
+        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+          setUserPost(response.data.posts),
+        );
+        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+          setUserEmail(response.data.email),
+        );
+        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+          setUserFollower(response.data.followers),
+        );
+        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+          setUserFollowing(response.data.following),
+        );
+        client(`/users/680b2cb73fc74c12d94141ad`).then((response) =>
+          setUserComment(response.data.comments),
+        );
+      } catch (error) {
+        console.error('Error: ', error);
+      }
+    };
+    getUser();
+  }, [userId]);
 
   return (
     <>

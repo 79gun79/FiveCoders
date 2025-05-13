@@ -1,11 +1,11 @@
 type UserData = {
-  userId: number;
+  id: string;
   userName: string;
   userEmail: string;
-  myPost: number;
-  myFollower: number;
-  myFollowing: number;
-  myPassWord: string;
+  userPost: number;
+  userFollower: number;
+  userFollowing: number;
+  userPassWord: string;
   newPassWord: string | null;
   checkPassWord: string | null;
 };
@@ -14,20 +14,21 @@ type PostData = {
   id: string;
   author: string;
   title: string;
-  update: Date;
+  update: string;
 };
 
 type CommentData = {
   id: string;
   author: string;
   comment: string;
-  update: Date;
+  post: string;
+  update: string;
 };
 
 type MyFollowing = {
   id: string;
   user: string;
-  update: Date;
+  update: string;
 };
 
 type MyFollower = {

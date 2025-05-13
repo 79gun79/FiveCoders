@@ -1,13 +1,18 @@
 import profile from '../assets/imgs/기본 프로필.png';
-import userData from '../data/UserData';
 import Button from './Button';
 import { AiFillMessage } from 'react-icons/ai';
 import { useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
 import { postData } from '../data/PostData';
 
-export default function MyPost() {
-  const userName = userData((state) => state.userName);
+export default function MyPost({
+  userName,
+  myPost,
+}: {
+  userName: string;
+  myPost: PostData[];
+}) {
+  // const [userName, setUserName] = useState();
   const [like, setLike] = useState(new Array(postData.length).fill(0));
   const handlesetLike = (i) => {
     const copyLike = [...like];
@@ -18,16 +23,11 @@ export default function MyPost() {
     }
     setLike(copyLike);
   };
-  const myPost: MyPostData = {
-    channelId: 2,
-    authorId: 1,
-    title: postData,
-  };
 
   return (
     <>
       <div>
-        {myPost.title.map((v, i) => (
+        {myPost.map((v, i) => (
           <div className="postBox block">
             <div className="flex">
               <img

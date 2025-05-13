@@ -1,16 +1,15 @@
 import profile from '../assets/imgs/기본 프로필.png';
-import { CommentData } from '../data/CommentData';
-import userData from '../data/UserData';
 
-export default function MyComment() {
-  const userName = userData((state) => state.userName);
-  const myComment: MyCommentData = {
-    authorId: 1,
-    comment: CommentData,
-  };
+export default function MyComment({
+  userName,
+  userComment,
+}: {
+  userName: string;
+  userComment: CommentData[];
+}) {
   return (
     <>
-      {myComment.comment.map((v) => (
+      {userComment.map((v) => (
         <div className="commentBox block">
           <div className="flex">
             <img

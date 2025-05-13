@@ -1,11 +1,6 @@
-import axios from 'axios';
+import { client } from './axios';
 
-const API_TOKEN = import.meta.env.VITE_API_TOKEN;
-
-export const UserAPI = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    accept: 'application/json',
-    Authorization: ` ${API_TOKEN}`,
-  },
-});
+export const fetchUser = async (): Promise<UserData[]> => {
+  const { data } = await client.get('/users/680b2cb73fc74c12d94141ad');
+  return data;
+};
