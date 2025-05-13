@@ -1,13 +1,17 @@
 import { useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
-import userData from '../data/UserData';
+// import userData from '../data/UserData';
+// import axios from 'axios';
 
-export default function ProfileUpload() {
+export default function ProfileUpload(
+  {userEmail}: {userEmail: string}
+) {
+  // const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
-  const userEmail = userData((state) => state.userEmail);
+  // const userEmail = userData((state) => state.userEmail);
   const fileInput = useRef<HTMLInputElement | null>(null);
 
-  const isChanged = (e: React.ChangeEvent<any>) => {
+  const isChanged = async (e: React.ChangeEvent<any>) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
     }
@@ -22,6 +26,19 @@ export default function ProfileUpload() {
 
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
+
+    // try {
+    //   const token = localStorage.getItem('token');
+    //   const response = await axios.put(API_URL, formData, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   });
+    //   setImage(response.data.imagePublicId);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
