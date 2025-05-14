@@ -1,6 +1,7 @@
 import { HiTrash } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
+import { CommentType } from '../types/post';
 
 export default function CommentList({
   commentId,
@@ -22,7 +23,7 @@ export default function CommentList({
             onClick={() => onDelete(commentId)}
             className={twMerge('btn-style-post', 'h-fit w-[37px]')}
           >
-            <HiTrash className="text-[var(--color-gray5)]" size={13} />
+            <HiTrash className="text-[var(--color-gray4)]" size={13} />
           </Button>
         </div>
         <p className="textST1 ml-[42px] text-[var(--color-gray8)]">{comment}</p>

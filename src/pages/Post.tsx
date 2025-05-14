@@ -1,9 +1,7 @@
-import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Channel from './Channel';
-import CreatePost from './CreatePost';
 
-export default function Content() {
+export default function Post() {
   return (
     <>
       <header className="min-h-[80px] min-w-screen bg-[var(--color-main)]">
@@ -12,10 +10,7 @@ export default function Content() {
       <main className="flex">
         <Sidebar />
         <section className="mx-[160px] mt-[50px] w-auto">
-          <Routes>
-            <Route path="/" element={<Channel />} />
-            <Route path="create" element={<CreatePost />} />
-          </Routes>
+          <Channel />
         </section>
       </main>
       <footer></footer>

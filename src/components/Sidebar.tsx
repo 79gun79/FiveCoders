@@ -49,7 +49,7 @@ export default function Sidebar() {
   const closeModal = () => setModalOpen(false);
 
   return (
-    <aside className="flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-[var(--color-bg-white)]">
+    <aside className="bg-white)] sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)]">
       <nav>
         <ul className="p-3">
           <li
@@ -61,7 +61,7 @@ export default function Sidebar() {
           </li>
           <li
             className="flex cursor-pointer items-center rounded-xl px-6 py-3 hover:bg-[var(--color-gray2)]"
-            onClick={() => navigate('/channellist')}
+            onClick={() => navigate('/channel')}
           >
             <img src={globeIcon} className="mr-[13px] h-5.5 w-5.5" />
             <span className="font-bold">커뮤니티</span>
@@ -80,7 +80,7 @@ export default function Sidebar() {
             <span
               onClick={() => {
                 if (isLoggedIn) {
-                  navigate('/channellist');
+                  navigate('/channel');
                 } else {
                   openModal();
                 }

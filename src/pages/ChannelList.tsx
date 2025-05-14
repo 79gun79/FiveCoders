@@ -38,26 +38,28 @@ export default function ChannelList() {
 
   return (
     <>
-      <h1 className="relative mb-15 inline-block text-[28px] font-bold">
-        커뮤니티
-        <span className="absolute bottom-[-9px] left-0 h-[4px] w-[97px] bg-[var(--color-main)]" />
-      </h1>
+      <div className="mx-[100px]">
+        <h1 className="relative mb-15 inline-block text-[28px] font-bold">
+          커뮤니티
+          <span className="absolute bottom-[-9px] left-0 h-[4px] w-[97px] bg-[var(--color-main)]" />
+        </h1>
 
-      {Object.entries(groupedByGenre).map(([genre, items]) => (
-        <div key={genre} className="mb-20">
-          <h2 className="mb-6 text-xl font-semibold">{genre}</h2>
-          <div className="grid grid-cols-1 gap-x-[32px] gap-y-[24px] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {items.map((item) => (
-              <ChannelCard
-                key={item.id}
-                {...item}
-                onClick={() => navigate(`/channel/${item.id}`)}
-                onBookmarkToggle={() => toggleSubscribe(item.id)}
-              />
-            ))}
+        {Object.entries(groupedByGenre).map(([genre, items]) => (
+          <div key={genre} className="mb-20">
+            <h2 className="mb-6 text-xl font-semibold">{genre}</h2>
+            <div className="grid grid-cols-1 gap-x-[32px] gap-y-[24px] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+              {items.map((item) => (
+                <ChannelCard
+                  key={item.id}
+                  {...item}
+                  onClick={() => navigate(`/channel/${item.id}`)}
+                  onBookmarkToggle={() => toggleSubscribe(item.id)}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </>
   );
 }
