@@ -8,8 +8,10 @@ export default function Layout() {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="mt-[50px] ml-[0px]">
-          <Outlet />
+        <main className="ml-0 w-full pt-[50px]">
+          <div className="mx-auto w-full">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
