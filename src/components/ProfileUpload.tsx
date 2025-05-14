@@ -1,13 +1,22 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
 // import userData from '../data/UserData';
-// import axios from 'axios';
+import axios from 'axios';
+import { client } from '../services/axios';
+import { useAuthStore } from '../stores/authStore';
 
-export default function ProfileUpload({ userEmail }: { userEmail: string }) {
-  // const API_URL = import.meta.env.VITE_API_URL;
+export default function ProfileUpload({
+  userEmail,
+  saveImage,
+}: {
+  userEmail: string;
+  saveImage: boolean;
+}) {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
   // const userEmail = userData((state) => state.userEmail);
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const userId = '68240ae628cdb13ab4a83053';
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
     if (e.target.files[0]) {
@@ -25,19 +34,39 @@ export default function ProfileUpload({ userEmail }: { userEmail: string }) {
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
 
-    // try {
-    //   const token = localStorage.getItem('token');
-    //   const response = await axios.put(API_URL, formData, {
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   });
-    //   setImage(response.data.imagePublicId);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    if (saveImage === true) {
+      try {
+        // axios.post(
+        //   `${API_URL}users/upload-photo`,
+        //   {
+        //     formdata: formData,
+        //   },
+        //   {
+        //     headers: {
+        //       'Content-Type': 'multipary/form-data',
+        //     },
+        //   },
+        // );
+        await axios({
+          method: 'post',
+          url: `${API_URL}users/upload-photo`,
+          data: formData,
+          headers: {
+            'Content-Type': 'multipary/form-data',
+            // Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
+
+  useEffect(() => {
+    client(`/users/${userId}`).then((response) =>
+      setImage(response.data.image),
+    );
+  }, []);
 
   return (
     <>
