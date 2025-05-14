@@ -15,7 +15,7 @@ export default function IsLoggedInModal({ onClose }: { onClose: () => void }) {
       ></div>
 
       <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="w-[400px] bg-white p-8 text-center shadow-lg rounded-[8px]">
+        <div className="w-[400px] rounded-[8px] bg-white p-8 text-center shadow-lg">
           <p className="text-[18px] font-medium">
             로그인이 필요한 서비스입니다
           </p>

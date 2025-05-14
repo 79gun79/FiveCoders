@@ -4,14 +4,20 @@ import { useEffect, useRef, useState } from 'react';
 import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { validateEmptyContent } from '../utils/validators';
 import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
-import { createPost } from '../services/postApi';
+import { updatePost } from '../services/postApi';
 import { channelData } from '../data/channelData';
+import { parseContent } from '../utils/parseContent';
 
-export default function CreatePost() {
+export default function UpdatePost() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { post }: { post: Post } = location.state || {};
+  const { id } = useParams();
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [chooseList, setChooseList] = useState(false);
@@ -26,16 +32,18 @@ export default function CreatePost() {
   const [cLink, setCLink] = useState('');
   const [cId, setCId] = useState('');
 
-  const navigate = useNavigate();
-  const { id } = useParams();
-
   useEffect(() => {
     const currentChannel = channelData.find((v) => v.channelId === id);
+
     if (currentChannel) {
       setCName(currentChannel.name);
       setCIcon(currentChannel.bannerImg);
       setCLink(currentChannel.channelId);
       setCId(currentChannel._id);
+
+      const { head, body } = parseContent(post.title);
+      setTitle(head);
+      setContent(body);
     }
   }, [id]);
 
@@ -59,10 +67,7 @@ export default function CreatePost() {
 
   const handleCancel = async () => {
     if (!validateEmptyContent(content) || title) {
-      if (
-        !window.confirm('작성 중인 내용이 있습니다. 작성을 그만하시겠습니까?')
-      )
-        return;
+      if (!window.confirm('수정을 그만하시겠습니까?')) return;
     }
     try {
       await navigate(`/channel/${id}`);
@@ -99,17 +104,18 @@ export default function CreatePost() {
     }
 
     if (hasError) return;
-    if (!window.confirm('게시글을 등록하시겠습니까?')) return;
+    if (!window.confirm('게시글을 수정하시겠습니까?')) return;
 
     try {
-      await createPost({
+      await updatePost({
+        postId: post._id,
         title: title + content,
         channelId: cId,
       });
-      alert('게시글이 등록 되었습니다.');
+      alert('게시글이 수정되었습니다.');
       navigate(`/channel/${cLink}`);
     } catch (err) {
-      alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
+      alert('게시글 수정에 실패했습니다. 다시 시도해주세요.');
       throw err;
     }
   };
@@ -120,7 +126,7 @@ export default function CreatePost() {
         className="mb-[50px] flex min-w-[656px] flex-col items-start justify-center gap-[26px]"
         onSubmit={handleSubmit}
       >
-        <h2 className="textH2">게시글 작성</h2>
+        <h2 className="textH2">게시글 수정</h2>
         <div className="relative z-30">
           <Button
             onClick={() => setChooseList(!chooseList)}
@@ -182,10 +188,10 @@ export default function CreatePost() {
             type="submit"
             className={twMerge(
               'btn-style-comment',
-              'textBasic h-10 bg-[var(--color-main)] text-white hover:bg-[var(--color-sub)]',
+              'textBasic h-10 bg-[var(--color-orange)] text-white hover:bg-[var(--color-deep-orange)]',
             )}
           >
-            게시하기
+            수정하기
           </Button>
         </div>
       </form>

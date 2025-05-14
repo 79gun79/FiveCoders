@@ -1,24 +1,31 @@
 import { Link } from 'react-router';
 import Button from '../components/Button';
-import ProfileUpload from '../components/ProfileUpload';
+// import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
 import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
+import axios from 'axios';
+import ProfileUpload from '../components/ProfileUpload';
+import { useAuthStore } from '../stores/authStore';
 
 export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
   const [userEmail, setUserEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');
+  // const [userId, setUserId] = useState<string>('');
   // const [userPassWord, setUserPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const userId = '680b2cb73fc74c12d94141ad';
+  const [saveImage, setSaveImage] = useState(false);
+  const userId = '68240ae628cdb13ab4a83053';
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = useAuthStore.getState().accessToken;
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -58,6 +65,39 @@ export default function ProfileSetting() {
       setPassword('');
       setConfirmPassword('');
       setButtonDisabled(true);
+      try {
+        axios.put(
+          `${API_URL}settings/update-user`,
+          {
+            fullName: username,
+            username: '',
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        axios.put(
+          `${API_URL}settings/update-password`,
+          {
+            password: password,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      setSaveImage(true);
+      console.log(token);
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
@@ -73,11 +113,11 @@ export default function ProfileSetting() {
   };
 
   useEffect(() => {
-    client(`/users/${userId}`).then(
-      (response) => (
-        setUsername(response.data.fullName), setUserEmail(response.data.email)
-      ),
-    );
+    // client(`/login`).then((response) => setUserId(response.data.userId));
+    client(`/users/${userId}`).then((response) => [
+      setUsername(response.data.fullName),
+      setUserEmail(response.data.email),
+    ]);
   }, []);
 
   return (
@@ -85,7 +125,7 @@ export default function ProfileSetting() {
       <div className="mx-50 flex flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
-          <ProfileUpload userEmail={userEmail} />
+          <ProfileUpload userEmail={userEmail} saveImage={saveImage} />
         </div>
         <div className="mt-13.5">
           <div className="flex items-center">

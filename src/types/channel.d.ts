@@ -18,3 +18,10 @@ export type ChannelItem = {
   isSubscribe: boolean;
   imageUrl: string;
 };
+
+type ChannelImg = {
+  channelId: string;
+  name: string;
+  bannerImg: string;
+  _id: string;
+};

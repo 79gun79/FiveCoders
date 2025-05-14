@@ -7,6 +7,7 @@ export default function Home() {
   return (
     <>
       <div className="max-[1200px] mx-auto ml-[280px]">
+
         <h1>Home Component</h1>
         <div className="flex gap-1.5">
           <SteamCard />

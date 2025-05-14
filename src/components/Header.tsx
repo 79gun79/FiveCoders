@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import HeaderLogin from './HeaderLogin';
 import HeaderNotLogin from './HeaderNotLogin';
 import { useAuthStore } from '../stores/authStore';
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { MdOutlineCancel } from "react-icons/md";
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { MdOutlineCancel } from 'react-icons/md';
 
 export default function Header() {
   const [searchInput, setSearchInput] = useState('');
@@ -28,7 +28,7 @@ export default function Header() {
           to={`/search?q=${searchInput}`}
           className="absolute left-4 cursor-pointer"
         >
-          <FaMagnifyingGlass className='text-[var(--color-main)]' />
+          <FaMagnifyingGlass className="text-[var(--color-main)]" />
         </Link>
         <input
           type="text"
@@ -43,7 +43,7 @@ export default function Header() {
             className="absolute right-4 cursor-pointer"
             onClick={() => setSearchInput('')}
           >
-            <MdOutlineCancel className='text-[20px] text-[var(--color-gray5)]' />
+            <MdOutlineCancel className="text-[20px] text-[var(--color-gray5)]" />
           </button>
         )}
       </form>
