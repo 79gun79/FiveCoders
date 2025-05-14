@@ -68,7 +68,7 @@ export default function Sidebar() {
           </li>
         </ul>
       </nav>
-      <div className="flex-1 overflow-y-auto">
+      <div className="w-[280px] flex-1 overflow-y-auto">
         <div className="mt-[10px] flex items-center px-8">
           <span className="h-px flex-1 bg-[var(--color-gray4)]" />
         </div>
