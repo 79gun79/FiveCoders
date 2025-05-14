@@ -3,6 +3,7 @@ import prof from '../assets/imgs/기본 프로필.png';
 // import userData from '../data/UserData';
 import axios from 'axios';
 import { client } from '../services/axios';
+import { useAuthStore } from '../stores/authStore';
 
 export default function ProfileUpload({
   userEmail,
@@ -33,19 +34,31 @@ export default function ProfileUpload({
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
 
-    try {
-      await axios({
-        method: 'post',
-        url: `${API_URL}users/upload-photo`,
-        data: formData,
-        headers: {
-          'Content-Type': 'multipary/form-data',
-          Authorization: `${sessionStorage.getItem('token') || null}`,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-      console.log(sessionStorage.getItem('token') || null);
+    if (saveImage === true) {
+      try {
+        // axios.post(
+        //   `${API_URL}users/upload-photo`,
+        //   {
+        //     formdata: formData,
+        //   },
+        //   {
+        //     headers: {
+        //       'Content-Type': 'multipary/form-data',
+        //     },
+        //   },
+        // );
+        await axios({
+          method: 'post',
+          url: `${API_URL}users/upload-photo`,
+          data: formData,
+          headers: {
+            'Content-Type': 'multipary/form-data',
+            // Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

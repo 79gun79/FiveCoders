@@ -11,11 +11,13 @@ import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 import axios from 'axios';
 import ProfileUpload from '../components/ProfileUpload';
+import { useAuthStore } from '../stores/authStore';
 
 export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
   const [userEmail, setUserEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');
+  // const [userId, setUserId] = useState<string>('');
   // const [userPassWord, setUserPassword] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,6 +25,7 @@ export default function ProfileSetting() {
   const [saveImage, setSaveImage] = useState(false);
   const userId = '68240ae628cdb13ab4a83053';
   const API_URL = import.meta.env.VITE_API_URL;
+  const token = useAuthStore.getState().accessToken;
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -66,14 +69,27 @@ export default function ProfileSetting() {
         axios.put(
           `${API_URL}settings/update-user`,
           {
-            params: {
-              fullName: username,
-              username: '',
-            },
+            fullName: username,
+            username: '',
           },
           {
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+      } catch (error) {
+        console.log(error);
+      }
+      try {
+        axios.put(
+          `${API_URL}settings/update-password`,
+          {
+            password: password,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
             },
           },
         );
@@ -81,7 +97,7 @@ export default function ProfileSetting() {
         console.log(error);
       }
       setSaveImage(true);
-      console.log(sessionStorage.getItem('token'));
+      console.log(token);
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
@@ -97,6 +113,7 @@ export default function ProfileSetting() {
   };
 
   useEffect(() => {
+    // client(`/login`).then((response) => setUserId(response.data.userId));
     client(`/users/${userId}`).then((response) => [
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),

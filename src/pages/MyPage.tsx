@@ -1,4 +1,3 @@
-import profile from '../assets/imgs/기본 프로필.png';
 import setting from '../assets/icons/Setting.svg';
 import { twMerge } from 'tailwind-merge';
 import MyInfo from '../components/MyInfo';
@@ -16,6 +15,7 @@ export default function MyPage() {
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
+  const [image, setImage] = useState('');
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
   const userId = '68240ae628cdb13ab4a83053';
@@ -48,7 +48,8 @@ export default function MyPage() {
             setUserEmail(response.data.email),
             setUserFollower(response.data.followers),
             setUserFollowing(response.data.following),
-            setUserComment(response.data.comments)
+            setUserComment(response.data.comments),
+            setImage(response.data.image)
           ),
         );
       } catch (error) {
@@ -64,7 +65,7 @@ export default function MyPage() {
         <div>
           <div className="flex">
             <img
-              src={profile}
+              src={image}
               alt="profile"
               className="mr-[18px] size-[90px] overflow-hidden rounded-full object-fill"
             />
