@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import Button from '../components/Button';
-import ProfileUpload from '../components/ProfileUpload';
+// import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
 import { useEffect, useRef, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
@@ -11,6 +11,7 @@ import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 import axios from 'axios';
 import prof from '../assets/imgs/기본 프로필.png';
+import { useAuthStore } from '../stores/authStore';
 
 export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
@@ -24,6 +25,7 @@ export default function ProfileSetting() {
   const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const token = useAuthStore.getState().accessToken;
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -64,18 +66,22 @@ export default function ProfileSetting() {
       setConfirmPassword('');
       setButtonDisabled(true);
       try {
-        axios
-          .put(`${API_URL}settings/update-user`, {
+        axios.put(
+          `${API_URL}settings/update-user`,
+          {
             fullName: username,
             username: '',
-          })
-          .then((response) => {
-            setUsername(response.data.fullName);
-          });
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
       } catch (error) {
         console.log(error);
       }
-      console.log('token');
+      console.log(token);
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
