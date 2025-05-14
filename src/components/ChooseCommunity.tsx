@@ -11,6 +11,7 @@ export default function ChooseCommunity({
   onChange: (
     channelName: string,
     channelIcon: string,
+    channelLink: string,
     channelId: string,
   ) => void;
 }) {
@@ -43,7 +44,7 @@ export default function ChooseCommunity({
             <li
               key={v.channelId}
               className="flex cursor-pointer items-center gap-2"
-              onClick={() => onChange(v.name, v.bannerImg, v.channelId)}
+              onClick={() => onChange(v.name, v.bannerImg, v.channelId, v._id)}
             >
               <img
                 className={twMerge('postProfile', 'h-[20px] w-[20px]')}

@@ -10,8 +10,6 @@ import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
 import { createPost } from '../utils/post';
 import { channelData } from '../data/channelData';
-import { client } from '../services/axios';
-import { Channel } from '../types/channel';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -25,8 +23,8 @@ export default function CreatePost() {
 
   const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
-  const [cId, setCId] = useState<string | null>(null);
-  const [isChannel, setChannel] = useState<Channel | null>(null);
+  const [cLink, setCLink] = useState('');
+  const [cId, setCId] = useState('');
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -36,29 +34,21 @@ export default function CreatePost() {
     if (currentChannel) {
       setCName(currentChannel.name);
       setCIcon(currentChannel.bannerImg);
-      setCId(currentChannel.channelId);
+      setCLink(currentChannel.channelId);
+      setCId(currentChannel._id);
     }
-
-    const loadChannel = async () => {
-      try {
-        const { data } = await client.get(`/channels/${currentChannel?.name}`);
-        setChannel(data);
-      } catch (err) {
-        console.log('채널 불러오기 실패: ', err);
-        return;
-      }
-    };
-    loadChannel();
   }, [id]);
 
   const handleChannelChange = (
     channelName: string,
     channelIcon: string,
+    channelLink: string,
     channelId: string,
   ) => {
     setCName(channelName);
     setCIcon(channelIcon);
     setChooseList(false);
+    setCLink(channelLink);
     setCId(channelId);
   };
 
@@ -85,7 +75,7 @@ export default function CreatePost() {
     e.preventDefault();
     let hasError = false;
 
-    if (!cId) {
+    if (!cLink) {
       alert('채널을 선택해주세요!');
       return;
     }
@@ -114,12 +104,13 @@ export default function CreatePost() {
     try {
       await createPost({
         title: title + content,
-        channelId: isChannel?._id ?? '',
+        channelId: cId,
       });
       alert('게시글이 등록 되었습니다.');
-      navigate(`/channel/${cId}`);
-    } catch {
+      navigate(`/channel/${cLink}`);
+    } catch (err) {
       alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
+      throw err;
     }
   };
 

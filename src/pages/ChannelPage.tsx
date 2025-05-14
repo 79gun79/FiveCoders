@@ -76,7 +76,7 @@ export default function ChannelPage({
                 size={22}
               />
               <div className="flex-grow"></div>
-              <Link to="create">
+              <Link to="create" state={{ channelId: channelId }}>
                 <Button
                   className={twMerge(
                     'btn-style',

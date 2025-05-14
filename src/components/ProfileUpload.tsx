@@ -3,9 +3,7 @@ import prof from '../assets/imgs/기본 프로필.png';
 // import userData from '../data/UserData';
 // import axios from 'axios';
 
-export default function ProfileUpload(
-  {userEmail}: {userEmail: string}
-) {
+export default function ProfileUpload({ userEmail }: { userEmail: string }) {
   // const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
   // const userEmail = userData((state) => state.userEmail);

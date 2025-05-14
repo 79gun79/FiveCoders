@@ -13,8 +13,6 @@ export default function PostList({ channelId }: { channelId: string }) {
         const { data } = await client.get(`/posts/channel/${channelId}`);
         const refinedData = data.map((v: Post) => ({
           ...v,
-          channel: v.channel.name,
-          author: v.author?.fullName,
         }));
         setPosts(refinedData);
       } catch (e) {

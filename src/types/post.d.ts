@@ -10,8 +10,8 @@ type Post = {
   image: string;
   imagePublicId: string;
   title: string;
-  channel: string;
-  author: string;
+  channel: Channel;
+  author: User;
   createdAt: string;
   updatedAt: string;
   likes: string[];

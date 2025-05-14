@@ -11,6 +11,7 @@ import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import IsLoggedInModal from './IsLoggedInModal';
 import { deletePost } from '../utils/post';
+import { useAuthStore } from '../stores/authStore';
 
 export default function PostPage({ post }: { post: Post }) {
   const [liked, setLiked] = useState(false);
@@ -66,6 +67,17 @@ export default function PostPage({ post }: { post: Post }) {
       },
     });
 
+  const handDelete = async () => {
+    if (!window.confirm('해당 게시글을 삭제하시겠습니까?')) return;
+    try {
+      await deletePost(post._id);
+      alert('게시글이 삭제되었습니다.');
+    } catch (err) {
+      console.log('🚩 현재 AccessToken:', useAuthStore.getState().accessToken);
+      alert('게시글이 삭제에 실패했습니다. 다시 시도해주세요.');
+      throw err;
+    }
+  };
   const { head, body } = parseContent(post.title);
   return (
     <>
@@ -77,7 +89,7 @@ export default function PostPage({ post }: { post: Post }) {
               alt="profile"
               className="postProfile"
             />
-            <p className="text-base">{post.author}</p>
+            <p className="text-base">{post.author.fullName}</p>
 
             <div className="flex-grow"></div>
             <div className="relative" ref={refDrop}>
@@ -103,12 +115,7 @@ export default function PostPage({ post }: { post: Post }) {
                     수정
                   </Button>
                   <Button
-                    onClick={() => {
-                      if (window.confirm('해당 게시글을 삭제하시겠습니까?')) {
-                        deletePost(post._id);
-                        alert('게시글이 삭제되었습니다.');
-                      }
-                    }}
+                    onClick={handDelete}
                     className="btn-style-post2 text-[var(--color-red-caution)]"
                   >
                     삭제

@@ -24,4 +24,5 @@ type ChannelImg = {
   channelId: string;
   name: string;
   bannerImg: string;
+  _id: string;
 };
