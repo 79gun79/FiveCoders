@@ -1,5 +1,3 @@
-import userData from '../data/UserData';
-
 //email 유효성 검사
 export const validateEmail = (value: string) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
@@ -24,14 +22,6 @@ export const validatePassword = (value: string) => {
     )
   ) {
     return '8~16자, 영문 숫자 특수문자 모두 포함';
-  }
-  return '';
-};
-
-export const validateCurrentPassword = (value: string) => {
-  const userPassWord = userData((state) => state.myPassWord);
-  if (value === userPassWord) {
-    return '비밀번호가 다릅니다';
   }
   return '';
 };

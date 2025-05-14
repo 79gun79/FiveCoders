@@ -1,41 +1,52 @@
 type UserData = {
-  userId: number;
+  id: string;
   userName: string;
   userEmail: string;
-  myPost: number;
-  myFollower: number;
-  myFollowing: number;
-  myPassWord: string;
+  userPost: number;
+  userFollower: number;
+  userFollowing: number;
+  userPassWord: string;
   newPassWord: string | null;
   checkPassWord: string | null;
 };
 
 type PostData = {
-  postId: number;
-  authorId: number;
+  id: string;
+  author: string;
   title: string;
-  channelId: number;
+  update: string;
 };
 
 type CommentData = {
-  commentId: number;
-  authorId: number;
+  id: string;
+  author: string;
   comment: string;
-  channelId: number;
+  post: string;
+  update: string;
 };
 
-type MyPostData = {
-  channelId: number;
-  authorId: number;
-  title: PostData[];
+type MyFollowing = {
+  id: string;
+  user: string;
+  update: string;
 };
 
-type MyCommentData = {
-  authorId: number;
-  comment: CommentData[];
+type MyFollower = {
+  id: string;
+  user: string;
+  update: string;
 };
 
 type Tooltip = {
   content: string;
   children: React.ReactNode;
+};
+
+type dfData = {
+  serverId: string;
+  characterId: string;
+  characterName: string;
+  level: string;
+  jobGrowName: string;
+  fame: number;
 };

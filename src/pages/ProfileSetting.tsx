@@ -2,22 +2,23 @@ import { Link } from 'react-router';
 import Button from '../components/Button';
 import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
-import userData from '../data/UserData';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
 import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
+import { client } from '../services/axios';
 
 export default function ProfileSetting() {
-  const userName = userData((state) => state.userName);
-  const userPassWord = userData((state) => state.myPassWord);
-  const [username, setUsername] = useState(userName);
-  const [password, setPassword] = useState('');
+  // const userPassWord = userData((state) => state.myPassWord);
+  const [userEmail, setUserEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  // const [userPassWord, setUserPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const userId = '680b2cb73fc74c12d94141ad';
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -29,28 +30,22 @@ export default function ProfileSetting() {
     const isPassword = validatePassword(value);
     if (isPassword === '8~16자, 영문 숫자 특수문자 모두 포함' && value !== '') {
       return '8~16자, 영문 대소문자와 숫자, 특수문자 모두 포함해주세요';
-    } else if (
-      isPassword !== '8~16자, 영문 숫자 특수문자 모두 포함' &&
-      value === currentPassword
-    ) {
-      return '새 비밀번호를 입력해 주세요';
     }
   };
 
-  const validateCurrentPassword = (value: string) => {
-    if (value !== userPassWord && value !== '') {
-      return '비밀번호가 다릅니다';
+  const validateNickName = (value: string) => {
+    const isNickName = validateUsername(value);
+    if (isNickName === '2~8자 이내 영문 또는 한글' && value !== '') {
+      return '2~8자 이내 영문 또는 한글로 입력해주세요';
+    } else if (isNickName === '2~8자 이내 영문 또는 한글' && value === '') {
+      return '변경하실 닉네임을 입력해 주세요';
     }
   };
 
   const isFormValid =
+    (username && !validateUsername(username) && password === '') ||
     (username &&
-      currentPassword &&
-      !validateCurrentPassword(currentPassword) &&
-      password === '') ||
-    (username &&
-      currentPassword &&
-      !validateCurrentPassword(currentPassword) &&
+      !validateUsername(username) &&
       password &&
       confirmPassword &&
       !validatePassword(password) &&
@@ -60,7 +55,6 @@ export default function ProfileSetting() {
   const notify = () => {
     if (isFormValid === true) {
       toast.success('저장되었습니다', { closeButton: false });
-      setCurrentPassword('');
       setPassword('');
       setConfirmPassword('');
       setButtonDisabled(true);
@@ -78,12 +72,20 @@ export default function ProfileSetting() {
     }
   };
 
+  useEffect(() => {
+    client(`/users/${userId}`).then(
+      (response) => (
+        setUsername(response.data.fullName), setUserEmail(response.data.email)
+      ),
+    );
+  }, []);
+
   return (
     <>
       <div className="mx-50 flex flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
-          <ProfileUpload />
+          <ProfileUpload userEmail={userEmail} />
         </div>
         <div className="mt-13.5">
           <div className="flex items-center">
@@ -95,22 +97,11 @@ export default function ProfileSetting() {
           <ValidateNickNameInput
             value={username}
             onChange={setUsername}
-            validate={validateUsername}
+            validate={validateNickName}
             placeholder="2자 이상, 8자 이하로 입력해주세요"
             className={twMerge('input text-T02 w-185')}
           />
         </div>
-        <div className="mt-6.5">
-          <span className="textST1 block">기존 비밀번호</span>
-          <ValidatePasswordInput
-            value={currentPassword}
-            onChange={setCurrentPassword}
-            validate={validateCurrentPassword}
-            placeholder="현재 비밀번호를 입력해 주세요"
-            className={twMerge('input text-T02 w-185')}
-          />
-        </div>
-
         <div className="mt-6.5">
           <span className="textST1 block">새 비밀번호</span>
           <ValidatePasswordInput
@@ -135,7 +126,6 @@ export default function ProfileSetting() {
           <Link to="/mypage">
             <Button className="cancel textT2">취소</Button>
           </Link>
-          {/* <Link to="/mypage"> */}
           <Button
             className="apply textT2 ml-2 disabled:bg-[var(--color-gray8)]"
             disabled={buttonDisabled}
@@ -151,7 +141,6 @@ export default function ProfileSetting() {
             transition={Slide}
             closeOnClick={false}
           />
-          {/* </Link> */}
         </div>
         <div className="h-10"></div>
       </div>

@@ -15,6 +15,14 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/steam-api/, ""),
         secure: false,
       },
+      "/df-api": {
+        target: "https://api.neople.co.kr",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/df-api/, ""),
+        secure: false,
+      },
     },
   },
 });
+
+

@@ -3,16 +3,23 @@ import setting from '../assets/icons/Setting.svg';
 import { twMerge } from 'tailwind-merge';
 import MyInfo from '../components/MyInfo';
 import MyPost from '../components/MyPost';
-import userData from '../data/UserData';
+// import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import { client } from '../services/axios';
 
 export default function MyPage() {
-  const userName = userData((state) => state.userName);
-  const userEmail = userData((state) => state.userEmail);
+  const [userName, setUserName] = useState<string>();
+  const [userEmail, setUserEmail] = useState<string>();
+  const [userPost, setUserPost] = useState<PostData[]>([]);
+  const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
+  const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
+  const [userComment, setUserComment] = useState<CommentData[]>([]);
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
+  const userId = '680b2cb73fc74c12d94141ad';
+  // userId를 불러오는 방법 찾기
 
   const buttonList = ['최신', '내 글', '댓글'];
 
@@ -23,10 +30,33 @@ export default function MyPage() {
   };
 
   const selectComponent = {
-    최신: [<MyPost />, <MyComment />],
-    '내 글': <MyPost />,
-    댓글: <MyComment />,
+    최신: [
+      <MyPost userName={userName} myPost={userPost} />,
+      <MyComment userName={userName} userComment={userComment} />,
+    ],
+    '내 글': <MyPost userName={userName} myPost={userPost} />,
+    댓글: <MyComment userName={userName} userComment={userComment} />,
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        client(`/users/${userId}`).then(
+          (response) => (
+            setUserName(response.data.fullName),
+            setUserPost(response.data.posts),
+            setUserEmail(response.data.email),
+            setUserFollower(response.data.followers),
+            setUserFollowing(response.data.following),
+            setUserComment(response.data.comments)
+          ),
+        );
+      } catch (error) {
+        console.error('Error: ', error);
+      }
+    };
+    getUser();
+  }, []);
 
   return (
     <>
@@ -42,7 +72,11 @@ export default function MyPage() {
               <span className="block text-[28px]">{userName}</span>
               <span className="block text-[20px]">{userEmail}</span>
             </div>
-            <MyInfo />
+            <MyInfo
+              myPost={userPost.length}
+              myFollowing={userFollowing.length}
+              myFollower={userFollower.length}
+            />
             <Link to="/setting">
               <button className="ml-[81.62px] h-[32px] cursor-pointer">
                 <img src={setting} alt="setting" />
