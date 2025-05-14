@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getUser } from '../services/dfAPI';
 import logo_small from '../assets/던파로고미니.png';
+import fame from '../assets/명성치.png';
 
 const serverId = 'hilder';
 const charName = '변신캐설월화';
@@ -39,19 +40,37 @@ export default function DFCard() {
   return (
     <>
       <h1>dfCard Component</h1>
-      <div className="relative flex h-[160px] w-[260px] justify-start overflow-hidden rounded-xl border-1 bg-red-200 bg-gradient-to-r from-[#141E30] to-[#243B55] p-[10px]">
-        <img src={logo_small} className="absolute w-[35px]" alt="미니로고" />
+      <div className="relative flex h-[160px] w-[260px] justify-start overflow-hidden rounded-xl bg-gradient-to-t from-[var(--color-gray7)] to-[var(--color-gray4)] p-[10px]">
+        <img
+          src={logo_small}
+          className="absolute w-[35px] select-none"
+          alt="미니로고"
+        />
         <img
           src={`https://img-api.neople.co.kr/df/servers/${serverId}/characters/${characterId}?zoom=1`}
           alt=""
-          className="h-[130px]"
+          className="absolute top-[-48px] left-[-5px] h-[200px] select-none"
         />
-        <div className="block text-white">
-          <span className="block">{charName}</span>
-          <span className="block">{server}</span>
-          <span className="block">명성치: {myFame}</span>
-          <span className="block">직업: {myJob}</span>
-          <span className="block">레벨: {level}</span>
+        <img
+          src={logo_big}
+          className="absolute top-10 left-[100px] size-[80%] select-none"
+          draggable={false}
+          alt="던파로고"
+        />
+        <div className="absolute top-1/4 right-8 block content-center text-center">
+          <span className="textST1 block text-[var(--color-gray3)]">
+            Lv.{level}
+          </span>
+          <span className="textT1 block text-[var(--color-white)]">
+            {charName}
+          </span>
+          <span className="textST1 block text-[var(--color-gray3)]">
+            {myJob} | {server}
+          </span>
+          <span className="textST1 flex justify-center text-[var(--color-main)]">
+            <img src={fame} alt="" className="mt-[3px] h-[13px] w-[15px]" />
+            {myFame}
+          </span>
         </div>
       </div>
     </>
