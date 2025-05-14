@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { getUser } from '../services/dfAPI';
-import logo_big from '../assets/던파로고.png';
 import logo_small from '../assets/던파로고미니.png';
 import fame from '../assets/명성치.png';
 
