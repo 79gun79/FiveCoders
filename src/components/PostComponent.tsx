@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 
 export default function PostComponent({ post }: { post: Post }) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
+
   const [liked, setLiked] = useState(false);
   const [isCmtForm, setCmtForm] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
