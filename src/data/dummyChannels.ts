@@ -1,5 +1,6 @@
 import type { Channel } from '../types/channel';
 import { postsData } from './postsData';
+import { Notification } from '../types/notification';
 
 export const dummyChannels: Channel[] = [
   {
@@ -92,29 +93,45 @@ export const dummyChannels: Channel[] = [
   },
 ];
 
-export const dummyNotifications = [
+export const dummyNotifications: Notification[] = [
   {
     id: '1',
-    genre: '슈팅',
+    name: '서든어택',
     nickname: '스나장인',
-    profileImg: '/images/user1.jpg',
-    time: '어제 오후 06:32',
-    content: '[서든어택] 회원님이 작성한 글에 좋아요가 달렸어요!',
+    profileImg: '/channelImages/sudden_attack.jpg',
+    createdAt: '2025-05-11T15:32:00.000Z',
+    content: '회원님 게시글에 새로운 댓글이 달렸어요.',
+  },
+  {
+    id: '6',
+    name: 'FC 온라인',
+    nickname: '게임전문가',
+    profileImg: '/channelImages/fc_online.jpg',
+    createdAt: '2025-05-11T05:02:00.000Z',
+    content: '회원님 게시글에 새로운 댓글이 달렸어요. "재밌게 보고 갑니다!"',
   },
   {
     id: '2',
-    genre: '스포츠',
-    nickname: '게임전문가',
-    profileImg: '/images/user2.jpg',
-    time: '어제 오전 02:02',
-    content: '[FC 온라인] 댓글이 달렸습니다: "재밌게 보고 갑니다!"',
+    name: '배틀그라운드',
+    nickname: '배그팬',
+    profileImg: '/channelImages/pubg.jpg',
+    createdAt: '2025-05-04T00:00:00.000Z',
+    content: '회원님 게시글에 새로운 댓글이 달렸어요.',
   },
   {
-    id: '3',
-    genre: '슈팅',
+    id: '6',
+    name: 'FC 온라인',
+    nickname: '피파왕',
+    profileImg: '/channelImages/fc_online.jpg',
+    createdAt: '2025-05-11T13:02:00.000Z',
+    content: '회원님 게시글에 새로운 댓글이 달렸어요. "일대일 하실래요?"',
+  },
+  {
+    id: '2',
+    name: '배틀그라운드',
     nickname: '배그팬',
-    profileImg: '/images/user3.jpg',
-    time: '5월 4일',
-    content: '[배틀그라운드] 회원님 게시글에 새로운 댓글이 달렸어요.',
+    profileImg: '/channelImages/pubg.jpg',
+    createdAt: '2025-05-04T00:00:00.000Z',
+    content: '회원님 게시글에 새로운 댓글이 달렸어요.',
   },
 ];

@@ -1,4 +1,3 @@
-import profile from '../assets/imgs/기본 프로필.png';
 import setting from '../assets/icons/Setting.svg';
 import { twMerge } from 'tailwind-merge';
 import MyInfo from '../components/MyInfo';
@@ -16,9 +15,10 @@ export default function MyPage() {
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
+  const [image, setImage] = useState('');
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
-  const userId = '680b2cb73fc74c12d94141ad';
+  const userId = '68240ae628cdb13ab4a83053';
   // userId를 불러오는 방법 찾기
 
   const buttonList = ['최신', '내 글', '댓글'];
@@ -48,7 +48,8 @@ export default function MyPage() {
             setUserEmail(response.data.email),
             setUserFollower(response.data.followers),
             setUserFollowing(response.data.following),
-            setUserComment(response.data.comments)
+            setUserComment(response.data.comments),
+            setImage(response.data.image)
           ),
         );
       } catch (error) {
@@ -60,17 +61,19 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mx-[160px] mt-[54px] flex flex-col items-center">
+      <div className="relative mx-[160px] mt-[15px] flex flex-col items-center">
         <div>
           <div className="flex">
             <img
-              src={profile}
+              src={image}
               alt="profile"
-              className="mr-[18px] size-[90px] overflow-hidden rounded-full object-fill"
+              className="mr-[18px] size-[80px] overflow-hidden rounded-full object-fill"
             />
             <div className="left-[100px] inline-block content-center">
-              <span className="block text-[28px]">{userName}</span>
-              <span className="block text-[20px]">{userEmail}</span>
+              <span className="block text-[24px]">{userName}</span>
+              <span className="block text-[18px] text-[var(--color-gray7)]">
+                {userEmail}
+              </span>
             </div>
             <MyInfo
               myPost={userPost.length}
