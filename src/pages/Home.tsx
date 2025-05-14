@@ -1,4 +1,4 @@
-//import DFCard from '../components/DFCard';
+import DFCard from '../components/DFCard';
 import DiscordCard from '../components/DiscordCard';
 import GameCarousel from '../components/GameCarousel';
 import SteamCard from '../components/SteamCard';
@@ -10,7 +10,7 @@ export default function Home() {
         <div className="flex gap-1.5">
           <SteamCard />
           <DiscordCard />
-          {/* <DFCard /> */}
+          <DFCard />
         </div>
         <div className="m-[20px] w-[960px]">
           <GameCarousel />
