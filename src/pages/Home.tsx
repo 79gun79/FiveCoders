@@ -7,9 +7,11 @@ export default function Home() {
     <>
       <div className="mx-[200px]">
         <h1>Home Component</h1>
-        <SteamCard />
-        <DiscordCard />
-        <DFCard />
+        <div className="flex gap-1.5">
+          <SteamCard />
+          <DiscordCard />
+          <DFCard />
+        </div>
       </div>
     </>
   );

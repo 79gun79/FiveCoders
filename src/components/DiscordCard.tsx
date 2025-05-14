@@ -34,7 +34,7 @@ export default function DiscordCard() {
   }, []);
   return (
     <>
-      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#141E30] to-[#243B55]">
+      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-[linear-gradient(90deg,_#1E2124_0%,_#36393E_48%,_#1E2124_100%)]">
         <div className="flex items-center px-4 py-4">
           <img
             src={DiscordSmall}
