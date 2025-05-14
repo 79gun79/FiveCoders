@@ -4,6 +4,7 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -13,37 +14,60 @@ interface PostEditorProps {
   className?: string;
   value?: string;
   onChange: (value: string) => void;
+  onImageChange: (file: File) => void;
 }
 
 const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
-  ({ className, value, onChange }, ref) => {
+  ({ className, value, onChange, onImageChange }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
 
+    // ✅ ReactQuill reference 생성
     const quillRef = useRef<ReactQuill>(null);
     useImperativeHandle(ref, () => quillRef.current!, []);
 
-    const modules = {
-      toolbar: {
-        container: [
-          ['bold', 'italic', 'strike', 'underline', 'image'],
-          [
-            {
-              color: [
-                'red',
-                'orange',
-                'yellow',
-                'green',
-                'blue',
-                'purple',
-                'pink',
-                'brown',
-                'black',
-              ],
-            },
-          ],
-        ],
-      },
+    // ✅ 이미지 핸들러 정의
+    const imageHandler = () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+        const file = input.files ? input.files[0] : null;
+        console.log(file);
+        if (file) {
+          onImageChange(file);
+        }
+      };
     };
+
+    // ✅ ReactQuill 모듈 설정
+    const modules = useMemo(() => {
+      return {
+        toolbar: {
+          container: [
+            ['bold', 'italic', 'strike', 'underline', 'image'],
+            [
+              {
+                color: [
+                  'red',
+                  'orange',
+                  'yellow',
+                  'green',
+                  'blue',
+                  'purple',
+                  'pink',
+                  'brown',
+                  'black',
+                ],
+              },
+            ],
+          ],
+          handlers: { image: imageHandler },
+        },
+      };
+    }, []);
+
     useEffect(() => {
       const editor = document.querySelector('.ql-editor');
       const toolbar = document.querySelector('.ql-toolbar');
@@ -67,7 +91,8 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       );
 
       container?.classList.add('rounded-b-xl', 'border-[var(--color-gray4)]');
-    }, [value]);
+    }, []);
+
     return (
       <>
         <div
@@ -90,4 +115,5 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
     );
   },
 );
+
 export default PostEditor;

@@ -14,8 +14,15 @@ import { useAuthStore } from '../stores/authStore';
 import { parseContent } from '../utils/parseContent';
 import { cleanContent } from '../utils/cleanContent';
 import { Link } from 'react-router-dom';
+import { customToast, ToastType } from '../utils/customToast';
 
-export default function PostComponent({ post }: { post: Post }) {
+export default function PostComponent({
+  post,
+  userInfo,
+}: {
+  post: Post;
+  userInfo?: User;
+}) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
 
   const [liked, setLiked] = useState(false);
@@ -48,10 +55,10 @@ export default function PostComponent({ post }: { post: Post }) {
     if (!window.confirm('해당 게시글을 삭제하시겠습니까?')) return;
     try {
       await deletePost(post._id);
-      alert('게시글이 삭제되었습니다.');
+      customToast('게시물이 삭제 되었습니다!', ToastType.SUCCESS);
       setIsDeleted(true);
     } catch (err) {
-      alert('게시글이 삭제에 실패했습니다. 다시 시도해주세요.');
+      customToast('게시글 삭제에 실패했습니다.', ToastType.ERROR);
       throw err;
     }
   };
@@ -64,11 +71,13 @@ export default function PostComponent({ post }: { post: Post }) {
           <div className="postBottom pb-9">
             <div className="mb-4 flex items-center gap-[10px]">
               <img
-                src={post.image || placeholderIcon}
+                src={post.author.image || placeholderIcon}
                 alt="profile"
                 className="postProfile"
               />
-              <p className="text-base">{post.author.fullName}</p>
+              <p className="text-base">
+                {post.author.fullName || userInfo?.fullName}
+              </p>
 
               <div className="flex-grow"></div>
               <div className="relative" ref={refDrop}>
@@ -135,7 +144,7 @@ export default function PostComponent({ post }: { post: Post }) {
                 liked ? 'text-[var(--color-main)]' : 'text-[var(--color-gray5)]'
               }`}
             >
-              <BiSolidLike size={13} />
+              <BiSolidLike className="mr-2" size={13} />
               <span>좋아요</span>
             </Button>
             <Button
@@ -146,7 +155,7 @@ export default function PostComponent({ post }: { post: Post }) {
                   : 'text-[var(--color-gray5)]'
               }`}
             >
-              <AiFillMessage size={13} />
+              <AiFillMessage className="mr-2" size={13} />
               <span>댓글 달기</span>
             </Button>
           </div>

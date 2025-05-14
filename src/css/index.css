@@ -138,6 +138,9 @@
   .cautionMsg {
     @apply mt-[-20px] text-sm text-[var(--color-red-caution)];
   }
+  .removeImgBtn {
+    @apply flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white text-[var(--color-red-caution)] shadow-md;
+  }
 }
 /* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */
 
