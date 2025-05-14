@@ -59,7 +59,11 @@ export default function Search() {
               </div>
             ))}
         {userTab && searchData?.filter((e) => 'fullName' in e).length === 0 && (
-          <div className="text-[18px] font-medium">검색 결과가 없습니다.</div>
+          <div className="flex h-[300px] items-center justify-center">
+            <div className="text-[18px] font-medium text-[var(--color-gray4)]">
+              검색 결과가 없습니다.
+            </div>
+          </div>
         )}
 
         {/* 게시글 검색 */}
@@ -69,7 +73,11 @@ export default function Search() {
             .map((post) => <SearchPost key={post._id} {...post} />)}
 
         {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (
-          <div className="text-[18px] font-medium">검색 결과가 없습니다.</div>
+          <div className="flex h-[300px] items-center justify-center">
+            <div className="text-[18px] font-medium text-[var(--color-gray4)]">
+              검색 결과가 없습니다.
+            </div>
+          </div>
         )}
       </div>
     </>

@@ -5,11 +5,11 @@ import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
 import { useNavigate, useParams } from 'react-router-dom';
-import { usePostStore } from '../stores/postStore';
-import { dummyChannels } from '../data/dummyChannels';
 import { validateEmptyContent } from '../utils/validators';
 import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
+import { createPost } from '../utils/post';
+import { channelData } from '../data/channelData';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -23,17 +23,18 @@ export default function CreatePost() {
 
   const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
-  const [cId, setCId] = useState<string | null>(null);
+  const [cLink, setCLink] = useState('');
+  const [cId, setCId] = useState('');
 
   const navigate = useNavigate();
-  const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
   const { id } = useParams();
 
   useEffect(() => {
-    const currentChannel = dummyChannels.find((v) => v._id === id);
+    const currentChannel = channelData.find((v) => v.channelId === id);
     if (currentChannel) {
       setCName(currentChannel.name);
-      setCIcon(currentChannel.imageUrl);
+      setCIcon(currentChannel.bannerImg);
+      setCLink(currentChannel.channelId);
       setCId(currentChannel._id);
     }
   }, [id]);
@@ -41,11 +42,13 @@ export default function CreatePost() {
   const handleChannelChange = (
     channelName: string,
     channelIcon: string,
+    channelLink: string,
     channelId: string,
   ) => {
     setCName(channelName);
     setCIcon(channelIcon);
     setChooseList(false);
+    setCLink(channelLink);
     setCId(channelId);
   };
 
@@ -72,7 +75,7 @@ export default function CreatePost() {
     e.preventDefault();
     let hasError = false;
 
-    if (!cId) {
+    if (!cLink) {
       alert('채널을 선택해주세요!');
       return;
     }
@@ -99,11 +102,15 @@ export default function CreatePost() {
     if (!window.confirm('게시글을 등록하시겠습니까?')) return;
 
     try {
-      await createPost(cId as string, title + content);
+      await createPost({
+        title: title + content,
+        channelId: cId,
+      });
       alert('게시글이 등록 되었습니다.');
-      navigate(`/channel/${cId}`);
-    } catch {
+      navigate(`/channel/${cLink}`);
+    } catch (err) {
       alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
+      throw err;
     }
   };
 
