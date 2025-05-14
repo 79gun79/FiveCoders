@@ -15,7 +15,13 @@ import { parseContent } from '../utils/parseContent';
 import { cleanContent } from '../utils/cleanContent';
 import { Link } from 'react-router-dom';
 
-export default function PostComponent({ post }: { post: Post }) {
+export default function PostComponent({
+  post,
+  userInfo,
+}: {
+  post: Post;
+  userInfo?: User;
+}) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
 
   const [liked, setLiked] = useState(false);
@@ -64,11 +70,13 @@ export default function PostComponent({ post }: { post: Post }) {
           <div className="postBottom pb-9">
             <div className="mb-4 flex items-center gap-[10px]">
               <img
-                src={post.image || placeholderIcon}
+                src={post.author.image || placeholderIcon}
                 alt="profile"
                 className="postProfile"
               />
-              <p className="text-base">{post.author.fullName}</p>
+              <p className="text-base">
+                {post.author.fullName || userInfo?.fullName}
+              </p>
 
               <div className="flex-grow"></div>
               <div className="relative" ref={refDrop}>
@@ -135,7 +143,7 @@ export default function PostComponent({ post }: { post: Post }) {
                 liked ? 'text-[var(--color-main)]' : 'text-[var(--color-gray5)]'
               }`}
             >
-              <BiSolidLike size={13} />
+              <BiSolidLike className="mr-2" size={13} />
               <span>좋아요</span>
             </Button>
             <Button
@@ -146,7 +154,7 @@ export default function PostComponent({ post }: { post: Post }) {
                   : 'text-[var(--color-gray5)]'
               }`}
             >
-              <AiFillMessage size={13} />
+              <AiFillMessage className="mr-2" size={13} />
               <span>댓글 달기</span>
             </Button>
           </div>

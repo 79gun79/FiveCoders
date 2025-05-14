@@ -1,31 +1,17 @@
 import { useEffect, useState } from 'react';
 import { client } from '../services/axios';
-import PostList from './PostList';
+import PostComponent from './PostComponent';
 
-export default function SearchPost({
-  _id,
-  title,
-  author,
-  image,
-  comments,
-  ...rest
-}: Post) {
-  const [userInfo, setUserInfo] = useState<UserType>();
+export default function SearchPost({ post }: { post: Post }) {
+  const [userInfo, setUserInfo] = useState<User>();
 
   useEffect(() => {
-    client(`/users/${author}`).then((res) => setUserInfo(res.data));
-  }, []);
+    client(`/users/${post.author}`).then((res) => setUserInfo(res.data));
+  }, [post]);
 
   return (
     <div className="mb-5">
-      <PostList
-        _id={_id}
-        image={image}
-        title={title}
-        author={userInfo?.fullName || '(알 수 없음)'}
-        comments={comments}
-        {...rest}
-      />
+      <PostComponent post={post} userInfo={userInfo} />
     </div>
   );
 }
