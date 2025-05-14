@@ -148,17 +148,18 @@ export default function ProfileSetting() {
         <div className="flex min-w-[850px] flex-col content-center justify-start">
           <span className="textH2">프로필 설정</span>
           <div className="mt-12.5 flex content-center items-center">
-          <ProfileUpload
-            userEmail={userEmail}
-            changedImage={handleImageChange}
-            userData={userData}
+            <ProfileUpload
+              userEmail={userEmail}
+              changedImage={handleImageChange}
+              userData={userData}
+            />
           </div>
           <div className="mt-13.5">
             <div className="flex items-center">
               <span className="textST1 block text-[var(--color-gray7)]">
                 닉네임
               </span>
-              <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요"/>
+              <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요" />
             </div>
             <ValidateNickNameInput
               value={username}
