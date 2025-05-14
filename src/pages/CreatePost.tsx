@@ -11,6 +11,8 @@ import PostHeadInput from '../components/PostHeadInput';
 import { createPost } from '../services/postApi';
 import { channelData } from '../data/channelData';
 
+import { IoMdRemoveCircle } from 'react-icons/io';
+
 export default function CreatePost() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -165,15 +167,15 @@ export default function CreatePost() {
         {previewImage ? (
           <div className={twMerge('postBorder2', 'relative rounded-xl p-4')}>
             <img src={previewImage} alt="Preview" className="" />
-            <button
+            <Button
               onClick={() => {
                 setPreviewImage('');
                 setSelectedImage(null);
               }}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-red-caution)] text-white"
+              className="removeImgBtn absolute top-2 right-2"
             >
-              ×
-            </button>
+              <IoMdRemoveCircle size={24} />
+            </Button>
           </div>
         ) : (
           <div
