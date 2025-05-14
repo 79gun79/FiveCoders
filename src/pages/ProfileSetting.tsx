@@ -21,7 +21,7 @@ export default function ProfileSetting() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const userId = '680b2cb73fc74c12d94141ad';
+  const userId = '68240ae628cdb13ab4a83053';
   const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
   const fileInput = useRef<HTMLInputElement | null>(null);
@@ -59,7 +59,7 @@ export default function ProfileSetting() {
       password === confirmPassword &&
       !validateNewPassword(password));
 
-  const notify = () => {
+  const notify = async (e: React.ChangeEvent<any>) => {
     if (isFormValid === true) {
       toast.success('저장되었습니다', { closeButton: false });
       setPassword('');
@@ -74,14 +74,43 @@ export default function ProfileSetting() {
           },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${sessionStorage.getItem('auth-storage')}`,
             },
           },
         );
       } catch (error) {
         console.log(error);
       }
-      console.log(token);
+      if (e.target.files[0]) {
+        setImage(e.target.files[0]);
+      }
+      // 이미지 리더
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage(reader.result);
+          console.log(Image);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+
+      const formData = new FormData();
+      formData.append('image', e.target.files[0]);
+
+      try {
+        await axios({
+          method: 'post',
+          url: `${API_URL}users/upload-photo`,
+          data: formData,
+          headers: {
+            'Content-Type': 'multipary/form-data',
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      console.log(sessionStorage.getItem('accessToken'));
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
@@ -100,7 +129,7 @@ export default function ProfileSetting() {
     client(`/users/${userId}`).then((response) => [
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),
-      setImage(response.data.image),
+      setImage(response.data.image || prof),
     ]);
   }, []);
 
@@ -120,6 +149,7 @@ export default function ProfileSetting() {
               id="profileImg"
               style={{ display: 'none' }}
               ref={fileInput}
+              onChange={notify}
             />
             <label
               htmlFor="profileImg"
