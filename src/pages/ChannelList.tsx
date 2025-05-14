@@ -37,7 +37,7 @@ export default function ChannelList() {
 
   return (
     <>
-      <div className="mx-[100px]">
+      <div className="mx-[200px]">
         <h1 className="relative mb-15 inline-block text-[28px] font-bold">
           커뮤니티
           <span className="absolute bottom-[-9px] left-0 h-[4px] w-[97px] bg-[var(--color-main)]" />

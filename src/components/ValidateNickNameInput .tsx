@@ -45,6 +45,7 @@ export default function ValidateNickNameInput({
             isInputClicked === true ? '' : '2자 이상, 8자 이하로 입력해주세요'
           }
           className={twMerge(
+            'h-[53px] w-full',
             error ? 'bg-red-50 text-[#FF7043]' : '',
             className,
           )}
