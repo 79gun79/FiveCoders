@@ -62,7 +62,9 @@ export default function DFCard() {
           <span className="textST1 block text-[var(--color-gray3)]">
             Lv.{level}
           </span>
-          <span className="textT1 block">{charName}</span>
+          <span className="textT1 block text-[var(--color-white)]">
+            {charName}
+          </span>
           <span className="textST1 block text-[var(--color-gray3)]">
             {myJob} | {server}
           </span>

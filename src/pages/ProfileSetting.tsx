@@ -9,6 +9,7 @@ import ValidatePasswordInput from '../components/ValidatePasswordInput';
 import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
+import axios from 'axios';
 
 export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
@@ -19,6 +20,7 @@ export default function ProfileSetting() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const userId = '680b2cb73fc74c12d94141ad';
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -58,6 +60,19 @@ export default function ProfileSetting() {
       setPassword('');
       setConfirmPassword('');
       setButtonDisabled(true);
+      try {
+        axios
+          .put(`${API_URL}settings/update-user`, {
+            fullName: username,
+            username: '',
+          })
+          .then((response) => {
+            setUsername(response.data.fullName);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+      console.log('token');
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
