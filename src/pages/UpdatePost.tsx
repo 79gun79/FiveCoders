@@ -11,6 +11,7 @@ import PostHeadInput from '../components/PostHeadInput';
 import { updatePost } from '../services/postApi';
 import { channelData } from '../data/channelData';
 import { parseContent } from '../utils/parseContent';
+import { IoMdRemoveCircle } from 'react-icons/io';
 
 export default function UpdatePost() {
   const navigate = useNavigate();
@@ -20,6 +21,8 @@ export default function UpdatePost() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string>('');
   const [chooseList, setChooseList] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null); // 자식 컴포넌트에서 사용
@@ -44,8 +47,9 @@ export default function UpdatePost() {
       const { head, body } = parseContent(post.title);
       setTitle(head);
       setContent(body);
+      setPreviewImage(post.image);
     }
-  }, [id]);
+  }, [post, id]);
 
   const handleChannelChange = (
     channelName: string,
@@ -63,6 +67,14 @@ export default function UpdatePost() {
   const handleEditorChange = (value: string) => {
     setContent(value);
     if (!validateEmptyContent(value)) setContentError(false);
+  };
+
+  const handleImageChange = (file: File) => {
+    console.log('선택된 이미지: ', file);
+    setSelectedImage(file);
+
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
   };
 
   const handleCancel = async () => {
@@ -110,6 +122,8 @@ export default function UpdatePost() {
       await updatePost({
         postId: post._id,
         title: title + content,
+        image: selectedImage ?? undefined,
+        imageToDeletePublicId: post.imagePublicId,
         channelId: cId,
       });
       alert('게시글이 수정되었습니다.');
@@ -157,6 +171,30 @@ export default function UpdatePost() {
           </Button>
           {chooseList && <ChooseCommunity onChange={handleChannelChange} />}
         </div>
+        {previewImage ? (
+          <div className={twMerge('postBorder2', 'relative rounded-xl p-4')}>
+            <img src={previewImage} alt="Preview" className="" />
+            <Button
+              onClick={() => {
+                setPreviewImage('');
+                setSelectedImage(null);
+              }}
+              className="removeImgBtn absolute top-2 right-2"
+            >
+              <IoMdRemoveCircle size={24} />
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={twMerge(
+              'postBorder2',
+              'text-base',
+              'rounded-xl p-4 text-[var(--color-gray5)]',
+            )}
+          >
+            선택된 이미지 없음
+          </div>
+        )}
         <PostHeadInput
           ref={titleRef}
           value={title}
@@ -168,10 +206,12 @@ export default function UpdatePost() {
           placeholder="제목을 입력하세요"
         />
         {titleError && <p className="cautionMsg">제목을 입력해주세요.</p>}
+
         <PostEditor
           ref={contentRef}
           value={content}
           onChange={handleEditorChange}
+          onImageChange={handleImageChange}
         />
         {contentError && <p className="cautionMsg">내용을 입력해주세요.</p>}
 
