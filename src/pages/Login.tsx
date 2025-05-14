@@ -23,7 +23,8 @@ export default function Login() {
         email,
         password,
       });
-      login(data.accessToken);
+      //console.log('로그인 응답:', data);
+      login(data.token);
       navigate('/');
     } catch (error) {
       console.log(error);
