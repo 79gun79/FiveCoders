@@ -144,71 +144,76 @@ export default function ProfileSetting() {
 
   return (
     <>
-      <div className="mx-50 flex flex-col content-center items-start justify-start">
-        <span className="textH2">프로필 설정</span>
-        <div className="mt-12.5 flex content-center items-center">
+      <div className="flex justify-center">
+        <div className="flex min-w-[850px] flex-col content-center justify-start">
+          <span className="textH2">프로필 설정</span>
+          <div className="mt-12.5 flex content-center items-center">
           <ProfileUpload
             userEmail={userEmail}
             changedImage={handleImageChange}
             userData={userData}
-          />
-        </div>
-        <div className="mt-13.5">
-          <div className="flex items-center">
-            <span className="textST1 block">닉네임</span>
-            <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요">
-              <button>?</button>
-            </Tooltip>
           </div>
-          <ValidateNickNameInput
-            value={username}
-            onChange={setUsername}
-            validate={validateNickName}
-            placeholder="2자 이상, 8자 이하로 입력해주세요"
-            className={twMerge('input text-T02 w-185')}
-          />
+          <div className="mt-13.5">
+            <div className="flex items-center">
+              <span className="textST1 block text-[var(--color-gray7)]">
+                닉네임
+              </span>
+              <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요"/>
+            </div>
+            <ValidateNickNameInput
+              value={username}
+              onChange={setUsername}
+              validate={validateNickName}
+              placeholder="2자 이상, 8자 이하로 입력해주세요"
+              className={twMerge('input text-T02 w-[850px]')}
+            />
+          </div>
+          <div className="mt-6.5">
+            <span className="textST1 block text-[var(--color-gray7)]">
+              새 비밀번호
+            </span>
+            <ValidatePasswordInput
+              value={password}
+              onChange={setPassword}
+              validate={validateNewPassword}
+              placeholder="8자 이상, 16자 이하 영문 대소문자와 숫자, 특수문자를 포함하여 입력해 주세요"
+              className={twMerge('input text-T02 w-[850px]')}
+            />
+          </div>
+          <div className="mt-6.5">
+            <span className="textST1 block text-[var(--color-gray7)]">
+              새 비밀번호 확인
+            </span>
+            <ValidatePasswordInput
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              validate={validateConfirmPassword}
+              placeholder="새 비밀번호를 한 번 더 입력해 주세요"
+              className={twMerge('input text-T02 w-[850px]')}
+            />
+          </div>
+          <div className="mt-6.75 flex w-[100%] content-end items-end justify-end">
+            <Link to="/mypage">
+              <Button className="cancel textT2">취소</Button>
+            </Link>
+            <Button
+              className="apply textT2 ml-2 disabled:bg-[var(--color-gray8)]"
+              disabled={buttonDisabled}
+              onClick={notify}
+            >
+              저장하기
+            </Button>
+            <ToastContainer
+              position="bottom-center"
+              autoClose={500}
+              hideProgressBar={true}
+              newestOnTop={false}
+              transition={Slide}
+              closeOnClick={false}
+            />
+          </div>
+          <div className="h-10"></div>
         </div>
-        <div className="mt-6.5">
-          <span className="textST1 block">새 비밀번호</span>
-          <ValidatePasswordInput
-            value={password}
-            onChange={setPassword}
-            validate={validateNewPassword}
-            placeholder="8자 이상, 16자 이하 영문 대소문자와 숫자, 특수문자를 포함하여 입력해 주세요"
-            className={twMerge('input text-T02 w-185')}
-          />
-        </div>
-        <div className="mt-6.5">
-          <span className="textST1 block">새 비밀번호 확인</span>
-          <ValidatePasswordInput
-            value={confirmPassword}
-            onChange={setConfirmPassword}
-            validate={validateConfirmPassword}
-            placeholder="새 비밀번호를 한 번 더 입력해 주세요"
-            className={twMerge('input text-T02 w-185')}
-          />
-        </div>
-        <div className="mt-6.75 flex w-[100%] content-end items-end justify-end">
-          <Link to="/mypage">
-            <Button className="cancel textT2">취소</Button>
-          </Link>
-          <Button
-            className="apply textT2 ml-2 disabled:bg-[var(--color-gray8)]"
-            disabled={buttonDisabled}
-            onClick={notify}
-          >
-            저장하기
-          </Button>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={500}
-            hideProgressBar={true}
-            newestOnTop={false}
-            transition={Slide}
-            closeOnClick={false}
-          />
-        </div>
-        <div className="h-10"></div>
       </div>
     </>
   );
