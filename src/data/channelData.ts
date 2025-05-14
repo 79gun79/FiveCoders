@@ -17,7 +17,7 @@ export const channelData: ChannelImg[] = [
     channelId: '3',
     name: '오버워치',
     bannerImg: '/channelImages/overwatch.jpg',
-    _id: '68171bbe833d4243f6b9fb4f',
+    _id: '6824832a5c063764a576468b',
   },
   {
     channelId: '4',
