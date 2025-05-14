@@ -4,12 +4,18 @@ import prof from '../assets/imgs/기본 프로필.png';
 import axios from 'axios';
 import { client } from '../services/axios';
 
-export default function ProfileUpload({ userEmail }: { userEmail: string }) {
+export default function ProfileUpload({
+  userEmail,
+  saveImage,
+}: {
+  userEmail: string;
+  saveImage: boolean;
+}) {
   const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
   // const userEmail = userData((state) => state.userEmail);
   const fileInput = useRef<HTMLInputElement | null>(null);
-  const userId = '680b2cb73fc74c12d94141ad';
+  const userId = '68240ae628cdb13ab4a83053';
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
     if (e.target.files[0]) {
@@ -20,7 +26,6 @@ export default function ProfileUpload({ userEmail }: { userEmail: string }) {
     reader.onload = () => {
       if (reader.readyState === 2) {
         setImage(reader.result);
-        console.log(Image);
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -35,10 +40,12 @@ export default function ProfileUpload({ userEmail }: { userEmail: string }) {
         data: formData,
         headers: {
           'Content-Type': 'multipary/form-data',
+          Authorization: `${sessionStorage.getItem('token') || null}`,
         },
       });
     } catch (error) {
       console.log(error);
+      console.log(sessionStorage.getItem('token') || null);
     }
   };
 

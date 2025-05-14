@@ -18,7 +18,7 @@ export default function MyPage() {
   const [userComment, setUserComment] = useState<CommentData[]>([]);
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
-  const userId = '680b2cb73fc74c12d94141ad';
+  const userId = '68240ae628cdb13ab4a83053';
   // userId를 불러오는 방법 찾기
 
   const buttonList = ['최신', '내 글', '댓글'];

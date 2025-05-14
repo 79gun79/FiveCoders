@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import channelImg from '../assets/channelImg.svg';
 
 export default function HeaderLogin() {
@@ -20,7 +21,9 @@ export default function HeaderLogin() {
         </svg>
       </button>
       <div>
-        <img src={channelImg} alt="channelImg" />
+        <Link to="/mypage">
+          <img src={channelImg} alt="channelImg" />
+        </Link>
       </div>
     </div>
   );

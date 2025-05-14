@@ -10,8 +10,7 @@ import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 import axios from 'axios';
-import prof from '../assets/imgs/기본 프로필.png';
-import { useAuthStore } from '../stores/authStore';
+import ProfileUpload from '../components/ProfileUpload';
 
 export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
@@ -21,11 +20,9 @@ export default function ProfileSetting() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [saveImage, setSaveImage] = useState(false);
   const userId = '68240ae628cdb13ab4a83053';
   const API_URL = import.meta.env.VITE_API_URL;
-  const [Image, setImage] = useState(prof);
-  const fileInput = useRef<HTMLInputElement | null>(null);
-  const token = useAuthStore.getState().accessToken;
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -59,7 +56,7 @@ export default function ProfileSetting() {
       password === confirmPassword &&
       !validateNewPassword(password));
 
-  const notify = async (e: React.ChangeEvent<any>) => {
+  const notify = () => {
     if (isFormValid === true) {
       toast.success('저장되었습니다', { closeButton: false });
       setPassword('');
@@ -69,48 +66,22 @@ export default function ProfileSetting() {
         axios.put(
           `${API_URL}settings/update-user`,
           {
-            fullName: username,
-            username: '',
+            params: {
+              fullName: username,
+              username: '',
+            },
           },
           {
             headers: {
-              Authorization: `Bearer ${sessionStorage.getItem('auth-storage')}`,
+              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
             },
           },
         );
       } catch (error) {
         console.log(error);
       }
-      if (e.target.files[0]) {
-        setImage(e.target.files[0]);
-      }
-      // 이미지 리더
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImage(reader.result);
-          console.log(Image);
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
-
-      const formData = new FormData();
-      formData.append('image', e.target.files[0]);
-
-      try {
-        await axios({
-          method: 'post',
-          url: `${API_URL}users/upload-photo`,
-          data: formData,
-          headers: {
-            'Content-Type': 'multipary/form-data',
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
-      console.log(sessionStorage.getItem('accessToken'));
+      setSaveImage(true);
+      console.log(sessionStorage.getItem('token'));
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
@@ -129,7 +100,6 @@ export default function ProfileSetting() {
     client(`/users/${userId}`).then((response) => [
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),
-      setImage(response.data.image || prof),
     ]);
   }, []);
 
@@ -138,26 +108,7 @@ export default function ProfileSetting() {
       <div className="mx-50 flex flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
-          <img src={Image} alt="프로필" className="h-30 w-30 rounded-full" />
-          <div className="ml-8.5">
-            <span className="textT1 block">이메일</span>
-            <span className="textT1 mt-2.75 block">{userEmail}</span>
-            <div className="h-3.75"></div>
-            <input
-              type="file"
-              accept="image/*"
-              id="profileImg"
-              style={{ display: 'none' }}
-              ref={fileInput}
-              onChange={notify}
-            />
-            <label
-              htmlFor="profileImg"
-              className="textST1 cursor-pointer rounded-xl bg-[var(--color-gray1)] px-3 py-2.5"
-            >
-              프로필 사진 변경
-            </label>
-          </div>
+          <ProfileUpload userEmail={userEmail} saveImage={saveImage} />
         </div>
         <div className="mt-13.5">
           <div className="flex items-center">
