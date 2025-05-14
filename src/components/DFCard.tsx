@@ -3,6 +3,7 @@ import { getUser } from '../services/dfAPI';
 import logo_big from '../assets/던파로고.png';
 import logo_small from '../assets/던파로고미니.png';
 import fame from '../assets/명성치.png';
+import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 
 const serverId = 'hilder';
 const charName = '변신캐설월화';
@@ -14,10 +15,50 @@ export default function DFCard() {
   const [myJob, setMyJob] = useState<string>();
   const [level, setLevel] = useState<number>();
   const [characterId, setCharacterId] = useState<string>();
+  const [showInstance, setShowInstance] = useState(false);
+  const menuTop = '서버를 선택해주세요';
+
+  const sortServer = [
+    '안톤',
+    '바칼',
+    '카인',
+    '카시야스',
+    '디레지에',
+    '힐더',
+    '프레이',
+    '시로코',
+  ];
+
+  const [dropdownView, setDropdownView] = useState<boolean>(false);
+  const [selectedMenu, setSelectedMenu] =
+    useState<string>('서버를 선택해주세요');
+
+  const handleClickDropdown = () => {
+    setDropdownView(!dropdownView);
+  };
+
+  const handleClickMenu = (menu: string) => {
+    setSelectedMenu(menu);
+    setDropdownView(!dropdownView);
+  };
 
   const serverName = () => {
-    if (serverId === 'hilder') {
+    if (serverId === 'anton') {
+      setServer('안톤');
+    } else if (serverId === 'bakal') {
+      setServer('바칼');
+    } else if (serverId === 'cain') {
+      setServer('카인');
+    } else if (serverId === 'casillas') {
+      setServer('카시야스');
+    } else if (serverId === 'diregie') {
+      setServer('디레지에');
+    } else if (serverId === 'hilder') {
       setServer('힐더');
+    } else if (serverId === 'prey') {
+      setServer('프레이');
+    } else if (serverId === 'siroco') {
+      setServer('시로코');
     }
   };
 
@@ -40,7 +81,6 @@ export default function DFCard() {
 
   return (
     <>
-      <h1>dfCard Component</h1>
       <div className="relative flex h-[160px] w-[260px] justify-start overflow-hidden rounded-xl bg-gradient-to-t from-[var(--color-gray7)] to-[var(--color-gray4)] p-[10px]">
         <img
           src={logo_small}
@@ -74,6 +114,28 @@ export default function DFCard() {
           </span>
         </div>
       </div>
+      <div className="relative flex w-[200px] content-center justify-center border-1 text-center">
+        <label onClick={handleClickDropdown}>
+          <div className="flex">
+            {menuTop === '서버를 선택해주세요'
+              ? '서버를 선택해주세요'
+              : selectedMenu}
+            <div className="absolute top-1/10 right-0 border-1">
+              {dropdownView ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              
+            </div>
+          </div>
+        </label>
+        {dropdownView && (
+          <ul>
+            {sortServer.map((data) => (
+              <li key={data} onClick={() => handleClickMenu(data)}>
+                {data}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>{' '}
     </>
   );
 }
