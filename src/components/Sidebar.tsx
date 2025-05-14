@@ -49,7 +49,7 @@ export default function Sidebar() {
   const closeModal = () => setModalOpen(false);
 
   return (
-    <aside className="bg-white)] sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)]">
+    <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">
       <nav>
         <ul className="p-3">
           <li
