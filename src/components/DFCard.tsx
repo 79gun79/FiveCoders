@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUser } from '../services/dfAPI';
 import logo_big from '../assets/던파로고.png';
 import logo_small from '../assets/던파로고미니.png';
 import fame from '../assets/명성치.png';
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { IoIosSettings } from 'react-icons/io';
 
-const serverId = 'hilder';
+// const serverId = 'hilder';
 // const charName = '변신캐설월화';
 
 export default function DFCard() {
@@ -20,30 +20,6 @@ export default function DFCard() {
   const [server, setServer] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
 
-  const sortServer = [
-    '안톤',
-    '바칼',
-    '카인',
-    '카시야스',
-    '디레지에',
-    '힐더',
-    '프레이',
-    '시로코',
-  ];
-
-  const [dropdownView, setDropdownView] = useState<boolean>(false);
-  const [selectedMenu, setSelectedMenu] = useState<string>(sortServer[0]);
-
-  const handleClickDropdown = () => {
-    setDropdownView(!dropdownView);
-  };
-
-  const handleClickMenu = (menu: string) => {
-    setSelectedMenu(menu);
-    setSInput(menu);
-    setDropdownView(!dropdownView);
-  };
-
   const onChange = (e) => {
     setInput(e.target.value);
   };
@@ -55,7 +31,12 @@ export default function DFCard() {
   const onClick = () => {
     setNickName(input);
     setServer(sInput);
+    setInput('');
     setVisible(true);
+  };
+
+  const onSetting = () => {
+    setVisible(false);
   };
 
   const serverName = () => {
@@ -130,6 +111,12 @@ export default function DFCard() {
                 {myFame}
               </span>
             </div>
+            <button
+              className="absolute right-3 cursor-pointer"
+              onClick={onSetting}
+            >
+              <IoIosSettings className="fill-white" />
+            </button>
           </div>
         )}
         {!visible && (
