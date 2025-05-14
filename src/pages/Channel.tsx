@@ -2,6 +2,7 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import ChannelPage from './ChannelPage';
 import CreatePost from './CreatePost';
 import ChannelList from './ChannelList';
+import UpdatePost from './UpdatePost';
 import { channelData } from '../data/channelData';
 import { ChannelImg } from '../types/channel';
 
@@ -13,6 +14,7 @@ export default function Channel() {
           <Route path="/" element={<ChannelList />} />
           <Route path=":id" element={<ChannelPageWrapper />} />
           <Route path=":id/create" element={<CreatePost />} />
+          <Route path=":id/update" element={<UpdatePost />} />
         </Routes>
       </div>
     </>
