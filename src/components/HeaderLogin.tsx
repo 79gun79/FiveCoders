@@ -25,16 +25,16 @@ export default function HeaderLogin() {
       prev.map((n) => ({
         ...n,
         isRead: true,
-      }))
+      })),
     );
   };
 
   const markNotificationAsRead = (id: string) => {
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
     );
   };
-  
+
   const handleClick = () => {
     navigate(`/mypage`);
   };
@@ -61,10 +61,7 @@ export default function HeaderLogin() {
   }, [isDropdownOpen]);
 
   return (
-    <div
-      className="absolute right-6 flex items-center gap-4"
-      ref={dropdownRef}
-    >
+    <div className="absolute right-6 flex items-center gap-4" ref={dropdownRef}>
       <div className="relative flex items-center">
         <button onClick={toggleDropdown} className="relative flex items-center">
           <FaRegBell className="h-6.5 w-6.5 cursor-pointer text-[var(--color-main)]" />
@@ -86,7 +83,7 @@ export default function HeaderLogin() {
           onClick={handleClick}
           src={channelImg}
           alt="channelImg"
-          className="h-full w-full rounded-full object-cover cursor-pointer"
+          className="h-full w-full cursor-pointer rounded-full object-cover"
         />
       </div>
     </div>

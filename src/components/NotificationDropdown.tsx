@@ -19,22 +19,22 @@ export default function NotificationDropdown({
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className="absolute -right-[55px] top-full z-50 mt-4 max-h-[400px] w-[340px] overflow-y-auto overflow-x-hidden rounded-xl border border-[var(--color-gray2)] bg-[var(--color-bg-white)]">
-      <div className="flex justify-between pt-4 pb-2 px-4 font-bold">
+    <div className="absolute top-full -right-[55px] z-50 mt-4 max-h-[400px] w-[340px] overflow-x-hidden overflow-y-auto rounded-xl border border-[var(--color-gray2)] bg-[var(--color-bg-white)]">
+      <div className="flex justify-between px-4 pt-4 pb-2 font-bold">
         <span className="text-[16px]">알림</span>
         {hasNotifications && (
           <button
             onClick={onClear}
-            className="text-[12px] text-[var(--color-gray7)] hover:text-[var(--color-text-black)] cursor-pointer"
+            className="cursor-pointer text-[12px] text-[var(--color-gray7)] hover:text-[var(--color-text-black)]"
           >
             모두 읽기
           </button>
         )}
       </div>
 
-      <div className="min-h-[300px] flex flex-col justify-center">
+      <div className="flex min-h-[300px] flex-col justify-center">
         {!hasNotifications ? (
-          <span className="mb-8 text-[14px] text-[var(--color-gray6)] text-center">
+          <span className="mb-8 text-center text-[14px] text-[var(--color-gray6)]">
             새로운 알림이 없습니다.
           </span>
         ) : (

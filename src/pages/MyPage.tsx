@@ -70,7 +70,9 @@ export default function MyPage() {
             />
             <div className="left-[100px] inline-block content-center">
               <span className="block text-[24px]">{userName}</span>
-              <span className="block text-[18px] text-[var(--color-gray7)]">{userEmail}</span>
+              <span className="block text-[18px] text-[var(--color-gray7)]">
+                {userEmail}
+              </span>
             </div>
             <MyInfo
               myPost={userPost.length}

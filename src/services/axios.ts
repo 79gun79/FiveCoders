@@ -3,7 +3,7 @@ import { useAuthStore } from '../stores/authStore';
 
 export const client = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  //withCredentials: true,
+  // withCredentials: true,
 });
 
 //요청 인터셉터
