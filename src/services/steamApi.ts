@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const STEAM_API_KEY = import.meta.env.VITE_STEAM_API_KEY;
-console.log(STEAM_API_KEY);
 
 //프로필 정보
 export const getPlayerSummaries = async (steamIds: string[]) => {
