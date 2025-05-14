@@ -19,7 +19,6 @@ export default function MyPost({
 
   client('/auth-user').then((response) => setUserData(response.data._id));
 
-  console.log(userData);
 
   const handlesetLike = (i) => {
     const copyLike = [...like];

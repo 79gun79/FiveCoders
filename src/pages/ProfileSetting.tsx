@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
 import Button from '../components/Button';
-// import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
 import { useEffect, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
@@ -10,8 +9,8 @@ import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 import axios from 'axios';
-import ProfileUpload from '../components/ProfileUpload';
 import { useAuthStore } from '../stores/authStore';
+import ProfileUpload from '../components/ProfileUpload';
 
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');
@@ -20,9 +19,18 @@ export default function ProfileSetting() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [saveImage, setSaveImage] = useState(false);
+  const [saveImage, setSaveImage] = useState<File | null>();
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
+
+  const handleImageChange = (imageFile: File | null) => {
+    if (imageFile) {
+      setSaveImage(imageFile);
+      console.log(imageFile);
+    } else {
+      setSaveImage(null);
+    }
+  };
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -56,8 +64,8 @@ export default function ProfileSetting() {
       password === confirmPassword &&
       !validateNewPassword(password));
 
-  const notify = () => {
-    if (isFormValid === true) {
+  const notify = async () => {
+    if (isFormValid === true && saveImage) {
       toast.success('저장되었습니다', { closeButton: false });
       setPassword('');
       setConfirmPassword('');
@@ -93,8 +101,25 @@ export default function ProfileSetting() {
       } catch (error) {
         console.log(error);
       }
-      setSaveImage(true);
-      console.log(token);
+
+      try {
+        const formData = new FormData();
+        // console.log('saveImage"', saveImage);
+        formData.append('image', saveImage);
+        // console.log(...formData);
+
+        await axios({
+          method: 'post',
+          url: `${API_URL}users/upload-photo`,
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
       const timer = setTimeout(() => {
         setButtonDisabled(false);
       }, 1000);
@@ -109,14 +134,12 @@ export default function ProfileSetting() {
     }
   };
 
-  client('/auth-user').then((response) => setUserData(response.data._id));
-
   useEffect(() => {
+    client('/auth-user').then((response) => setUserData(response.data._id));
     client(`/users/${userData}`).then((response) => [
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),
     ]);
-    console.log(userData);
   }, [userData]);
 
   return (
@@ -126,7 +149,7 @@ export default function ProfileSetting() {
         <div className="mt-12.5 flex content-center items-center">
           <ProfileUpload
             userEmail={userEmail}
-            saveImage={saveImage}
+            changedImage={handleImageChange}
             userData={userData}
           />
         </div>

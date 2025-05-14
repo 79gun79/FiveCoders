@@ -1,61 +1,51 @@
 import { useEffect, useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
-// import userData from '../data/UserData';
-import axios from 'axios';
 import { client } from '../services/axios';
 
 export default function ProfileUpload({
   userEmail,
-  saveImage,
+  changedImage,
   userData,
 }: {
   userEmail: string;
-  saveImage: boolean;
+  changedImage: (imageFile: File | undefined) => void;
   userData: [];
 }) {
-  const API_URL = import.meta.env.VITE_API_URL;
-  const [Image, setImage] = useState(prof);
-  // const userEmail = userData((state) => state.userEmail);
+  const [Image, setImage] = useState<File | undefined>();
   const fileInput = useRef<HTMLInputElement | null>(null);
-  // const userId = '6824566f8834f0583a54a00e';
+  // const token = useAuthStore.getState().accessToken;
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-    // 이미지 리더
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImage(reader.result || prof);
+    try {
+      if (e.target.files[0]) {
+        setImage(e.target.files[0]);
       }
-    };
-    reader.readAsDataURL(e.target.files[0]);
+      console.log(e.target.files[0]);
 
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-
-    if (saveImage === true) {
-      try {
-        await axios({
-          method: 'post',
-          url: `${API_URL}users/upload-photo`,
-          data: formData,
-          headers: {
-            'Content-Type': 'multipary/form-data',
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
+      // 이미지 리더
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
+    if (Image instanceof File || Image === undefined) {
+      changedImage(Image);
+    }
+  }, [Image, changedImage]);
+
+  useEffect(() => {
     client(`/users/${userData}`).then((response) =>
-      setImage(response.data.image),
+      setImage(response.data.image || prof),
     );
-  }, []);
+  }, [userData]);
 
   return (
     <>
