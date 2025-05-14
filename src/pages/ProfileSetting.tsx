@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import Button from '../components/Button';
 import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
@@ -10,6 +10,7 @@ import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 import axios from 'axios';
+import prof from '../assets/imgs/기본 프로필.png';
 
 export default function ProfileSetting() {
   // const userPassWord = userData((state) => state.myPassWord);
@@ -21,6 +22,8 @@ export default function ProfileSetting() {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const userId = '680b2cb73fc74c12d94141ad';
   const API_URL = import.meta.env.VITE_API_URL;
+  const [Image, setImage] = useState(prof);
+  const fileInput = useRef<HTMLInputElement | null>(null);
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -88,11 +91,11 @@ export default function ProfileSetting() {
   };
 
   useEffect(() => {
-    client(`/users/${userId}`).then(
-      (response) => (
-        setUsername(response.data.fullName), setUserEmail(response.data.email)
-      ),
-    );
+    client(`/users/${userId}`).then((response) => [
+      setUsername(response.data.fullName),
+      setUserEmail(response.data.email),
+      setImage(response.data.image),
+    ]);
   }, []);
 
   return (
@@ -100,7 +103,25 @@ export default function ProfileSetting() {
       <div className="mx-50 flex flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
-          <ProfileUpload userEmail={userEmail} />
+          <img src={Image} alt="프로필" className="h-30 w-30 rounded-full" />
+          <div className="ml-8.5">
+            <span className="textT1 block">이메일</span>
+            <span className="textT1 mt-2.75 block">{userEmail}</span>
+            <div className="h-3.75"></div>
+            <input
+              type="file"
+              accept="image/*"
+              id="profileImg"
+              style={{ display: 'none' }}
+              ref={fileInput}
+            />
+            <label
+              htmlFor="profileImg"
+              className="textST1 cursor-pointer rounded-xl bg-[var(--color-gray1)] px-3 py-2.5"
+            >
+              프로필 사진 변경
+            </label>
+          </div>
         </div>
         <div className="mt-13.5">
           <div className="flex items-center">
