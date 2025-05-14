@@ -2,6 +2,8 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import ChannelPage from './ChannelPage';
 import CreatePost from './CreatePost';
 import ChannelList from './ChannelList';
+import { channelData } from '../data/channelData';
+import { ChannelImg } from '../types/channel';
 
 export default function Channel() {
   return (
@@ -19,5 +21,7 @@ export default function Channel() {
 
 function ChannelPageWrapper() {
   const { id } = useParams();
-  return <ChannelPage channelId={id ?? '0'} />;
+  const channelInfo = channelData.find((v) => v.channelId === id);
+
+  return <ChannelPage id={id ?? '0'} info={channelInfo as ChannelImg} />;
 }

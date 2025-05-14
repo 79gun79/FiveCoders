@@ -5,11 +5,13 @@ import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
 import { useNavigate, useParams } from 'react-router-dom';
-import { usePostStore } from '../stores/postStore';
-import { dummyChannels } from '../data/dummyChannels';
 import { validateEmptyContent } from '../utils/validators';
 import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
+import { createPost } from '../utils/post';
+import { channelData } from '../data/channelData';
+import { client } from '../services/axios';
+import { Channel } from '../types/channel';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -24,18 +26,29 @@ export default function CreatePost() {
   const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
   const [cId, setCId] = useState<string | null>(null);
+  const [isChannel, setChannel] = useState<Channel | null>(null);
 
   const navigate = useNavigate();
-  const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
   const { id } = useParams();
 
   useEffect(() => {
-    const currentChannel = dummyChannels.find((v) => v._id === id);
+    const currentChannel = channelData.find((v) => v.channelId === id);
     if (currentChannel) {
       setCName(currentChannel.name);
-      setCIcon(currentChannel.imageUrl);
-      setCId(currentChannel._id);
+      setCIcon(currentChannel.bannerImg);
+      setCId(currentChannel.channelId);
     }
+
+    const loadChannel = async () => {
+      try {
+        const { data } = await client.get(`/channels/${currentChannel?.name}`);
+        setChannel(data);
+      } catch (err) {
+        console.log('채널 불러오기 실패: ', err);
+        return;
+      }
+    };
+    loadChannel();
   }, [id]);
 
   const handleChannelChange = (
@@ -99,7 +112,10 @@ export default function CreatePost() {
     if (!window.confirm('게시글을 등록하시겠습니까?')) return;
 
     try {
-      await createPost(cId as string, title + content);
+      await createPost({
+        title: title + content,
+        channelId: isChannel?._id ?? '',
+      });
       alert('게시글이 등록 되었습니다.');
       navigate(`/channel/${cId}`);
     } catch {

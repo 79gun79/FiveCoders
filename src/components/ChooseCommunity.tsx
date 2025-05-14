@@ -2,8 +2,8 @@ import { TiStarFullOutline } from 'react-icons/ti';
 import { twMerge } from 'tailwind-merge';
 import { useEffect, useState } from 'react';
 import { IoIosList } from 'react-icons/io';
-import { Channel } from '../types/channel';
-import { dummyChannels } from '../data/dummyChannels';
+import { ChannelImg } from '../types/channel';
+import { channelData } from '../data/channelData';
 
 export default function ChooseCommunity({
   onChange,
@@ -14,10 +14,10 @@ export default function ChooseCommunity({
     channelId: string,
   ) => void;
 }) {
-  const [channels, setChannels] = useState<Channel[]>([]);
+  const [channels, setChannels] = useState<ChannelImg[]>([]);
 
   useEffect(() => {
-    setChannels(dummyChannels);
+    setChannels(channelData);
   }, []);
 
   return (
@@ -41,13 +41,13 @@ export default function ChooseCommunity({
         <ul className="gap-[7px] px-1 pb-[10px] text-[13px] font-normal">
           {channels.map((v) => (
             <li
-              key={v._id}
+              key={v.channelId}
               className="flex cursor-pointer items-center gap-2"
-              onClick={() => onChange(v.name, v.imageUrl, v._id)}
+              onClick={() => onChange(v.name, v.bannerImg, v.channelId)}
             >
               <img
                 className={twMerge('postProfile', 'h-[20px] w-[20px]')}
-                src={v.imageUrl}
+                src={v.bannerImg}
                 alt="icon"
               />
               <span className="leading-[30px]">{v.name}</span>

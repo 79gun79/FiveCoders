@@ -19,3 +19,9 @@ export type ChannelItem = {
   imageUrl: string;
   genre?: string;
 };
+
+type ChannelImg = {
+  channelId: string;
+  name: string;
+  bannerImg: string;
+};
