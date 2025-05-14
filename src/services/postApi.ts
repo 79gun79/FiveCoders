@@ -1,4 +1,4 @@
-import { client } from '../services/axios';
+import { client } from './axios';
 
 type PostCreateReq = {
   title: string;

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import placeholderIcon from '../assets/channelImg.svg';
-import sanitizeHtml from 'sanitize-html';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import { FaEllipsisV } from 'react-icons/fa';
@@ -10,8 +9,11 @@ import { useCommentStore } from '../stores/commentStore';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import IsLoggedInModal from './IsLoggedInModal';
-import { deletePost } from '../utils/post';
+import { deletePost } from '../services/postApi';
 import { useAuthStore } from '../stores/authStore';
+import { parseContent } from '../utils/parseContent';
+import { cleanContent } from '../utils/cleanContent';
+import { Link } from 'react-router-dom';
 
 export default function PostComponent({ post }: { post: Post }) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
@@ -22,7 +24,7 @@ export default function PostComponent({ post }: { post: Post }) {
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
-
+  // const { id } = useParams();
   const { comments, addComment, deleteComment } = useCommentStore();
 
   // 외부 클릭 시 드롭메뉴 닫기
@@ -40,34 +42,6 @@ export default function PostComponent({ post }: { post: Post }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const parseContent = (content: string) => {
-    const [head, ...body] = content.split(/<p>/i);
-    return {
-      head: head.trim(),
-      body: `<p>${body.join('<p>')}`,
-    };
-  };
-
-  const cleanContent = (body: string) =>
-    sanitizeHtml(body, {
-      allowedTags: ['p', 'strong', 'em', 'u', 's', 'a', 'img', 'span'],
-      allowedAttributes: {
-        strong: ['style'],
-        em: ['style'],
-        u: ['style'],
-        s: ['style'],
-        span: ['style'],
-        a: ['href', 'target'],
-        img: ['src', 'alt', 'width', 'height'],
-      },
-      allowedSchemes: ['http', 'https', 'data'],
-      allowedStyles: {
-        '*': {
-          color: [/^red$/, /^blue$/, /^green$/, /^black$/, /^orange$/],
-        },
-      },
-    });
 
   const handDelete = async () => {
     if (!window.confirm('해당 게시글을 삭제하시겠습니까?')) return;
@@ -112,12 +86,20 @@ export default function PostComponent({ post }: { post: Post }) {
                       'bg-white',
                     )}
                   >
-                    <Button
-                      onClick={() => (isLoggedIn ? '' : setIsOpen(true))}
-                      className="btn-style-post2 text-black"
-                    >
-                      수정
-                    </Button>
+                    {isLoggedIn ? (
+                      <Link to={`./update`} state={{ post }}>
+                        <Button className="btn-style-post2 text-black">
+                          수정
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        onClick={() => setIsOpen(true)}
+                        className="btn-style-post2 text-black"
+                      >
+                        수정
+                      </Button>
+                    )}
                     <Button
                       onClick={() =>
                         isLoggedIn ? handDelete() : setIsOpen(true)
