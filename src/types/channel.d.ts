@@ -17,7 +17,6 @@ export type ChannelItem = {
   name: string;
   isSubscribe: boolean;
   imageUrl: string;
-  genre?: string;
 };
 
 type ChannelImg = {

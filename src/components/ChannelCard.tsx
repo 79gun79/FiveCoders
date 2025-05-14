@@ -40,8 +40,8 @@ export default function ChannelCard({
           <TiStarFullOutline
             className={`text-[20px] transition-colors ${
               isSubscribe
-                ? 'text-[var(--color-sub)]'
-                : 'text-[var(--color-gray4)] hover:text-[var(--color-sub)]'
+                ? 'text-[var(--color-deep-orange)]'
+                : 'text-[var(--color-gray4)] hover:text-[var(--color-deep-orange)]'
             }`}
           />
         </button>

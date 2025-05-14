@@ -26,7 +26,6 @@ export default function ChannelList() {
         id: channel._id,
         name: channel.name,
         isSubscribe: subscribes.includes(channel._id),
-        genre,
         imageUrl: channel.imageUrl || '/images/placeholder.jpg',
       };
       if (!acc[genre]) acc[genre] = [];
