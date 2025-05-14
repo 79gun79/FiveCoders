@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import Button from '../components/Button';
 // import ProfileUpload from '../components/ProfileUpload';
 import { validatePassword, validateUsername } from '../utils/validators';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
@@ -14,16 +14,13 @@ import ProfileUpload from '../components/ProfileUpload';
 import { useAuthStore } from '../stores/authStore';
 
 export default function ProfileSetting() {
-  // const userPassWord = userData((state) => state.myPassWord);
   const [userEmail, setUserEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-  // const [userId, setUserId] = useState<string>('');
-  // const [userPassWord, setUserPassword] = useState<string>('');
+  const [userData, setUserData] = useState<[]>([]);
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [saveImage, setSaveImage] = useState(false);
-  const userId = '68240ae628cdb13ab4a83053';
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
 
@@ -112,20 +109,26 @@ export default function ProfileSetting() {
     }
   };
 
+  client('/auth-user').then((response) => setUserData(response.data._id));
+
   useEffect(() => {
-    // client(`/login`).then((response) => setUserId(response.data.userId));
-    client(`/users/${userId}`).then((response) => [
+    client(`/users/${userData}`).then((response) => [
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),
     ]);
-  }, []);
+    console.log(userData);
+  }, [userData]);
 
   return (
     <>
       <div className="mx-50 flex flex-col content-center items-start justify-start">
         <span className="textH2">프로필 설정</span>
         <div className="mt-12.5 flex content-center items-center">
-          <ProfileUpload userEmail={userEmail} saveImage={saveImage} />
+          <ProfileUpload
+            userEmail={userEmail}
+            saveImage={saveImage}
+            userData={userData}
+          />
         </div>
         <div className="mt-13.5">
           <div className="flex items-center">

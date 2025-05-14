@@ -3,20 +3,21 @@ import prof from '../assets/imgs/기본 프로필.png';
 // import userData from '../data/UserData';
 import axios from 'axios';
 import { client } from '../services/axios';
-import { useAuthStore } from '../stores/authStore';
 
 export default function ProfileUpload({
   userEmail,
   saveImage,
+  userData,
 }: {
   userEmail: string;
   saveImage: boolean;
+  userData: [];
 }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const [Image, setImage] = useState(prof);
   // const userEmail = userData((state) => state.userEmail);
   const fileInput = useRef<HTMLInputElement | null>(null);
-  const userId = '68240ae628cdb13ab4a83053';
+  // const userId = '6824566f8834f0583a54a00e';
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
     if (e.target.files[0]) {
@@ -26,7 +27,7 @@ export default function ProfileUpload({
     const reader = new FileReader();
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setImage(reader.result);
+        setImage(reader.result || prof);
       }
     };
     reader.readAsDataURL(e.target.files[0]);
@@ -36,24 +37,12 @@ export default function ProfileUpload({
 
     if (saveImage === true) {
       try {
-        // axios.post(
-        //   `${API_URL}users/upload-photo`,
-        //   {
-        //     formdata: formData,
-        //   },
-        //   {
-        //     headers: {
-        //       'Content-Type': 'multipary/form-data',
-        //     },
-        //   },
-        // );
         await axios({
           method: 'post',
           url: `${API_URL}users/upload-photo`,
           data: formData,
           headers: {
             'Content-Type': 'multipary/form-data',
-            // Authorization: `Bearer ${token}`,
           },
         });
       } catch (error) {
@@ -63,7 +52,7 @@ export default function ProfileUpload({
   };
 
   useEffect(() => {
-    client(`/users/${userId}`).then((response) =>
+    client(`/users/${userData}`).then((response) =>
       setImage(response.data.image),
     );
   }, []);

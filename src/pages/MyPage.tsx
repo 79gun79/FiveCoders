@@ -7,6 +7,7 @@ import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { client } from '../services/axios';
+import prof from '../assets/imgs/기본 프로필.png';
 
 export default function MyPage() {
   const [userName, setUserName] = useState<string>();
@@ -15,10 +16,16 @@ export default function MyPage() {
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
+  const [userData, setUserData] = useState<[]>([]);
   const [image, setImage] = useState('');
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
-  const userId = '68240ae628cdb13ab4a83053';
+  // const [disabled, setDisabled] = useState(false);
+
+  client('/auth-user').then((response) => setUserData(response.data._id));
+
+  // const myUserId: string = '68240ae628cdb13ab4a83053';
+  // const userId: string = '681db16a890af552f3055777';
   // userId를 불러오는 방법 찾기
 
   const buttonList = ['최신', '내 글', '댓글'];
@@ -34,30 +41,35 @@ export default function MyPage() {
       <MyPost userName={userName} myPost={userPost} />,
       <MyComment userName={userName} userComment={userComment} />,
     ],
-    '내 글': <MyPost userName={userName} myPost={userPost} />,
-    댓글: <MyComment userName={userName} userComment={userComment} />,
+    '내 글': <MyPost userName={userName} myPost={userPost} image={image} />,
+    댓글: (
+      <MyComment userName={userName} userComment={userComment} image={image} />
+    ),
   };
 
+  // const checkUser = () => {
+  //   if (userId !== myUserId) {
+  //     setDisabled(false);
+  //   } else if (userId === myUserId) {
+  //     setDisabled(true);
+  //   }
+  // };
+  // console.log(disabled);
+
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        client(`/users/${userId}`).then(
-          (response) => (
-            setUserName(response.data.fullName),
-            setUserPost(response.data.posts),
-            setUserEmail(response.data.email),
-            setUserFollower(response.data.followers),
-            setUserFollowing(response.data.following),
-            setUserComment(response.data.comments),
-            setImage(response.data.image)
-          ),
-        );
-      } catch (error) {
-        console.error('Error: ', error);
-      }
-    };
-    getUser();
-  }, []);
+    client(`/users/${userData}`).then(
+      (response) => (
+        setUserName(response.data.fullName),
+        setUserPost(response.data.posts),
+        setUserEmail(response.data.email),
+        setUserFollower(response.data.followers),
+        setUserFollowing(response.data.following),
+        setUserComment(response.data.comments),
+        setImage(response.data.image || prof)
+        // checkUser()
+      ),
+    );
+  }, [userData]);
 
   return (
     <>
@@ -66,7 +78,7 @@ export default function MyPage() {
           <div className="flex">
             <img
               src={image}
-              alt="profile"
+              alt="profileImg"
               className="mr-[18px] size-[80px] overflow-hidden rounded-full object-fill"
             />
             <div className="left-[100px] inline-block content-center">

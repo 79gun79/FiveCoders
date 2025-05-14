@@ -1,9 +1,9 @@
-import profile from '../assets/imgs/기본 프로필.png';
 import Button from './Button';
 import { AiFillMessage } from 'react-icons/ai';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
 import { postData } from '../data/PostData';
+import { client } from '../services/axios';
 
 export default function MyPost({
   userName,
@@ -14,6 +14,13 @@ export default function MyPost({
 }) {
   // const [userName, setUserName] = useState();
   const [like, setLike] = useState(new Array(postData.length).fill(0));
+  const [image, setImage] = useState('');
+  const [userData, setUserData] = useState<[]>([]);
+
+  client('/auth-user').then((response) => setUserData(response.data._id));
+
+  console.log(userData);
+
   const handlesetLike = (i) => {
     const copyLike = [...like];
     if (copyLike[i] === 0) {
@@ -24,6 +31,12 @@ export default function MyPost({
     setLike(copyLike);
   };
 
+  useEffect(() => {
+    client(`/users/${userData}`).then((response) =>
+      setImage(response.data.image),
+    );
+  }, [userData]);
+
   return (
     <>
       <div>
@@ -31,7 +44,7 @@ export default function MyPost({
           <div className="postBox block">
             <div className="flex">
               <img
-                src={profile}
+                src={image}
                 alt="프로필"
                 className="h-[50px] w-[50px] rounded-full"
               />
