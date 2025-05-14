@@ -13,7 +13,8 @@ import IsLoggedInModal from './IsLoggedInModal';
 import { deletePost } from '../utils/post';
 import { useAuthStore } from '../stores/authStore';
 
-export default function PostPage({ post }: { post: Post }) {
+export default function PostComponent({ post }: { post: Post }) {
+  const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
   const [liked, setLiked] = useState(false);
   const [isCmtForm, setCmtForm] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -73,15 +74,14 @@ export default function PostPage({ post }: { post: Post }) {
     try {
       await deletePost(post._id);
       alert('게시글이 삭제되었습니다.');
-      setIsDeleted(true); // ✅ 삭제 상태 업데이트
+      setIsDeleted(true);
     } catch (err) {
-      const token = useAuthStore.getState().accessToken;
-      console.log('❗❗', token);
       alert('게시글이 삭제에 실패했습니다. 다시 시도해주세요.');
       throw err;
     }
   };
   const { head, body } = parseContent(post.title);
+
   return (
     <>
       {!isDeleted && (
@@ -113,13 +113,15 @@ export default function PostPage({ post }: { post: Post }) {
                     )}
                   >
                     <Button
-                      onClick={() => setIsOpen(true)}
+                      onClick={() => (isLoggedIn ? '' : setIsOpen(true))}
                       className="btn-style-post2 text-black"
                     >
                       수정
                     </Button>
                     <Button
-                      onClick={handDelete}
+                      onClick={() =>
+                        isLoggedIn ? handDelete() : setIsOpen(true)
+                      }
                       className="btn-style-post2 text-[var(--color-red-caution)]"
                     >
                       삭제

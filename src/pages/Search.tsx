@@ -60,7 +60,9 @@ export default function Search() {
             ))}
         {userTab && searchData?.filter((e) => 'fullName' in e).length === 0 && (
           <div className="flex h-[300px] items-center justify-center">
-            <div className="text-[18px] font-medium text-[var(--color-gray4)]">검색 결과가 없습니다.</div>
+            <div className="text-[18px] font-medium text-[var(--color-gray4)]">
+              검색 결과가 없습니다.
+            </div>
           </div>
         )}
 
@@ -72,7 +74,9 @@ export default function Search() {
 
         {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (
           <div className="flex h-[300px] items-center justify-center">
-            <div className="text-[18px] font-medium text-[var(--color-gray4)]">검색 결과가 없습니다.</div>
+            <div className="text-[18px] font-medium text-[var(--color-gray4)]">
+              검색 결과가 없습니다.
+            </div>
           </div>
         )}
       </div>

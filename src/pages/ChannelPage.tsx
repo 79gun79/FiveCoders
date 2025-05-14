@@ -7,6 +7,8 @@ import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { Channel, ChannelImg } from '../types/channel';
 import { client } from '../services/axios';
+import { useAuthStore } from '../stores/authStore';
+import IsLoggedInModal from '../components/IsLoggedInModal';
 
 export default function ChannelPage({
   id,
@@ -15,6 +17,9 @@ export default function ChannelPage({
   id: string;
   info: ChannelImg;
 }) {
+  const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
+  const [isOpen, setIsOpen] = useState(false);
+
   const [subscribes, setSubscribes] = useState(false); // 채널 구독 상태 관리
   const [channelId, setChannelId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -76,7 +81,16 @@ export default function ChannelPage({
                 size={22}
               />
               <div className="flex-grow"></div>
-              <Link to="create" state={{ channelId: channelId }}>
+              <Link
+                to={isLoggedIn ? 'create' : '#'}
+                state={isLoggedIn ? { channelId: channelId } : {}}
+                onClick={(e) => {
+                  if (!isLoggedIn) {
+                    e.preventDefault();
+                    setIsOpen(true);
+                  }
+                }}
+              >
                 <Button
                   className={twMerge(
                     'btn-style',
@@ -91,6 +105,7 @@ export default function ChannelPage({
             </div>
           </div>
           <PostList key={channelId} channelId={channelId} />
+          {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
         </div>
       )}
     </>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { client } from '../services/axios';
-import PostPage from './PostPage';
+
+import PostComponent from './PostComponent.tsx';
 
 export default function PostList({ channelId }: { channelId: string }) {
   // 상태 관리
@@ -30,7 +31,7 @@ export default function PostList({ channelId }: { channelId: string }) {
     <>
       {posts.length > 0 ? (
         posts.map((post) => {
-          return <PostPage key={post._id} post={post} />;
+          return <PostComponent key={post._id} post={post} />;
         })
       ) : (
         <p>포스트가 없습니다.</p>
