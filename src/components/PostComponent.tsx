@@ -14,6 +14,7 @@ import { useAuthStore } from '../stores/authStore';
 import { parseContent } from '../utils/parseContent';
 import { cleanContent } from '../utils/cleanContent';
 import { Link } from 'react-router-dom';
+import { customToast, ToastType } from '../utils/customToast';
 
 export default function PostComponent({
   post,
@@ -54,10 +55,10 @@ export default function PostComponent({
     if (!window.confirm('해당 게시글을 삭제하시겠습니까?')) return;
     try {
       await deletePost(post._id);
-      alert('게시글이 삭제되었습니다.');
+      customToast('게시물이 삭제 되었습니다!', ToastType.SUCCESS);
       setIsDeleted(true);
     } catch (err) {
-      alert('게시글이 삭제에 실패했습니다. 다시 시도해주세요.');
+      customToast('게시글 삭제에 실패했습니다.', ToastType.ERROR);
       throw err;
     }
   };

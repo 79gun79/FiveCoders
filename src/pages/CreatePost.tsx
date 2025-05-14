@@ -10,8 +10,8 @@ import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
 import { createPost } from '../services/postApi';
 import { channelData } from '../data/channelData';
-
 import { IoMdRemoveCircle } from 'react-icons/io';
+import { customToast, ToastType } from '../utils/customToast';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -119,7 +119,7 @@ export default function CreatePost() {
         image: selectedImage || undefined,
         channelId: cId,
       });
-      alert('게시글이 등록 되었습니다.');
+      customToast('게시물이 등록 되었습니다!', ToastType.SUCCESS);
       navigate(`/channel/${cLink}`);
     } catch (err) {
       alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
