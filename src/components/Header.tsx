@@ -16,7 +16,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-center border-b border-[var(--color-gray4)] bg-white">
+    <header className="z-10 flex items-center justify-center border-b border-[var(--color-gray4)] bg-white">
       <Link to={'/'} className="absolute left-8 cursor-pointer">
         <img src={Logo} alt="Logo" className="w-40" />
       </Link>
