@@ -71,7 +71,7 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       const container = document.querySelector('.ql-container');
 
       editor?.classList.add(
-        'min-w-[656px]',
+        'w-full',
         'min-h-[419px]',
         'p-4',
         'textBasic',
@@ -82,18 +82,23 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       editor?.setAttribute('data-placeholder', '내용을 입력하세요');
 
       toolbar?.classList.add(
+        'w-full',
         'rounded-t-xl',
         'border-[var(--color-gray4)]',
         'bg-white',
       );
 
-      container?.classList.add('rounded-b-xl', 'border-[var(--color-gray4)]');
+      container?.classList.add(
+        'w-full',
+        'rounded-b-xl',
+        'border-[var(--color-gray4)]',
+      );
     }, []);
 
     return (
       <>
         <div
-          className={`rounded-xl transition-all ${
+          className={`mx-auto w-full min-w-[654px] rounded-xl transition-all ${
             isFocused ? 'commentBorder' : ''
           }`}
         >
