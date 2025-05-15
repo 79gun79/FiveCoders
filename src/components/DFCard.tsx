@@ -4,6 +4,9 @@ import logo_small from '../assets/던파로고미니.png';
 import logo_big from '../assets/던파로고.png';
 import fame from '../assets/명성치.png';
 import { IoIosSettings } from 'react-icons/io';
+import { client } from '../services/axios';
+import axios from 'axios';
+import { useAuthStore } from '../stores/authStore';
 
 // const serverId = 'hilder';
 // const charName = '변신캐설월화';
@@ -19,6 +22,9 @@ export default function DFCard() {
   const [sInput, setSInput] = useState<string>('');
   const [server, setServer] = useState<string>('');
   const [visible, setVisible] = useState<boolean>(false);
+  const [userData, setUserData] = useState<[]>([]);
+  const [username, setUsername] = useState<string>('');
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const onChange = (e) => {
     setInput(e.target.value);
@@ -28,11 +34,32 @@ export default function DFCard() {
     setSInput(e.target.value);
   };
 
+  const token = useAuthStore.getState().accessToken;
+
   const onClick = () => {
     setNickName(input);
     setServer(sInput);
     setInput('');
     setVisible(true);
+    try {
+      axios.put(
+        `${API_URL}settings/update-user`,
+        {
+          fullName: username,
+          username: {
+            Nickname: nickName,
+            server: server,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSetting = () => {
@@ -59,6 +86,13 @@ export default function DFCard() {
     }
   };
   useEffect(() => {
+    client('/auth-user').then((response) => setUserData(response.data._id));
+    client(`/users/${userData}`).then((response) => [
+      setUsername(response.data.fullName),
+      setNickName(response.data.username.Nickname),
+      setServer(response.data.username.server),
+    ]);
+
     const fetchData = async () => {
       try {
         const player = await getUser(server, nickName);
@@ -73,7 +107,7 @@ export default function DFCard() {
     };
     fetchData();
     serverName();
-  }, [nickName, server]);
+  }, [nickName, server, userData]);
 
   return (
     <>
