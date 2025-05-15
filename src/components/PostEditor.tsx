@@ -21,11 +21,9 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
   ({ className, value, onChange, onImageChange }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
 
-    // ✅ ReactQuill reference 생성
     const quillRef = useRef<ReactQuill>(null);
     useImperativeHandle(ref, () => quillRef.current!, []);
 
-    // ✅ 이미지 핸들러 정의
     const imageHandler = () => {
       const input = document.createElement('input');
       input.setAttribute('type', 'file');
@@ -41,7 +39,6 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       };
     };
 
-    // ✅ ReactQuill 모듈 설정
     const modules = useMemo(() => {
       return {
         toolbar: {
@@ -74,7 +71,7 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       const container = document.querySelector('.ql-container');
 
       editor?.classList.add(
-        'min-w-[656px]',
+        'w-full',
         'min-h-[419px]',
         'p-4',
         'textBasic',
@@ -85,18 +82,23 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       editor?.setAttribute('data-placeholder', '내용을 입력하세요');
 
       toolbar?.classList.add(
+        'w-full',
         'rounded-t-xl',
         'border-[var(--color-gray4)]',
         'bg-white',
       );
 
-      container?.classList.add('rounded-b-xl', 'border-[var(--color-gray4)]');
+      container?.classList.add(
+        'w-full',
+        'rounded-b-xl',
+        'border-[var(--color-gray4)]',
+      );
     }, []);
 
     return (
       <>
         <div
-          className={`rounded-xl transition-all ${
+          className={`mx-auto w-full min-w-[654px] rounded-xl transition-all ${
             isFocused ? 'commentBorder' : ''
           }`}
         >

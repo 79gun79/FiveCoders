@@ -14,7 +14,9 @@ import { useAuthStore } from '../stores/authStore';
 import { parseContent } from '../utils/parseContent';
 import { cleanContent } from '../utils/cleanContent';
 import { Link } from 'react-router-dom';
-import { customToast, ToastType } from '../utils/customToast';
+import { customToast } from '../utils/customToast';
+import { HiTrash } from 'react-icons/hi';
+import { customConfirm } from '../utils/customConfirm';
 
 export default function PostComponent({
   post,
@@ -32,7 +34,6 @@ export default function PostComponent({
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
-  // const { id } = useParams();
   const { comments, addComment, deleteComment } = useCommentStore();
 
   // 외부 클릭 시 드롭메뉴 닫기
@@ -52,13 +53,19 @@ export default function PostComponent({
   }, []);
 
   const handDelete = async () => {
-    if (!window.confirm('해당 게시글을 삭제하시겠습니까?')) return;
+    const isConfirmed = await customConfirm('해당 게시글을 삭제하시겠습니까?');
+    if (!isConfirmed) return;
+
     try {
       await deletePost(post._id);
-      customToast('게시물이 삭제 되었습니다!', ToastType.SUCCESS);
+      customToast(
+        '게시물이 삭제 되었습니다!',
+        'success',
+        <HiTrash className="text-[var(--color-sub)]" size={24} />,
+      );
       setIsDeleted(true);
     } catch (err) {
-      customToast('게시글 삭제에 실패했습니다.', ToastType.ERROR);
+      customToast('게시글 삭제에 실패했습니다.', 'error');
       throw err;
     }
   };
