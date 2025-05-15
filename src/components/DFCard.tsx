@@ -58,11 +58,6 @@ export default function DFCard() {
   };
   useEffect(() => {
     client('/auth-user').then((response) => setUserData(response.data._id));
-    client(`/users/${userData}`).then((response) => [
-      setNickName(response.data.username.Nickname),
-      setServer(response.data.username.server),
-    ]);
-
     const fetchData = async () => {
       try {
         const player = await getUser(server, nickName);
@@ -76,7 +71,7 @@ export default function DFCard() {
     };
     fetchData();
     serverName();
-  }, [server, userData]);
+  }, [nickName, server, userData]);
 
   return (
     <>
