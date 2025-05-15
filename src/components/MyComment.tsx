@@ -1,4 +1,6 @@
-import profile from '../assets/imgs/기본 프로필.png';
+import { useEffect, useState } from 'react';
+// import profile from '../assets/imgs/기본 프로필.png';
+import { client } from '../services/axios';
 
 export default function MyComment({
   userName,
@@ -7,13 +9,24 @@ export default function MyComment({
   userName: string;
   userComment: CommentData[];
 }) {
+  const [image, setImage] = useState('');
+  const [userData, setUserData] = useState<[]>([]);
+
+  client('/auth-user').then((response) => setUserData(response.data._id));
+
+  useEffect(() => {
+    client(`/users/${userData}`).then((response) =>
+      setImage(response.data.image),
+    );
+  }, [userData]);
+
   return (
     <>
       {userComment.map((v) => (
         <div className="commentBox block">
           <div className="flex">
             <img
-              src={profile}
+              src={image}
               alt="프로필"
               className="h-[50px] w-[50px] rounded-full"
             />
