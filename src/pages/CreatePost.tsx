@@ -1,4 +1,4 @@
-import { FaCaretDown } from 'react-icons/fa';
+import { FaCaretDown, FaCheckCircle } from 'react-icons/fa';
 import Button from '../components/Button';
 import { useEffect, useRef, useState } from 'react';
 import PostEditor from '../components/PostEditor';
@@ -11,7 +11,8 @@ import PostHeadInput from '../components/PostHeadInput';
 import { createPost } from '../services/postApi';
 import { channelData } from '../data/channelData';
 import { IoMdRemoveCircle } from 'react-icons/io';
-import { customToast, ToastType } from '../utils/customToast';
+import { customToast } from '../utils/customToast';
+import { customConfirm } from '../utils/customConfirm';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -71,15 +72,18 @@ export default function CreatePost() {
 
   const handleCancel = async () => {
     if (!validateEmptyContent(content) || title) {
-      if (
-        !window.confirm('작성 중인 내용이 있습니다. 작성을 그만하시겠습니까?')
-      )
-        return;
+      const isConfirmed = await customConfirm(
+        '작성 중인 내용이 있습니다.\n작성을 그만하시겠습니까?',
+      );
+      if (!isConfirmed) return;
     }
     try {
       await navigate(`/channel/${id}`);
     } catch {
-      alert('동작 중에 오류가 발생했습니다. 다시 시도 해주세요!');
+      customToast(
+        '동작 중에 오류가 발생했습니다. 다시 시도 해주세요!',
+        'error',
+      );
     }
   };
 
@@ -88,7 +92,7 @@ export default function CreatePost() {
     let hasError = false;
 
     if (!cLink) {
-      alert('채널을 선택해주세요!');
+      customToast('채널을 선택해주세요!', 'warning');
       return;
     }
 
@@ -111,7 +115,8 @@ export default function CreatePost() {
     }
 
     if (hasError) return;
-    if (!window.confirm('게시글을 등록하시겠습니까?')) return;
+    const isConfirmed = await customConfirm('게시글을 등록하시겠습니까?');
+    if (!isConfirmed) return;
 
     try {
       await createPost({
@@ -119,10 +124,14 @@ export default function CreatePost() {
         image: selectedImage || undefined,
         channelId: cId,
       });
-      customToast('게시물이 등록 되었습니다!', ToastType.SUCCESS);
+      customToast(
+        '게시물이 등록 되었습니다!',
+        'success',
+        <FaCheckCircle className="text-[var(--color-sub)]" />,
+      );
       navigate(`/channel/${cLink}`);
     } catch (err) {
-      alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
+      customToast('게시글이 등록에 실패했습니다. 다시 시도해주세요.', 'error');
       throw err;
     }
   };

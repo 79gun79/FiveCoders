@@ -1,4 +1,4 @@
-//import DFCard from '../components/DFCard';
+import DFCard from '../components/DFCard';
 import DiscordCard from '../components/DiscordCard';
 import GameCarousel from '../components/GameCarousel';
 import SteamCard from '../components/SteamCard';

@@ -1,16 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import channelImg from '../assets/channelImg.svg';
 import { FaRegBell } from 'react-icons/fa';
 import NotificationDropdown from './NotificationDropdown';
 import { dummyNotifications } from '../data/dummyChannels';
 import { Notification } from '../types/notification';
+import { twMerge } from 'tailwind-merge';
+import Button from './Button';
+import { client } from '../services/axios';
+import { useAuthStore } from '../stores/authStore';
 
 export default function HeaderLogin() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [notifications, setNotifications] =
     useState<Notification[]>(dummyNotifications);
+  const [profileDropdown, setProfileDropdown] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const logout = useAuthStore((state) => state.logout);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -35,8 +42,13 @@ export default function HeaderLogin() {
     );
   };
 
-  const handleClick = () => {
-    navigate(`/mypage`);
+  const handleClick = () => setProfileDropdown(!profileDropdown);
+
+  const logoutHandler = () => {
+    client.post('/logout');
+    logout();
+    setModalOpen(false);
+    navigate('/');
   };
 
   useEffect(() => {
@@ -78,14 +90,58 @@ export default function HeaderLogin() {
           onRead={markNotificationAsRead}
         />
       </div>
-      <div>
+      <button type="button" onClick={handleClick}>
         <img
-          onClick={handleClick}
           src={channelImg}
           alt="channelImg"
           className="h-full w-full cursor-pointer rounded-full object-cover"
         />
-      </div>
+      </button>
+      {profileDropdown && (
+        <div className="absolute top-11 z-50 flex w-25 flex-col rounded-lg border border-[var(--color-gray3)] bg-white">
+          <button
+            className="mx-auto w-full rounded-t-lg px-1 py-1 hover:bg-[var(--color-gray1)]"
+            onClick={() => setProfileDropdown(false)}
+          >
+            <Link to="/mypage">마이페이지</Link>
+          </button>
+          <button
+            className="cursor-pointer rounded-b-lg px-1 py-1 text-[#f00] hover:bg-[var(--color-gray1)]"
+            onClick={() => {
+              setProfileDropdown(false);
+              setModalOpen(true);
+            }}
+          >
+            로그아웃
+          </button>
+        </div>
+      )}
+      {modalOpen && (
+        <>
+          <div className="fixed inset-0 z-100 bg-black opacity-50"></div>
+          <div className="fixed inset-0 z-150 flex items-center justify-center">
+            <div className="w-[400px] rounded-[8px] bg-white p-8 text-center shadow-lg">
+              <p className="mb-[32px] text-[18px] font-medium">
+                로그아웃 하시겠습니까?
+              </p>
+              <div className="flex justify-center gap-4">
+                <Button
+                  className={twMerge(
+                    'btn-style-modal',
+                    'border border-[var(--color-gray4)] bg-white text-[var(--color-text-black)] hover:bg-[var(--color-gray1)]',
+                  )}
+                  onClick={() => setModalOpen(false)}
+                >
+                  아니오
+                </Button>
+                <Button className="btn-style-modal" onClick={logoutHandler}>
+                  예
+                </Button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
