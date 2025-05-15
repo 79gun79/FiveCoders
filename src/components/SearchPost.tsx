@@ -2,16 +2,20 @@ import { useEffect, useState } from 'react';
 import { client } from '../services/axios';
 import PostComponent from './PostComponent';
 
-export default function SearchPost({ post }: { post: Post }) {
-  const [userInfo, setUserInfo] = useState<User>();
+export default function SearchPost({ searchId }: { searchId: string }) {
+  const [post, setPost] = useState<Post>();
 
   useEffect(() => {
-    client(`/users/${post.author}`).then((res) => setUserInfo(res.data));
-  }, [post]);
+    client(`/posts/${searchId}`).then((res) => setPost(res.data));
+  }, [searchId]);
 
   return (
-    <div className="mb-5">
-      <PostComponent post={post} userInfo={userInfo} />
-    </div>
+    <>
+      {post && (
+        <div className="mb-5">
+          <PostComponent post={post} userInfo={post.author} />
+        </div>
+      )}
+    </>
   );
 }
