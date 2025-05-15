@@ -22,7 +22,7 @@ export default function MyComment({
 
   return (
     <>
-      {userComment.map((v) => (
+      {userComment.map((v, i) => (
         <div className="commentBox block">
           <div className="flex">
             <img

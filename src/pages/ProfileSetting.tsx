@@ -11,6 +11,7 @@ import { client } from '../services/axios';
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 import ProfileUpload from '../components/ProfileUpload';
+import prof from '../assets/imgs/기본 프로필.png';
 
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');
@@ -19,17 +20,17 @@ export default function ProfileSetting() {
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [saveImage, setSaveImage] = useState<File | null>();
+  const [saveImage, setSaveImage] = useState<File | null | string>();
   const [loading, setLoading] = useState<boolean>(false);
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
 
-  const handleImageChange = (imageFile: File | null) => {
+  const handleImageChange = (imageFile: File | null | string) => {
     if (imageFile) {
       setSaveImage(imageFile);
       console.log(imageFile);
     } else {
-      setSaveImage(null);
+      setSaveImage(prof);
     }
   };
 
@@ -66,7 +67,7 @@ export default function ProfileSetting() {
       !validateNewPassword(password));
 
   const notify = async () => {
-    if (isFormValid === true && saveImage) {
+    if (isFormValid === true) {
       setPassword('');
       setConfirmPassword('');
       setButtonDisabled(true);
@@ -105,7 +106,7 @@ export default function ProfileSetting() {
       try {
         const formData = new FormData();
         // console.log('saveImage"', saveImage);
-        formData.append('image', saveImage);
+        formData.append('image', saveImage || prof);
         // console.log(...formData);
 
         await axios({
@@ -142,6 +143,10 @@ export default function ProfileSetting() {
     ]);
   }, [userData]);
 
+  const handleRemoveProf = () => {
+    setSaveImage(prof);
+  };
+
   return (
     <>
       <div className="flex justify-center">
@@ -153,6 +158,7 @@ export default function ProfileSetting() {
               changedImage={handleImageChange}
               userData={userData}
             />
+            <button onClick={handleRemoveProf}>제거</button>
           </div>
           <div className="mt-13.5">
             <div className="flex items-center">
