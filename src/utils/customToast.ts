@@ -1,63 +1,39 @@
-import { Bounce, toast } from 'react-toastify';
+import { Slide, toast, ToastIcon, ToastPosition } from 'react-toastify';
 
-export enum ToastType {
-  SUCCESS = 'success',
-  ERROR = 'error',
-  WARNING = 'warning',
-  INFO = 'info',
-}
+type ToastType = 'success' | 'error' | 'warning' | 'info';
 
-export const customToast = (message: string, type: ToastType) => {
-  switch (type) {
-    case ToastType.SUCCESS:
-      toast.success(message, {
-        position: 'top-center',
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-        transition: Bounce,
-      });
-      break;
-    case ToastType.ERROR:
-      toast.error(message, {
-        position: 'top-center',
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-        transition: Bounce,
-      });
-      break;
-    case ToastType.WARNING:
-      toast.warning(message, {
-        position: 'top-center',
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-        transition: Bounce,
-      });
-      break;
-    case ToastType.INFO:
-      toast.info(message, {
-        position: 'top-center',
-        autoClose: 1000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: 'light',
-        transition: Bounce,
-      });
-      break;
-    default:
-      break;
-  }
+// 공통된 옵션 정의
+const commonOptions = {
+  position: 'top-center' as ToastPosition,
+  autoClose: 2000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  theme: 'light',
+  transition: Slide,
+};
+
+export const customToast = (
+  message: string,
+  type: ToastType,
+  icon?: ToastIcon | false,
+  color?: string,
+  backgroundColor?: string,
+) => {
+  const toastFn = {
+    success: toast.success,
+    error: toast.error,
+    warning: toast.warning,
+    info: toast.info,
+  }[type];
+
+  toastFn(message, {
+    ...commonOptions,
+    icon,
+    style: {
+      color: color || '#000',
+      backgroundColor: backgroundColor || '#fff',
+    },
+  });
 };

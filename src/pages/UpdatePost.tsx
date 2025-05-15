@@ -12,6 +12,9 @@ import { updatePost } from '../services/postApi';
 import { channelData } from '../data/channelData';
 import { parseContent } from '../utils/parseContent';
 import { IoMdRemoveCircle } from 'react-icons/io';
+import { customToast } from '../utils/customToast';
+import { FaRotate } from 'react-icons/fa6';
+import { customConfirm } from '../utils/customConfirm';
 
 export default function UpdatePost() {
   const navigate = useNavigate();
@@ -79,12 +82,16 @@ export default function UpdatePost() {
 
   const handleCancel = async () => {
     if (!validateEmptyContent(content) || title) {
-      if (!window.confirm('수정을 그만하시겠습니까?')) return;
+      const isConfirmed = await customConfirm('수정을 그만하시겠습니까?');
+      if (!isConfirmed) return;
     }
     try {
       await navigate(`/channel/${id}`);
     } catch {
-      alert('동작 중에 오류가 발생했습니다. 다시 시도 해주세요!');
+      customToast(
+        '동작 중에 오류가 발생했습니다. 다시 시도 해주세요!',
+        'error',
+      );
     }
   };
 
@@ -93,7 +100,7 @@ export default function UpdatePost() {
     let hasError = false;
 
     if (!cLink) {
-      alert('채널을 선택해주세요!');
+      customToast('채널을 선택해주세요!', 'warning');
       return;
     }
 
@@ -116,7 +123,8 @@ export default function UpdatePost() {
     }
 
     if (hasError) return;
-    if (!window.confirm('게시글을 수정하시겠습니까?')) return;
+    const isConfirmed = await customConfirm('게시글을 수정하시겠습니까?');
+    if (!isConfirmed) return;
 
     try {
       await updatePost({
@@ -126,10 +134,14 @@ export default function UpdatePost() {
         imageToDeletePublicId: post.imagePublicId,
         channelId: cId,
       });
-      alert('게시글이 수정되었습니다.');
+      customToast(
+        '게시물이 수정 되었습니다!',
+        'success',
+        <FaRotate className="text-[var(--color-deep-orange)]" size={24} />,
+      );
       navigate(`/channel/${cLink}`);
     } catch (err) {
-      alert('게시글 수정에 실패했습니다. 다시 시도해주세요.');
+      customToast('게시글 수정에 실패했습니다.', 'error');
       throw err;
     }
   };
