@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import profile from '../assets/imgs/기본 프로필.png';
+import profile from '../assets/imgs/기본 프로필.png';
 import { client } from '../services/axios';
 
 export default function MyComment({
@@ -11,18 +11,22 @@ export default function MyComment({
 }) {
   const [image, setImage] = useState('');
   const [userData, setUserData] = useState<[]>([]);
+  const [postDate, setPostDate] = useState<[]>([]);
+
+  console.log(postDate);
 
   client('/auth-user').then((response) => setUserData(response.data._id));
 
   useEffect(() => {
-    client(`/users/${userData}`).then((response) =>
-      setImage(response.data.image),
-    );
+    client(`/users/${userData}`).then((response) => [
+      setImage(response.data.image || profile),
+      setPostDate(response.data.comments),
+    ]);
   }, [userData]);
 
   return (
     <>
-      {userComment.map((v, i) => (
+      {userComment.map((v) => (
         <div className="commentBox block">
           <div className="flex">
             <img
