@@ -39,7 +39,6 @@ type MyFollower = {
 
 type Tooltip = {
   content: string;
-  children: React.ReactNode;
 };
 
 type dfData = {
