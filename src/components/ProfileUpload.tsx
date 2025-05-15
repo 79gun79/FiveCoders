@@ -5,7 +5,6 @@ import { client } from '../services/axios';
 import { useAuthStore } from '../stores/authStore';
 import { CiImageOn } from 'react-icons/ci';
 
-
 export default function ProfileUpload({
   userEmail,
   changedImage,
