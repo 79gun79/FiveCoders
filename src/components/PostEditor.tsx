@@ -4,6 +4,7 @@ import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -13,44 +14,64 @@ interface PostEditorProps {
   className?: string;
   value?: string;
   onChange: (value: string) => void;
+  onImageChange: (file: File) => void;
 }
 
 const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
-  ({ className, value, onChange }, ref) => {
+  ({ className, value, onChange, onImageChange }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
 
     const quillRef = useRef<ReactQuill>(null);
     useImperativeHandle(ref, () => quillRef.current!, []);
 
-    const modules = {
-      toolbar: {
-        container: [
-          ['bold', 'italic', 'strike', 'underline', 'image'],
-          [
-            {
-              color: [
-                'red',
-                'orange',
-                'yellow',
-                'green',
-                'blue',
-                'purple',
-                'pink',
-                'brown',
-                'black',
-              ],
-            },
-          ],
-        ],
-      },
+    const imageHandler = () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+
+      input.onchange = async () => {
+        const file = input.files ? input.files[0] : null;
+        console.log(file);
+        if (file) {
+          onImageChange(file);
+        }
+      };
     };
+
+    const modules = useMemo(() => {
+      return {
+        toolbar: {
+          container: [
+            ['bold', 'italic', 'strike', 'underline', 'image'],
+            [
+              {
+                color: [
+                  'red',
+                  'orange',
+                  'yellow',
+                  'green',
+                  'blue',
+                  'purple',
+                  'pink',
+                  'brown',
+                  'black',
+                ],
+              },
+            ],
+          ],
+          handlers: { image: imageHandler },
+        },
+      };
+    }, []);
+
     useEffect(() => {
       const editor = document.querySelector('.ql-editor');
       const toolbar = document.querySelector('.ql-toolbar');
       const container = document.querySelector('.ql-container');
 
       editor?.classList.add(
-        'min-w-[656px]',
+        'w-full',
         'min-h-[419px]',
         'p-4',
         'textBasic',
@@ -61,17 +82,23 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
       editor?.setAttribute('data-placeholder', '내용을 입력하세요');
 
       toolbar?.classList.add(
+        'w-full',
         'rounded-t-xl',
         'border-[var(--color-gray4)]',
         'bg-white',
       );
 
-      container?.classList.add('rounded-b-xl', 'border-[var(--color-gray4)]');
-    }, [value]);
+      container?.classList.add(
+        'w-full',
+        'rounded-b-xl',
+        'border-[var(--color-gray4)]',
+      );
+    }, []);
+
     return (
       <>
         <div
-          className={`rounded-xl transition-all ${
+          className={`mx-auto w-full min-w-[654px] rounded-xl transition-all ${
             isFocused ? 'commentBorder' : ''
           }`}
         >
@@ -90,4 +117,5 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
     );
   },
 );
+
 export default PostEditor;

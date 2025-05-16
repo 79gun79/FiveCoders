@@ -1,19 +1,24 @@
-import { FaCaretDown } from 'react-icons/fa';
+import { FaCaretDown, FaCheckCircle } from 'react-icons/fa';
 import Button from '../components/Button';
 import { useEffect, useRef, useState } from 'react';
 import PostEditor from '../components/PostEditor';
 import { twMerge } from 'tailwind-merge';
 import ChooseCommunity from '../components/ChooseCommunity';
 import { useNavigate, useParams } from 'react-router-dom';
-import { usePostStore } from '../stores/postStore';
-import { dummyChannels } from '../data/dummyChannels';
 import { validateEmptyContent } from '../utils/validators';
 import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
+import { createPost } from '../services/postApi';
+import { channelData } from '../data/channelData';
+import { IoMdRemoveCircle } from 'react-icons/io';
+import { customToast } from '../utils/customToast';
+import { customConfirm } from '../utils/customConfirm';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string>('');
   const [chooseList, setChooseList] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null); // 자식 컴포넌트에서 사용
@@ -23,17 +28,18 @@ export default function CreatePost() {
 
   const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
-  const [cId, setCId] = useState<string | null>(null);
+  const [cLink, setCLink] = useState('');
+  const [cId, setCId] = useState('');
 
   const navigate = useNavigate();
-  const { createPost } = usePostStore(); // 전역으로 관리되는 상태 가져오기
   const { id } = useParams();
 
   useEffect(() => {
-    const currentChannel = dummyChannels.find((v) => v._id === id);
+    const currentChannel = channelData.find((v) => v.channelId === id);
     if (currentChannel) {
       setCName(currentChannel.name);
-      setCIcon(currentChannel.imageUrl);
+      setCIcon(currentChannel.bannerImg);
+      setCLink(currentChannel.channelId);
       setCId(currentChannel._id);
     }
   }, [id]);
@@ -41,11 +47,13 @@ export default function CreatePost() {
   const handleChannelChange = (
     channelName: string,
     channelIcon: string,
+    channelLink: string,
     channelId: string,
   ) => {
     setCName(channelName);
     setCIcon(channelIcon);
     setChooseList(false);
+    setCLink(channelLink);
     setCId(channelId);
   };
 
@@ -54,17 +62,28 @@ export default function CreatePost() {
     if (!validateEmptyContent(value)) setContentError(false);
   };
 
+  const handleImageChange = (file: File) => {
+    console.log('선택된 이미지: ', file);
+    setSelectedImage(file);
+
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
+  };
+
   const handleCancel = async () => {
     if (!validateEmptyContent(content) || title) {
-      if (
-        !window.confirm('작성 중인 내용이 있습니다. 작성을 그만하시겠습니까?')
-      )
-        return;
+      const isConfirmed = await customConfirm(
+        '작성 중인 내용이 있습니다.\n작성을 그만하시겠습니까?',
+      );
+      if (!isConfirmed) return;
     }
     try {
       await navigate(`/channel/${id}`);
     } catch {
-      alert('동작 중에 오류가 발생했습니다. 다시 시도 해주세요!');
+      customToast(
+        '동작 중에 오류가 발생했습니다. 다시 시도 해주세요!',
+        'error',
+      );
     }
   };
 
@@ -72,8 +91,8 @@ export default function CreatePost() {
     e.preventDefault();
     let hasError = false;
 
-    if (!cId) {
-      alert('채널을 선택해주세요!');
+    if (!cLink) {
+      customToast('채널을 선택해주세요!', 'warning');
       return;
     }
 
@@ -96,14 +115,24 @@ export default function CreatePost() {
     }
 
     if (hasError) return;
-    if (!window.confirm('게시글을 등록하시겠습니까?')) return;
+    const isConfirmed = await customConfirm('게시글을 등록하시겠습니까?');
+    if (!isConfirmed) return;
 
     try {
-      await createPost(cId as string, title + content);
-      alert('게시글이 등록 되었습니다.');
-      navigate(`/channel/${cId}`);
-    } catch {
-      alert('게시글이 등록에 실패했습니다. 다시 시도해주세요.');
+      await createPost({
+        title: title + content,
+        image: selectedImage || undefined,
+        channelId: cId,
+      });
+      customToast(
+        '게시물이 등록 되었습니다!',
+        'success',
+        <FaCheckCircle className="text-[var(--color-sub)]" />,
+      );
+      navigate(`/channel/${cLink}`);
+    } catch (err) {
+      customToast('게시글이 등록에 실패했습니다. 다시 시도해주세요.', 'error');
+      throw err;
     }
   };
 
@@ -144,6 +173,30 @@ export default function CreatePost() {
           </Button>
           {chooseList && <ChooseCommunity onChange={handleChannelChange} />}
         </div>
+        {previewImage ? (
+          <div className={twMerge('postBorder2', 'relative rounded-xl p-4')}>
+            <img src={previewImage} alt="Preview" className="" />
+            <Button
+              onClick={() => {
+                setPreviewImage('');
+                setSelectedImage(null);
+              }}
+              className="removeImgBtn absolute top-2 right-2"
+            >
+              <IoMdRemoveCircle size={24} />
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={twMerge(
+              'postBorder2',
+              'text-base',
+              'rounded-xl p-4 text-[var(--color-gray5)]',
+            )}
+          >
+            선택된 이미지 없음
+          </div>
+        )}
         <PostHeadInput
           ref={titleRef}
           value={title}
@@ -155,10 +208,12 @@ export default function CreatePost() {
           placeholder="제목을 입력하세요"
         />
         {titleError && <p className="cautionMsg">제목을 입력해주세요.</p>}
+
         <PostEditor
           ref={contentRef}
           value={content}
           onChange={handleEditorChange}
+          onImageChange={handleImageChange}
         />
         {contentError && <p className="cautionMsg">내용을 입력해주세요.</p>}
 

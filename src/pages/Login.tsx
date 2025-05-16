@@ -23,7 +23,12 @@ export default function Login() {
         email,
         password,
       });
-      login(data.accessToken);
+      //console.log('로그인 응답:', data);
+
+      const role = data.user.role;
+      const isAdmin = role === 'SuperAdmin';
+
+      login(data.token, isAdmin);
       navigate('/');
     } catch (error) {
       console.log(error);

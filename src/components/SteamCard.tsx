@@ -17,10 +17,13 @@ interface GameInfo {
   game_count: number;
 }
 
-//임시로 저의스팀아이디를 공개합니다 ..ㅎ
-const steamId = '76561198972680084';
+interface SteamCardProps {
+  id: string;
+}
 
-export default function SteamCard() {
+//const steamId = '76561198972680084';
+
+export default function SteamCard({ id }: SteamCardProps) {
   const [card, setCard] = useState<SteamPlayer | null>(null);
   const [games, setGames] = useState<number>(0);
   const [totalPlaytime, setTotalPlaytime] = useState<number>(0);
@@ -31,11 +34,11 @@ export default function SteamCard() {
       setLoading(true);
       try {
         //프로필 정보 조회
-        const players = await getPlayerSummaries([steamId]);
+        const players = await getPlayerSummaries([id]);
         setCard(players[0]);
 
         //보유 게임 수 조회
-        const ownedGames = await getOwnedGames(steamId);
+        const ownedGames = await getOwnedGames(id);
         setGames(ownedGames.game_count);
 
         //전체 플레이 타임
@@ -52,7 +55,7 @@ export default function SteamCard() {
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
   //if (!card) return <div>Loading...</div>;
   return (

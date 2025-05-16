@@ -3,13 +3,17 @@ import DiscordBig from '../assets/discord-big.svg';
 import DiscordSmall from '../assets/discord-small.svg';
 import { getDiscordUser } from '../services/discordApi';
 
-const discordId = '593372604933341210';
+//const discordId = '593372604933341210';
 interface DiscordProfile {
   userid: string;
   avatar: string;
 }
 
-export default function DiscordCard() {
+interface DiscordCardProps {
+  id: string;
+}
+
+export default function DiscordCard({ id }: DiscordCardProps) {
   const [card, setCard] = useState<DiscordProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -17,7 +21,7 @@ export default function DiscordCard() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const profile = await getDiscordUser(discordId);
+        const profile = await getDiscordUser(id);
         //console.log(profile);
 
         setCard({
@@ -31,10 +35,10 @@ export default function DiscordCard() {
       }
     };
     fetchData();
-  }, []);
+  }, [id]);
   return (
     <>
-      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-[linear-gradient(90deg,_#1E2124_0%,_#36393E_48%,_#1E2124_100%)]">
+      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#7289D9] via-[#2C2F34] to-[#1E2124]">
         <div className="flex items-center px-4 py-4">
           <img
             src={DiscordSmall}

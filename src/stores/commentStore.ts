@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { commentsData } from '../data/commentsData';
 import placeholderIcon from '../assets/channelImg.svg';
-import { CommentType } from '../types/post';
 
 export const useCommentStore = create<{
   comments: CommentType[];
