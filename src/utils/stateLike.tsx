@@ -6,7 +6,7 @@ import { customToast } from './customToast';
 import { BiSolidLike } from 'react-icons/bi';
 
 export const stateLike = (initialPost: Post) => {
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<User['_id'] | null>(null);
   const [post, setPost] = useState<Post | null>(initialPost);
 
   const [optPostData, updateOptPost] = useOptimistic(
@@ -47,7 +47,6 @@ export const stateLike = (initialPost: Post) => {
     client('/auth-user').then((response) =>
       setCurrentUserId(response.data._id),
     );
-    // setCurrentUserId('6826bc37cbe4bb60dca4e6a7');
   }, []);
 
   const isLiked =
