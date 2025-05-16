@@ -41,7 +41,7 @@ export const stateLike = (initialPost: Post) => {
   );
 
   useEffect(() => {
-    setCurrentUserId('681db16a890af552f3055777');
+    setCurrentUserId('6826bc37cbe4bb60dca4e6a7');
   }, []);
 
   const isLiked =

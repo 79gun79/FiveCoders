@@ -9,12 +9,13 @@ import { validateEmptyContent } from '../utils/validators';
 import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
 import { updatePost } from '../services/postApi';
-import { channelData } from '../data/channelData';
 import { parseContent } from '../utils/parseContent';
 import { IoMdRemoveCircle } from 'react-icons/io';
 import { customToast } from '../utils/customToast';
 import { FaRotate } from 'react-icons/fa6';
 import { customConfirm } from '../utils/customConfirm';
+import { getImagePreview } from '../utils/localImage';
+import { fetchChannels } from '../services/channelApi';
 
 export default function UpdatePost() {
   const navigate = useNavigate();
@@ -39,19 +40,28 @@ export default function UpdatePost() {
   const [cId, setCId] = useState('');
 
   useEffect(() => {
-    const currentChannel = channelData.find((v) => v.channelId === id);
+    const fetchData = async () => {
+      try {
+        const data = await fetchChannels();
+        const index = parseInt(id ?? '0', 10);
+        const currentChannel = data[index];
 
-    if (currentChannel) {
-      setCName(currentChannel.name);
-      setCIcon(currentChannel.bannerImg);
-      setCLink(currentChannel.channelId);
-      setCId(currentChannel._id);
+        if (currentChannel) {
+          setCName(currentChannel.name);
+          setCIcon(getImagePreview(currentChannel._id) || '');
+          setCLink(String(index));
+          setCId(currentChannel._id);
 
-      const { head, body } = parseContent(post.title);
-      setTitle(head);
-      setContent(body);
-      setPreviewImage(post.image);
-    }
+          const { head, body } = parseContent(post.title);
+          setTitle(head);
+          setContent(body);
+          setPreviewImage(post.image);
+        }
+      } catch (error) {
+        console.error('채널 정보를 불러오는 중 오류가 발생했습니다.', error);
+      }
+    };
+    fetchData();
   }, [post, id]);
 
   const handleChannelChange = (
@@ -86,7 +96,7 @@ export default function UpdatePost() {
       if (!isConfirmed) return;
     }
     try {
-      await navigate(`/channel/${id}`);
+      await navigate(`/channel/${cLink}`);
     } catch {
       customToast(
         '동작 중에 오류가 발생했습니다. 다시 시도 해주세요!',

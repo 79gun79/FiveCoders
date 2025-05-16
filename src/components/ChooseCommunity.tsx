@@ -2,8 +2,9 @@ import { TiStarFullOutline } from 'react-icons/ti';
 import { twMerge } from 'tailwind-merge';
 import { useEffect, useState } from 'react';
 import { IoIosList } from 'react-icons/io';
-import { ChannelImg } from '../types/channel';
-import { channelData } from '../data/channelData';
+import { Channel } from '../types/channel';
+import { fetchChannels } from '../services/channelApi';
+import { getImagePreview } from '../utils/localImage';
 
 export default function ChooseCommunity({
   onChange,
@@ -15,10 +16,18 @@ export default function ChooseCommunity({
     channelId: string,
   ) => void;
 }) {
-  const [channels, setChannels] = useState<ChannelImg[]>([]);
+  const [channels, setChannels] = useState<Channel[]>([]);
 
   useEffect(() => {
-    setChannels(channelData);
+    const fetchData = async () => {
+      try {
+        const data = await fetchChannels();
+        setChannels(data);
+      } catch (error) {
+        console.error('채널 목록을 불러오는 중 오류가 발생했습니다:', error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
@@ -40,20 +49,25 @@ export default function ChooseCommunity({
           <span className="leading-[30px]">전체 커뮤니티</span>
         </div>
         <ul className="gap-[7px] px-1 pb-[10px] text-[13px] font-normal">
-          {channels.map((v) => (
-            <li
-              key={v.channelId}
-              className="flex cursor-pointer items-center gap-2"
-              onClick={() => onChange(v.name, v.bannerImg, v.channelId, v._id)}
-            >
-              <img
-                className={twMerge('postProfile', 'h-[20px] w-[20px]')}
-                src={v.bannerImg}
-                alt="icon"
-              />
-              <span className="leading-[30px]">{v.name}</span>
-            </li>
-          ))}
+          {channels.map((v, index) => {
+            const bannerImg = getImagePreview(v._id) || '';
+            return (
+              <li
+                key={v._id}
+                className="flex cursor-pointer items-center gap-2"
+                onClick={() =>
+                  onChange(v.name, bannerImg, String(index), v._id)
+                }
+              >
+                <img
+                  className={twMerge('postProfile', 'h-[20px] w-[20px]')}
+                  src={bannerImg}
+                  alt="icon"
+                />
+                <span className="leading-[30px]">{v.name}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </>
