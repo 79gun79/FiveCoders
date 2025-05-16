@@ -22,8 +22,6 @@ export default function ProfileUpload({
       } else {
         setImage(prof);
       }
-      console.log(e.target.files[0]);
-
       // 이미지 리더
       const reader = new FileReader();
       reader.onload = () => {
@@ -40,7 +38,6 @@ export default function ProfileUpload({
   useEffect(() => {
     if (Image instanceof File || Image === undefined) {
       changedImage(Image);
-      console.log(Image);
     }
   }, [Image, changedImage]);
 

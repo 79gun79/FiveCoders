@@ -30,7 +30,6 @@ export default function ProfileSetting() {
   const handleImageChange = (imageFile: File | null | string) => {
     if (imageFile) {
       setSaveImage(imageFile);
-      console.log(imageFile);
     } else {
       setSaveImage(prof);
     }
@@ -144,7 +143,6 @@ export default function ProfileSetting() {
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),
     ]);
-    console.log(buttonDisabled);
   }, [userData, buttonDisabled]);
 
   return (
