@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { customToast } from '../utils/customToast';
 import { HiTrash } from 'react-icons/hi';
 import { customConfirm } from '../utils/customConfirm';
+import { stateLike } from '../utils/stateLike';
 
 export default function PostComponent({
   post,
@@ -27,14 +28,14 @@ export default function PostComponent({
 }) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
 
-  const [liked, setLiked] = useState(false);
   const [isCmtForm, setCmtForm] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  const { comments, addComment, deleteComment } = useCommentStore();
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
-  const { comments, addComment, deleteComment } = useCommentStore();
+  const { isLiked, toggleLike, likes, isPending } = stateLike(post);
 
   // 외부 클릭 시 드롭메뉴 닫기
   const handleClickOutside = (e: MouseEvent) => {
@@ -52,7 +53,7 @@ export default function PostComponent({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handDelete = async () => {
+  const handleDelete = async () => {
     const isConfirmed = await customConfirm('해당 게시글을 삭제하시겠습니까?');
     if (!isConfirmed) return;
 
@@ -69,6 +70,7 @@ export default function PostComponent({
       throw err;
     }
   };
+
   const { head, body } = parseContent(post.title);
 
   return (
@@ -119,7 +121,7 @@ export default function PostComponent({
                     )}
                     <Button
                       onClick={() =>
-                        isLoggedIn ? handDelete() : setIsOpen(true)
+                        isLoggedIn ? handleDelete() : setIsOpen(true)
                       }
                       className="btn-style-post2 text-[var(--color-red-caution)]"
                     >
@@ -146,13 +148,16 @@ export default function PostComponent({
 
           <div className="postBottom flex items-center justify-around">
             <Button
-              onClick={() => setLiked(!liked)}
+              onClick={toggleLike}
               className={`btn-style-post ${
-                liked ? 'text-[var(--color-main)]' : 'text-[var(--color-gray5)]'
+                isLiked
+                  ? 'text-[var(--color-main)]'
+                  : 'text-[var(--color-gray5)]'
               }`}
+              disabled={isPending}
             >
               <BiSolidLike className="mr-2" size={13} />
-              <span>좋아요</span>
+              <span>좋아요 {likes.length}</span>
             </Button>
             <Button
               onClick={() => setCmtForm(!isCmtForm)}
