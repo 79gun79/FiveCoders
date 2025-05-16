@@ -15,11 +15,12 @@ import { createPortal } from 'react-dom';
 import { getImagePreview, setImagePreview } from '../utils/localImage';
 import { channelData } from '../data/channelData';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
+import { useSubscriptionStore } from '../stores/subscriptionStore';
 
 export default function ChannelList() {
   const navigate = useNavigate();
   const [channels, setChannels] = useState<Channel[]>([]);
-  const [subscribes, setSubscribes] = useState<string[]>([]);
+  //const [subscribes, setSubscribes] = useState<string[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isAdmin = useAuthStore((state) => state.isAdmin);
   const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +28,10 @@ export default function ChannelList() {
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+
+  //구독 상태 전역 상태 관리
+  const subscribes = useSubscriptionStore((state) => state.subscribes);
+  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   // 인덱스 매핑 테이블
   const [indexMapping, setIndexMapping] = useState<Record<string, number>>({});

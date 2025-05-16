@@ -20,13 +20,16 @@ import UserList from './UserList';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { toast } from 'react-toastify';
 import { customToast } from '../utils/customToast';
+import { useSubscriptionStore } from '../stores/subscriptionStore';
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [channels, setChannels] = useState<Channel[]>([]);
-  const [subscribes, setSubscribes] = useState<string[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [modalOpen, setModalOpen] = useState(false);
+  //구독 상태 전역 상태 관리
+  const subscribes = useSubscriptionStore((state) => state.subscribes);
+  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   //구독한 채널 목록
   const subscribedChannels = channels.filter((channel) =>
@@ -37,9 +40,10 @@ export default function Sidebar() {
   //로그인 O : 구독한 채널 있으면 채널 목록 표시 / 없으면 +커뮤니티 찾기 표시 -> /channels로 리다이렉트
   //로그인 X : + 커뮤니티 찾기 표시 -> 로그인하세요 모달
   useEffect(() => {
-    setSubscribes(getSubscribedChannels); // 로컬에 저장
-  }, []);
+    setSubscribes(getSubscribedChannels()); // 로컬에 저장
+  }, [setSubscribes]);
 
+  //구독한 채널 목록 불러오기
   useEffect(() => {
     const getChannels = async () => {
       try {
