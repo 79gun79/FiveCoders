@@ -1,6 +1,9 @@
 import { startTransition, useOptimistic } from 'react';
 import { useState, useEffect } from 'react';
 import { createLike, deleteLike } from '../services/likesApi';
+import { client } from '../services/axios';
+import { customToast } from './customToast';
+import { BiSolidLike } from 'react-icons/bi';
 
 export const stateLike = (initialPost: Post) => {
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -41,7 +44,10 @@ export const stateLike = (initialPost: Post) => {
   );
 
   useEffect(() => {
-    setCurrentUserId('6826bc37cbe4bb60dca4e6a7');
+    client('/auth-user').then((response) =>
+      setCurrentUserId(response.data._id),
+    );
+    // setCurrentUserId('6826bc37cbe4bb60dca4e6a7');
   }, []);
 
   const isLiked =
@@ -93,6 +99,11 @@ export const stateLike = (initialPost: Post) => {
           ...post!,
           likes: [...post!.likes, newLike],
         }));
+        customToast(
+          `${post?.author.fullName}님의\n게시글에 좋아요를 눌렀습니다!`,
+          'success',
+          <BiSolidLike className="text-[var(--color-sub)]" size={24} />,
+        );
       } catch (err) {
         console.error('좋아요 추가 실패:', err);
       }

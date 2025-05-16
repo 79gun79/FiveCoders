@@ -33,4 +33,16 @@ export const channelData: ChannelImg[] = [
     name: 'MLB 더 쇼 24',
     bannerImg: '/channelImages/mlb_the_show.jpg',
   },
+  {
+    name: '리그오브레전드',
+    bannerImg: '/channelImages/lol.jpg',
+  },
+  {
+    name: '스타크래프트',
+    bannerImg: '/channelImages/starcraft.jpg',
+  },
+  {
+    name: '엘든 링',
+    bannerImg: '/channelImages/elden_ring.jpg',
+  },
 ];

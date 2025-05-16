@@ -32,7 +32,7 @@ export default function PostComponent({
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
-  const { isLiked, toggleLike, likes, isPending } = stateLike(post);
+  const { isLiked, toggleLike, likes } = stateLike(post);
   const [userData, setUserData] = useState<User>();
 
   // 외부 클릭 시 드롭메뉴 닫기
@@ -155,7 +155,7 @@ export default function PostComponent({
                   ? 'text-[var(--color-main)]'
                   : 'text-[var(--color-gray5)]'
               }`}
-              disabled={isPending}
+              disabled={!isLoggedIn}
             >
               <BiSolidLike className="mr-2" size={13} />
               <span>좋아요 {likes.length}</span>
