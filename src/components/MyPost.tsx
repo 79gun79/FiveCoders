@@ -34,14 +34,46 @@ export default function MyPost({
   //   }
   // };
 
+  const likedArr = new Array(postData.length).fill(0);
+
+  console.log(like);
+
   const handlesetLike = async (i) => {
     const copyLike = [...like];
+    const likeNum = myPost[i].likes.length;
+    if (myLike[i]?.post === myPost[i]?._id) {
+      likedArr[i] = 1;
+    } else {
+      likedArr[i] = 0;
+    }
     if (copyLike[i] === 0) {
       copyLike[i] = copyLike[i] + 1;
-      createLike(i);
+      likedArr[i] = likedArr[i] + 1;
+      console.log(myPost[i].likes.length);
+      try {
+        await axios.post(
+          `${API_URL}likes/create`,
+          {
+            postId: myPost[i]._id,
+          },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+        console.log('updated');
+      } catch (error) {
+        console.log(error);
+      }
     } else if (copyLike[i] !== 0) {
       copyLike[i] = copyLike[i] - 1;
-      deleteLike(i);
+      console.log(myLike[i]._id);
+      console.log(i);
+      try {
+        const response = await axios.delete(`${API_URL}likes/delete`, {
+          data: { id: myLike[i]._id },
+        });
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
     }
     setLike(copyLike);
   };
@@ -82,13 +114,14 @@ export default function MyPost({
               <Button
                 className={
                   'textT2 flex w-80 cursor-pointer content-end justify-center hover:bg-[var(--color-gray1)]' +
-                  (like[i] > 0 || myLike[i].post === myPost[i]._id
+                  (like[i] > 0 || myLike[i]?.post === myPost[i]?._id
                     ? ' text-[var(--color-main)]'
                     : ' text-[var(--color-gray5)]')
                 }
                 onClick={() => handlesetLike(i)}
               >
-                <BiSolidLike className="mr-2 h-5" /> 좋아요
+                <BiSolidLike className="mr-2 h-5" /> 좋아요{' '}
+                {myPost[i].likes.length}
               </Button>
               <Button className="textT2 comment w-80">
                 <AiFillMessage className="mr-2 h-5" />

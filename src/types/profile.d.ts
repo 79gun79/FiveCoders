@@ -11,7 +11,7 @@ type UserData = {
 };
 
 type PostData = {
-  lieks: LikeData[];
+  likes: LikeData[];
   comments: CommentData[];
   _id: string;
   author: string;
