@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import channelImg from '../assets/channelImg.svg';
 import { FaRegBell } from 'react-icons/fa';
 import NotificationDropdown from './NotificationDropdown';
-import { dummyNotifications } from '../data/dummyChannels';
 import { Notification } from '../types/notification';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
@@ -13,36 +12,61 @@ import { useAuthStore } from '../stores/authStore';
 export default function HeaderLogin() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [notifications, setNotifications] =
-    useState<Notification[]>(dummyNotifications);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notificationCount, setNotificationCount] = useState(0);
   const logout = useAuthStore((state) => state.logout);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const notificationCount = notifications.filter((n) => !n.isRead).length;
-
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
-
-  const markAllAsRead = () => {
-    setNotifications((prev) =>
-      prev.map((n) => ({
-        ...n,
-        isRead: true,
-      })),
-    );
-  };
+  const profileRef = useRef<HTMLDivElement>(null);
 
   const markNotificationAsRead = (id: string) => {
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
+    setNotificationCount((prev) => Math.max(prev - 1, 0));
   };
 
-  const handleClick = () => setProfileDropdown(!profileDropdown);
+  const toggleNotificationDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsDropdownOpen((prev) => {
+      if (!prev) setProfileDropdown(false);
+      return !prev;
+    });
+  };
+
+  const toggleProfileDropdown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setProfileDropdown((prev) => {
+      if (!prev) setIsDropdownOpen(false);
+      return !prev;
+    });
+  };
+
+  // 알림 api - PUT /notifications/seen 할 때 이어서 구현할 예정
+  const handleClear = () => {
+    setNotifications([]);
+    setNotificationCount(0);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        profileRef.current &&
+        !profileRef.current.contains(e.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+        setProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () =>
+      document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const logoutHandler = () => {
     client.post('/logout');
@@ -51,74 +75,77 @@ export default function HeaderLogin() {
     navigate('/');
   };
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isDropdownOpen]);
-
   return (
-    <div className="absolute right-6 flex items-center gap-4" ref={dropdownRef}>
-      <div className="relative flex items-center">
-        <button onClick={toggleDropdown} className="relative flex items-center">
-          <FaRegBell className="h-6.5 w-6.5 cursor-pointer text-[var(--color-main)]" />
+    <div className="absolute right-6 flex items-center gap-3">
+      <div className="relative" ref={dropdownRef}>
+        <button
+          onClick={toggleNotificationDropdown}
+          type="button"
+          className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full"
+        >
+          <FaRegBell className="h-7 w-7 text-[var(--color-main)]" />
           {notificationCount > 0 && (
             <span className="absolute -top-1 -right-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-red-caution)] px-1.5 py-0.5 text-[10px] font-bold text-[var(--color-bg-white)]">
               {notificationCount > 99 ? '99+' : notificationCount}
             </span>
           )}
         </button>
-        <NotificationDropdown
-          isOpen={isDropdownOpen}
-          onClear={markAllAsRead}
-          notifications={notifications}
-          onRead={markNotificationAsRead}
-        />
+        {isDropdownOpen && (
+          <div className="absolute right-0 z-50 mt-2">
+            <NotificationDropdown
+              isOpen={isDropdownOpen}
+              onClear={handleClear}
+              notifications={notifications}
+              onRead={markNotificationAsRead}
+            />
+          </div>
+        )}
       </div>
-      <button type="button" onClick={handleClick}>
-        <img
-          src={channelImg}
-          alt="channelImg"
-          className="h-full w-full cursor-pointer rounded-full object-cover"
-        />
-      </button>
-      {profileDropdown && (
-        <div className="absolute top-11 z-50 flex w-25 flex-col rounded-lg border border-[var(--color-gray3)] bg-white">
-          <button
-            className="mx-auto w-full rounded-t-lg px-1 py-1 hover:bg-[var(--color-gray1)]"
-            onClick={() => setProfileDropdown(false)}
-          >
-            <Link to="/mypage">마이페이지</Link>
-          </button>
-          <button
-            className="cursor-pointer rounded-b-lg px-1 py-1 text-[#f00] hover:bg-[var(--color-gray1)]"
-            onClick={() => {
-              setProfileDropdown(false);
-              setModalOpen(true);
-            }}
-          >
-            로그아웃
-          </button>
-        </div>
-      )}
+
+      <div className="relative" ref={profileRef}>
+        <button
+          type="button"
+          onClick={toggleProfileDropdown}
+          className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full"
+        >
+          <img
+            src={channelImg}
+            alt="channelImg"
+            className="h-10 w-10 object-cover"
+          />
+        </button>
+        {profileDropdown && (
+          <div className="absolute top-full right-0 z-50 mt-2 w-[100px] rounded-xl border border-[var(--color-gray2)] bg-[var(--color-bg-white)] shadow-md">
+            <ul className="text-[14px] text-[var(--color-text-black)]">
+              <li className="border-b border-[var(--color-gray2)]">
+                <Link to="/mypage">
+                  <button
+                    onClick={() => setProfileDropdown(false)}
+                    className="w-full cursor-pointer rounded-t-xl px-4 py-3 text-center hover:bg-[var(--color-gray2)]"
+                  >
+                    마이페이지
+                  </button>
+                </Link>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setProfileDropdown(false);
+                    setModalOpen(true);
+                  }}
+                  className="w-full cursor-pointer rounded-b-xl px-4 py-3 text-center text-[var(--color-red-caution)] hover:bg-[var(--color-gray2)]"
+                >
+                  로그아웃
+                </button>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
+
       {modalOpen && (
         <>
-          <div className="fixed inset-0 z-100 bg-black opacity-50"></div>
+          <div className="fixed inset-0 z-100 bg-[var(--color-text-black)] opacity-50"></div>
           <div className="fixed inset-0 z-150 flex items-center justify-center">
             <div className="w-[400px] rounded-[8px] bg-white p-8 text-center shadow-lg">
               <p className="mb-[32px] text-[18px] font-medium">
@@ -128,7 +155,7 @@ export default function HeaderLogin() {
                 <Button
                   className={twMerge(
                     'btn-style-modal',
-                    'border border-[var(--color-gray4)] bg-white text-[var(--color-text-black)] hover:bg-[var(--color-gray1)]',
+                    'border border-[var(--color-gray4)] bg-white text-[var(--color-text-black)] hover:bg-[var(--color-gray1)]'
                   )}
                   onClick={() => setModalOpen(false)}
                 >
