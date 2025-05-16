@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
 import { client } from '../services/axios';
 import { CiImageOn } from 'react-icons/ci';
@@ -14,7 +14,6 @@ export default function ProfileUpload({
 }) {
   const [Image, setImage] = useState<File | undefined>();
   const fileInput = useRef<HTMLInputElement | null>(null);
-  // const token = useAuthStore.getState().accessToken;
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
     try {

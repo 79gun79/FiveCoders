@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 import ProfileUpload from '../components/ProfileUpload';
 import prof from '../assets/imgs/기본 프로필.png';
+import { useImageStore } from '../stores/imageStore';
 
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');
@@ -24,6 +25,7 @@ export default function ProfileSetting() {
   const [loading, setLoading] = useState<boolean>(false);
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
+  const setProfileImage = useImageStore((state) => state.setProfileImage);
 
   const handleImageChange = (imageFile: File | null | string) => {
     if (imageFile) {
@@ -118,6 +120,7 @@ export default function ProfileSetting() {
             Authorization: `Bearer ${token}`,
           },
         });
+        setProfileImage(saveImage);
       } catch (error) {
         console.log(error);
       } finally {

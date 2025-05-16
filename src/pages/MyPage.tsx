@@ -5,7 +5,7 @@ import MyPost from '../components/MyPost';
 // import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
 
@@ -44,8 +44,6 @@ export default function MyPage() {
       <MyComment userName={userName} userComment={userComment} image={image} />
     ),
   };
-
-  console.log(userId, myData);
 
   useEffect(() => {
     client('/auth-user').then((response) => setMyData(response.data._id));

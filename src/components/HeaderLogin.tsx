@@ -8,12 +8,14 @@ import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import { client } from '../services/axios';
 import { useAuthStore } from '../stores/authStore';
+import { useImageStore } from '../stores/imageStore';
 
 export default function HeaderLogin() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [myData, setMyData] = useState<[]>([]);
   const [Image, setImage] = useState<string>('');
+  const updatedImage = useImageStore((state) => state.profileImage);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -76,14 +78,12 @@ export default function HeaderLogin() {
     navigate('/');
   };
 
-  client(`/users/${myData}`).then((response) =>
-    setImage(response.data.image || channelImg),
-  );
-
   useEffect(() => {
+    client(`/users/${myData}`).then((response) =>
+      setImage(response.data.image || channelImg || updatedImage),
+    );
     client('/auth-user').then((response) => setMyData(response.data._id));
-    console.log('check');
-  }, [myData]);
+  }, [myData, updatedImage]);
 
   return (
     <div className="absolute right-6 flex items-center gap-3">
