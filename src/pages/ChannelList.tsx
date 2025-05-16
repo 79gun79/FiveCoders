@@ -14,6 +14,7 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { createPortal } from 'react-dom';
 import { getImagePreview, setImagePreview } from '../utils/localImage';
 import { channelData } from '../data/channelData';
+import { channelIndexMapping } from '../utils/channelIndexMapping';
 
 export default function ChannelList() {
   const navigate = useNavigate();
@@ -82,14 +83,8 @@ export default function ChannelList() {
         const channels = await fetchChannels();
         setChannels(channels);
 
-        // 인덱스 매핑 생성
-        const mapping = channels.reduce<Record<string, number>>(
-          (acc, channel, index) => {
-            acc[channel._id] = index;
-            return acc;
-          },
-          {},
-        );
+        // 인덱스 매핑 함수 이용 utils/channelIndexMapping.ts
+        const mapping = channelIndexMapping(channels);
         setIndexMapping(mapping);
 
         channels.forEach((channel) => {
