@@ -3,6 +3,7 @@ import { createChannel } from '../services/channelApi';
 import { setImagePreview } from '../utils/localImage';
 import type { Channel } from '../types/channel';
 import { customToast } from '../utils/customToast';
+import { blobToBase64 } from '../utils/imageConverter';
 
 interface CreateChannelFormProps {
   onClose: () => void;
@@ -19,13 +20,14 @@ export default function CreateChannelForm({
   const [imagePreview, setImagePreviewState] = useState<string | null>(null);
   const [imageFileName, setImageFileName] = useState<string>('');
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
     if (file) {
-      const previewUrl = URL.createObjectURL(file);
       setImageFile(file);
-      setImagePreviewState(previewUrl);
       setImageFileName(file.name);
+
+      const base64Image = await blobToBase64(file);
+      setImagePreviewState(base64Image);
     } else {
       setImageFileName('');
       setImagePreviewState(null);

@@ -12,6 +12,7 @@ import globeIcon from '../assets/globe.svg';
 import homeIcon from '../assets/home.svg';
 import { TiStarFullOutline } from 'react-icons/ti';
 import { getSubscribedChannels } from '../utils/localSubscribe';
+import { getImagePreview } from '../utils/localImage';
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -99,7 +100,7 @@ export default function Sidebar() {
               >
                 <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
                   <img
-                    src={item.imageUrl}
+                    src={getImagePreview(item._id)}
                     alt="channelImg"
                     className="h-full w-full object-cover"
                   />

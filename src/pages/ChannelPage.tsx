@@ -5,49 +5,45 @@ import { useEffect, useState } from 'react';
 import PostList from '../components/PostList';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
-import { Channel, ChannelImg } from '../types/channel';
-import { client } from '../services/axios';
 import { useAuthStore } from '../stores/authStore';
 import IsLoggedInModal from '../components/IsLoggedInModal';
+import { fetchChannels } from '../services/channelApi';
+import { Channel } from '../types/channel';
+import { getImagePreview } from '../utils/localImage';
 
-export default function ChannelPage({
-  id,
-  info,
-}: {
-  id: string;
-  info: ChannelImg;
-}) {
+export default function ChannelPage({ id }: { id: string }) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
   const [isOpen, setIsOpen] = useState(false);
-
   const [subscribes, setSubscribes] = useState(false); // 채널 구독 상태 관리
-  const [channelId, setChannelId] = useState('');
+  const [channelData, setChannelData] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   console.log('채널', id);
 
   useEffect(() => {
-    const fetchChannelId = async () => {
+    const fetchChannelData = async () => {
       try {
-        const { data } = await client.get<Channel[]>(`/channels`);
+        const data = await fetchChannels();
 
-        const matchChannel = data.find((v) => v.name === info.name);
-        if (!matchChannel) {
-          console.log(`채널 ${info.name}을(를) 찾지 못했습니다.`);
-          setIsLoading(false);
-          return;
+        // ✅ 인덱스를 기준으로 채널 정보 가져오기
+        const index = parseInt(id, 10);
+        if (data[index]) {
+          setChannelData(data[index]);
+        } else {
+          console.error(`해당 인덱스 ${id}에 채널이 없습니다.`);
         }
-        setChannelId(matchChannel._id);
       } catch (err) {
         console.error('채널 불러오기 실패:', err);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchChannelId();
-  }, [info]);
 
-  console.log(channelId);
-
+    fetchChannelData();
+  }, [id]);
+  if (!channelData) {
+    return <p>해당 채널 정보를 찾을 수 없습니다.</p>;
+  }
+  const bannerImage = getImagePreview(channelData._id);
   return (
     <>
       {isLoading ? (
@@ -60,7 +56,7 @@ export default function ChannelPage({
             >
               <img
                 className="h-full w-full object-cover"
-                src={info.bannerImg}
+                src={bannerImage || '/gammue.ico'}
               />
             </div>
             <div
@@ -69,7 +65,9 @@ export default function ChannelPage({
                 'flex h-[76px] items-center border px-[20px]',
               )}
             >
-              <h3 className={twMerge('textH3', 'font-bold')}>{info.name}</h3>
+              <h3 className={twMerge('textH3', 'font-bold')}>
+                {channelData.name}
+              </h3>
               <TiStarFullOutline
                 onClick={() => setSubscribes(!subscribes)}
                 className={twMerge(
@@ -83,7 +81,7 @@ export default function ChannelPage({
               <div className="flex-grow"></div>
               <Link
                 to={isLoggedIn ? 'create' : '#'}
-                state={isLoggedIn ? { channelId: channelId } : {}}
+                state={isLoggedIn ? { channelId: id } : {}}
                 onClick={(e) => {
                   if (!isLoggedIn) {
                     e.preventDefault();
@@ -104,7 +102,7 @@ export default function ChannelPage({
               </Link>
             </div>
           </div>
-          <PostList key={channelId} channelId={channelId} />
+          <PostList key={channelData._id} channelId={channelData._id} />
           {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
         </div>
       )}

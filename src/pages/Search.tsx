@@ -82,7 +82,8 @@ export default function Search() {
                   />
                   <span className="text-xl font-bold">{user.fullName}</span>
                   <Link
-                    to={`/mypage/${user._id}`} state={user._id}
+                    to={`/mypage/${user._id}`}
+                    state={user._id}
                     className="absolute right-6.5 cursor-pointer rounded-[8px] bg-[var(--color-gray1)] p-2 text-[var(--color-gray8)] hover:bg-[var(--color-main)] hover:text-white"
                   >
                     프로필 보기
