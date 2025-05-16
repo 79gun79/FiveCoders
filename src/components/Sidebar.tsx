@@ -74,11 +74,11 @@ export default function Sidebar() {
     navigate(`/channel/${index}`);
   };
 
-  console.log(subscribes);
+  //console.log(subscribes);
 
   return (
     <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">
-      <nav>
+      <nav className="my-2.5 h-[130px] flex-col items-center">
         <ul className="p-3">
           <li
             className="flex cursor-pointer items-center rounded-xl px-6 py-3 hover:bg-[var(--color-gray2)]"
@@ -96,56 +96,65 @@ export default function Sidebar() {
           </li>
         </ul>
       </nav>
-      <div className="w-[280px] flex-1 overflow-y-auto">
-        <div className="mt-[10px] flex items-center px-8">
-          <span className="h-px flex-1 bg-[var(--color-gray4)]" />
-        </div>
-        <h2 className="mt-[25px] px-8 py-2 text-[16px] text-[var(--color-gray8)]">
-          즐겨찾는 커뮤니티
-        </h2>
-        {subscribedChannels.length <= 0 ? (
-          <div className="p-2.5">
-            <span
-              onClick={() => {
-                if (isLoggedIn) {
-                  navigate('/channel');
-                } else {
-                  openModal();
-                }
-              }}
-              className="block cursor-pointer px-8 py-2.5 text-[14px] text-[var(--color-gray6)] select-none hover:bg-[var(--color-gray2)]"
-            >
-              + 커뮤니티 찾기
-            </span>
+      {/* 채널 목록과 유저리스트 */}
+      <div className="flex min-h-0 flex-1 flex-col">
+        {/* 채널 목록 */}
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="flex items-center px-8">
+            <span className="h-px flex-1 bg-[var(--color-gray4)]" />
           </div>
-        ) : (
-          <ul className="p-2.5">
-            {subscribedChannels.map((item) => (
-              <li
-                key={item._id}
-                className="flex cursor-pointer items-center rounded-xl px-5.5 py-2.5 text-[16px] hover:bg-[var(--color-gray2)]"
-                onClick={() => channelClickHandler(item._id)}
+          <h2 className="mt-[25px] px-8 py-2 text-[16px] text-[var(--color-gray8)]">
+            즐겨찾는 커뮤니티
+          </h2>
+          {subscribedChannels.length <= 0 ? (
+            <div className="p-2.5">
+              <span
+                onClick={() => {
+                  if (isLoggedIn) {
+                    navigate('/channel');
+                  } else {
+                    openModal();
+                  }
+                }}
+                className="block cursor-pointer px-8 py-2.5 text-[14px] text-[var(--color-gray6)] select-none hover:bg-[var(--color-gray2)]"
               >
-                <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
-                  <img
-                    src={getImagePreview(item._id)}
-                    alt="channelImg"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                <span className="flex-1 text-sm">{item.name}</span>
-                <button onClick={(e) => unSubscribedHandler(e, item._id)}>
-                  <TiStarFullOutline
-                    className={`text-[20px] transition-colors ${'text-[var(--color-orange)] hover:text-[var(--color-gray3)]'}`}
-                  />
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-        {modalOpen && <IsLoggedInModal onClose={closeModal} />}
+                + 커뮤니티 찾기
+              </span>
+            </div>
+          ) : (
+            <ul className="p-2.5">
+              {subscribedChannels.map((item) => (
+                <li
+                  key={item._id}
+                  className="flex cursor-pointer items-center rounded-xl px-5.5 py-2.5 text-[16px] hover:bg-[var(--color-gray2)]"
+                  onClick={() => channelClickHandler(item._id)}
+                >
+                  <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
+                    <img
+                      src={getImagePreview(item._id)}
+                      alt="channelImg"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <span className="flex-1 text-sm">{item.name}</span>
+                  <button onClick={(e) => unSubscribedHandler(e, item._id)}>
+                    <TiStarFullOutline
+                      className={`text-[20px] transition-colors ${'text-[var(--color-orange)] hover:text-[var(--color-gray3)]'}`}
+                    />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          {modalOpen && <IsLoggedInModal onClose={closeModal} />}
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <div className="flex items-center px-6">
+            <span className="h-px flex-1 bg-[var(--color-gray4)]" />
+          </div>
+          <UserList />
+        </div>
       </div>
-      <UserList />
     </aside>
   );
 }
