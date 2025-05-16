@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
 import { postData } from '../data/PostData';
 import { client } from '../services/axios';
-import prof from '../assets/imgs/기본 프로필.png';
+import prof from '../assets/imgs/defaultProfileImg.png';
 import { useParams } from 'react-router';
 
 export default function MyPost({
