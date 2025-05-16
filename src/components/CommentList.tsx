@@ -1,29 +1,57 @@
 import { HiTrash } from 'react-icons/hi';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
+import defaultProfileImage from '../assets/channelImg.svg';
+import { client } from '../services/axios';
+import { useRefreshStore } from '../stores/refreshStore';
 
 export default function CommentList({
   commentId,
+  authorId,
+  authorName,
   comment,
-  coverImage,
-  userName,
-  onDelete,
-}: CommentType & { onDelete: (id: number) => void }) {
+  profileImg,
+  userId,
+}: {
+  commentId: string;
+  authorId: string;
+  authorName: string;
+  comment: string;
+  profileImg: string;
+  userId: string;
+}) {
+  const refresh = useRefreshStore((state) => state.refresh);
+  const doRefresh = useRefreshStore((state) => state.do);
+  const resetRefresh = useRefreshStore((state) => state.reset);
+
+  const commentDelete = () => {
+    const deleteComment = { id: `${commentId}` };
+    client
+      .delete(`/comments/delete`, { data: deleteComment })
+      .then(() => (refresh === 0 ? doRefresh() : resetRefresh()));
+  };
+
   return (
     <>
       <div
         className={twMerge('postBottom', 'flex flex-col gap-2 px-1 py-[16px]')}
       >
         <div className="flex items-center gap-[10px]">
-          <img src={coverImage} alt="profile" className="postProfile" />
-          <p className="text-base font-medium">{userName}</p>
+          <img
+            src={profileImg || defaultProfileImage}
+            alt="profile"
+            className="postProfile"
+          />
+          <p className="text-base font-medium">{authorName}</p>
           <div className="flex-grow"></div>
-          <Button
-            onClick={() => onDelete(commentId)}
-            className={twMerge('btn-style-post', 'h-fit w-[37px]')}
-          >
-            <HiTrash className="text-[var(--color-gray4)]" size={13} />
-          </Button>
+          {userId === authorId && (
+            <Button
+              onClick={commentDelete}
+              className={twMerge('btn-style-post', 'h-fit w-[37px]')}
+            >
+              <HiTrash className="text-[var(--color-gray4)]" size={13} />
+            </Button>
+          )}
         </div>
         <p className="textST1 ml-[42px] text-[var(--color-gray8)]">{comment}</p>
       </div>

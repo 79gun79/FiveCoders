@@ -1,8 +1,14 @@
 type CommentType = {
-  commentId: number;
+  _id: string;
   comment: string;
-  coverImage: string; // 유저 이미지
-  userName: string;
+  author: {
+    _id: string;
+    fullName: string;
+    image: string;
+  };
+  post: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 type Post = {

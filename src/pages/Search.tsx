@@ -8,7 +8,7 @@ export default function Search() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('q');
   const [userTab, setUserTab] = useState(true);
-  const [searchData, setSearchData] = useState<[UserType | Post]>();
+  const [searchData, setSearchData] = useState<[User | Post]>();
 
   const filteredTags = [
     'p',
@@ -51,7 +51,7 @@ export default function Search() {
   return (
     <>
       <div className="mx-[200px]">
-        <div className="mb-9.5 w-[690px] text-xl">
+        <div className="mb-9.5 text-xl">
           <button
             className="search-tab-style"
             onClick={() => setUserTab(true)}
@@ -102,7 +102,7 @@ export default function Search() {
         {!userTab &&
           searchData
             ?.filter((e) => 'title' in e)
-            .map((post) => <SearchPost key={post._id} post={post} />)}
+            .map((data) => <SearchPost key={data._id} searchId={data._id} />)}
 
         {!userTab && searchData?.filter((e) => 'title' in e).length == 0 && (
           <div className="flex h-[300px] items-center justify-center">

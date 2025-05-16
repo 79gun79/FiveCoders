@@ -5,7 +5,7 @@ export const channelData: ChannelImg[] = [
     channelId: '1',
     name: '서든어택',
     bannerImg: '/channelImages/sudden_attack.jpg',
-    _id: '6824738f5cd50a5f4f59a9cf',
+    _id: '682556c17ed2be78a4c80278',
   },
   {
     channelId: '2',
@@ -17,7 +17,7 @@ export const channelData: ChannelImg[] = [
     channelId: '3',
     name: '오버워치',
     bannerImg: '/channelImages/overwatch.jpg',
-    _id: '6824832a5c063764a576468b',
+    _id: '682556f87ed2be78a4c802b8',
   },
   {
     channelId: '4',

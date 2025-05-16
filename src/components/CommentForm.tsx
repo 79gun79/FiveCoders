@@ -1,21 +1,37 @@
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import placeholderIcon from '../assets/channelImg.svg';
+import { client } from '../services/axios';
+import { customToast } from '../utils/customToast';
+import { useRefreshStore } from '../stores/refreshStore';
 
 export default function CommentForm({
-  addComment,
+  postId,
+  user,
 }: {
-  addComment: (comment: string) => void;
+  postId: string;
+  user: User;
 }) {
   const [comment, setComment] = useState(''); // 댓글 입력 내용
   const [isFocused, setFocused] = useState(false); // 댓글 창 포커스 상태
   const commentRef = useRef<HTMLTextAreaElement>(null); // 댓글 입력 내용 줄 수 확인 용도
 
+  const refresh = useRefreshStore((state) => state.refresh);
+  const doRefresh = useRefreshStore((state) => state.do);
+  const resetRefresh = useRefreshStore((state) => state.reset);
+
   const postComment = () => {
-    if (!comment.trim()) return;
-    addComment(comment);
-    setComment('');
+    const commentData = {
+      postId: `${postId}`,
+      comment: `${comment}`,
+    };
+    comment.length > 0
+      ? client
+          .post(`/comments/create`, commentData)
+          .then(() => (refresh === 0 ? doRefresh() : resetRefresh()))
+          .then(() => setComment(''))
+      : comment.length == 0 && customToast('댓글을 입력해주세요.', 'error');
   };
 
   const resizeComment = () => {
@@ -28,7 +44,11 @@ export default function CommentForm({
   return (
     <>
       <div className="flex items-start gap-[10px] px-1 py-[20px]">
-        <img src={placeholderIcon} alt="profile" className="postProfile" />
+        <img
+          src={user.image || placeholderIcon}
+          alt="profile"
+          className="postProfile"
+        />
         <div
           className={twMerge(
             'h-min-[110px] flex-1 rounded-xl bg-[var(--color-gray1)] p-4',
