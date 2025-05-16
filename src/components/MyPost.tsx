@@ -13,16 +13,15 @@ import { createLike, deleteLike } from '../services/likesApi';
 export default function MyPost({
   userName,
   myPost,
-  myLike,
 }: {
   userName: string;
   myPost: PostData[];
-  myLike: LikeData[];
 }) {
   // const [userName, setUserName] = useState();
   const [like, setLike] = useState(new Array(postData.length).fill(0));
-  // const [liked, setLiked] = useState();
+  const [liked, setLiked] = useState<LikeData[]>([]);
   const [image, setImage] = useState('');
+  const [postLike, setPostLike] = useState<number>(0);
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
 
@@ -34,21 +33,15 @@ export default function MyPost({
   //   }
   // };
 
-  const likedArr = new Array(postData.length).fill(0);
-
-  console.log(like);
+  // console.log(like);
 
   const handlesetLike = async (i) => {
+    console.log(like);
     const copyLike = [...like];
-    const likeNum = myPost[i].likes.length;
-    if (myLike[i]?.post === myPost[i]?._id) {
-      likedArr[i] = 1;
-    } else {
-      likedArr[i] = 0;
-    }
-    if (copyLike[i] === 0) {
+    console.log(liked[i].post);
+    setPostLike(myPost[i].likes.length);
+    if (liked[i].post !== myPost[i]._id) {
       copyLike[i] = copyLike[i] + 1;
-      likedArr[i] = likedArr[i] + 1;
       console.log(myPost[i].likes.length);
       try {
         await axios.post(
@@ -62,13 +55,15 @@ export default function MyPost({
       } catch (error) {
         console.log(error);
       }
-    } else if (copyLike[i] !== 0) {
+    } else if (liked[i].post === myPost[i]._id) {
       copyLike[i] = copyLike[i] - 1;
-      console.log(myLike[i]._id);
-      console.log(i);
+      // console.log(liked[i]._id);
       try {
         const response = await axios.delete(`${API_URL}likes/delete`, {
-          data: { id: myLike[i]._id },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: { id: liked[i]._id },
         });
         return response;
       } catch (error) {
@@ -85,9 +80,9 @@ export default function MyPost({
   useEffect(() => {
     client(`/users/${userId.userId}`).then((response) => [
       setImage(response.data.image || prof),
-      // setLiked(response.data.likes),
+      setLiked(response.data.likes),
     ]);
-  }, [userId.userId]);
+  }, [userId.userId, postLike]);
 
   // console.log(myLike);
 
@@ -114,18 +109,17 @@ export default function MyPost({
               <Button
                 className={
                   'textT2 flex w-80 cursor-pointer content-end justify-center hover:bg-[var(--color-gray1)]' +
-                  (like[i] > 0 || myLike[i]?.post === myPost[i]?._id
+                  (liked[i]?.post === myPost[i]?._id
                     ? ' text-[var(--color-main)]'
                     : ' text-[var(--color-gray5)]')
                 }
                 onClick={() => handlesetLike(i)}
               >
-                <BiSolidLike className="mr-2 h-5" /> 좋아요{' '}
-                {myPost[i].likes.length}
+                <BiSolidLike className="mr-2 h-5" /> 좋아요 {postLike}
               </Button>
-              <Button className="textT2 comment w-80">
+              <Button className="textT2 comment w-80 active:text-[var(--color-main)]">
                 <AiFillMessage className="mr-2 h-5" />
-                58
+                {myPost[i].comments.length}
               </Button>
             </div>
           </div>

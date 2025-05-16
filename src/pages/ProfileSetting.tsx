@@ -12,7 +12,7 @@ import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 import ProfileUpload from '../components/ProfileUpload';
 import prof from '../assets/imgs/기본 프로필.png';
-import { useImageStore } from '../stores/imageStore';
+import { useImageStore, usePreviewImage } from '../stores/imageStore';
 
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');
@@ -25,15 +25,16 @@ export default function ProfileSetting() {
   const [loading, setLoading] = useState<boolean>(false);
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
+  const updatedPrevImage = usePreviewImage((state) => state.previewImage);
   const setProfileImage = useImageStore((state) => state.setProfileImage);
 
-  const handleImageChange = (imageFile: File | null | string) => {
-    if (imageFile) {
-      setSaveImage(imageFile);
-    } else {
-      setSaveImage(prof);
-    }
-  };
+  // const handleImageChange = (imageFile: File | null | string) => {
+  //   if (imageFile) {
+  //     setSaveImage(imageFile);
+  //   } else {
+  //     setSaveImage(prof);
+  //   }
+  // };
 
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
@@ -88,44 +89,47 @@ export default function ProfileSetting() {
       } catch (error) {
         console.log(error);
       }
-      try {
-        axios.put(
-          `${API_URL}settings/update-password`,
-          {
-            password: password,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
+      if (password !== '') {
+        try {
+          axios.put(
+            `${API_URL}settings/update-password`,
+            {
+              password: password,
             },
-          },
-        );
-      } catch (error) {
-        console.log(error);
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+        } catch (error) {
+          console.log(error);
+        }
       }
       setLoading(true);
-      try {
-        const formData = new FormData();
-        // console.log('saveImage"', saveImage);
-        formData.append('image', saveImage || prof);
-        // console.log(...formData);
+      console.log(saveImage);
+      if (saveImage !== '') {
+        try {
+          const formData = new FormData();
+          formData.append('image', saveImage || prof);
 
-        await axios({
-          method: 'post',
-          url: `${API_URL}users/upload-photo`,
-          data: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setProfileImage(saveImage);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-        toast.success('저장되었습니다', { closeButton: false });
-        setButtonDisabled(false);
+          await axios({
+            method: 'post',
+            url: `${API_URL}users/upload-photo`,
+            data: formData,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setProfileImage(saveImage);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+          toast.success('저장되었습니다', { closeButton: false });
+          setButtonDisabled(false);
+        }
       }
     } else {
       toast.error('다시 확인해주세요', { closeButton: false });
@@ -139,11 +143,15 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     client('/auth-user').then((response) => setUserData(response.data._id));
-    client(`/users/${userData}`).then((response) => [
-      setUsername(response.data.fullName),
-      setUserEmail(response.data.email),
-    ]);
-  }, [userData, buttonDisabled]);
+    console.log(userData);
+    if (userData.length !== 0) {
+      client(`/users/${userData}`).then((response) => [
+        setUsername(response.data.fullName),
+        setUserEmail(response.data.email),
+        setSaveImage(updatedPrevImage || response.data.image || prof),
+      ]);
+    }
+  }, [userData, buttonDisabled, updatedPrevImage]);
 
   return (
     <>
@@ -153,7 +161,7 @@ export default function ProfileSetting() {
           <div className="mt-12.5 flex content-center items-center">
             <ProfileUpload
               userEmail={userEmail}
-              changedImage={handleImageChange}
+              // changedImage={handleImageChange}
               userData={userData}
             />
           </div>

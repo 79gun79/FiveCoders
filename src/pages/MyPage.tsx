@@ -13,7 +13,6 @@ export default function MyPage() {
   const [userName, setUserName] = useState<string>();
   const [userEmail, setUserEmail] = useState<string>();
   const [userPost, setUserPost] = useState<PostData[]>([]);
-  const [userLike, setUserLike] = useState<LikeData[]>([]);
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
@@ -23,6 +22,7 @@ export default function MyPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [myData, setMyData] = useState();
   const [disabled, setDisabled] = useState<boolean>(false);
+
 
   const userId = useParams();
 
@@ -36,7 +36,7 @@ export default function MyPage() {
 
   const selectComponent = {
     최신: [
-      <MyPost userName={userName} myPost={userPost} myLike={userLike} />,
+      <MyPost userName={userName} myPost={userPost}/>,
       <MyComment userName={userName} userComment={userComment} />,
     ],
     게시글: (
@@ -44,7 +44,6 @@ export default function MyPage() {
         userName={userName}
         myPost={userPost}
         userData={userId}
-        myLike={userLike}
       />
     ),
     댓글: (
@@ -62,7 +61,6 @@ export default function MyPage() {
         setUserFollower(response.data.followers),
         setUserFollowing(response.data.following),
         setUserComment(response.data.comments),
-        setUserLike(response.data.likes),
         setImage(response.data.image || prof)
       ),
     );
