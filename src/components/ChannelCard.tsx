@@ -27,8 +27,8 @@ export default function ChannelCard({
     if (preview) {
       setLocalImage(preview);
     }
-    console.log(_id);
-    console.log(preview);
+    //console.log(_id);
+    //console.log(preview);
   }, [_id]);
 
   return (
