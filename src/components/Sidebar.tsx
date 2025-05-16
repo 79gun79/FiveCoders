@@ -18,6 +18,8 @@ import {
 import { getImagePreview } from '../utils/localImage';
 import UserList from './UserList';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
+import { toast } from 'react-toastify';
+import { customToast } from '../utils/customToast';
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -55,7 +57,8 @@ export default function Sidebar() {
     e.stopPropagation();
     const update = subscribes.filter((id) => id !== channelId); //목록 갱신
     setSubscribes(update);
-    setSubscribedChannels(update); //로컬에 저장
+    setSubscribedChannels(update); //로컬 저장
+    customToast('구독이 취소되었습니다.', 'info');
   };
 
   //모달 핸들러
