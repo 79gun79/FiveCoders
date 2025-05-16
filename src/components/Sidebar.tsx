@@ -11,14 +11,10 @@ import { useAuthStore } from '../stores/authStore';
 import globeIcon from '../assets/globe.svg';
 import homeIcon from '../assets/home.svg';
 import { TiStarFullOutline } from 'react-icons/ti';
-import {
-  getSubscribedChannels,
-  setSubscribedChannels,
-} from '../utils/localSubscribe';
+import { setSubscribedChannels } from '../utils/localSubscribe';
 import { getImagePreview } from '../utils/localImage';
 import UserList from './UserList';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
-import { toast } from 'react-toastify';
 import { customToast } from '../utils/customToast';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
 
@@ -39,9 +35,9 @@ export default function Sidebar() {
   //채널 구독
   //로그인 O : 구독한 채널 있으면 채널 목록 표시 / 없으면 +커뮤니티 찾기 표시 -> /channels로 리다이렉트
   //로그인 X : + 커뮤니티 찾기 표시 -> 로그인하세요 모달
-  useEffect(() => {
-    setSubscribes(getSubscribedChannels()); // 로컬에 저장
-  }, [setSubscribes]);
+  // useEffect(() => {
+  //   setSubscribes(getSubscribedChannels()); // 로컬에 저장
+  // }, [setSubscribes]);
 
   //구독한 채널 목록 불러오기
   useEffect(() => {
@@ -77,6 +73,8 @@ export default function Sidebar() {
     const index = indexMap[chanelId];
     navigate(`/channel/${index}`);
   };
+
+  console.log(subscribes);
 
   return (
     <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">

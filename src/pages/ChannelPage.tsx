@@ -10,17 +10,47 @@ import IsLoggedInModal from '../components/IsLoggedInModal';
 import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import { getImagePreview } from '../utils/localImage';
+import { useSubscriptionStore } from '../stores/subscriptionStore';
+import { setSubscribedChannels } from '../utils/localSubscribe';
+import { customToast } from '../utils/customToast';
 
 export default function ChannelPage({ id }: { id: string }) {
-  const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn); // 로그인 상태 확인
   const [isOpen, setIsOpen] = useState(false);
-  const [subscribes, setSubscribes] = useState(false); // 채널 구독 상태 관리
   const [channelData, setChannelData] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  console.log('채널', id);
+  const [subscribing, setSubscribing] = useState(false);
+
+  //구독 상태 전역 관리
+  const subscribes = useSubscriptionStore((state) => state.subscribes);
+  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
+
+  const channelId = channelData?._id ?? '';
+  const isSubscribed = subscribes.includes(channelId);
+
+  const SubscribedHandler = () => {
+    if (subscribing) return; // 1초 동안 클릭 막음
+    setSubscribing(true);
+
+    // 구독/구독취소 로직
+    let updated;
+    if (isSubscribed) {
+      updated = subscribes.filter((subId) => subId !== channelId);
+      customToast('구독이 취소되었습니다.', 'info');
+    } else {
+      updated = [...subscribes, channelId];
+      customToast('채널을 구독하였습니다.', 'success');
+    }
+    setSubscribes(updated);
+    setSubscribedChannels(updated);
+
+    // 1초 뒤에 다시 클릭 가능
+    setTimeout(() => setSubscribing(false), 1000);
+  };
 
   useEffect(() => {
     const fetchChannelData = async () => {
+      setIsLoading(true);
       try {
         const data = await fetchChannels();
 
@@ -69,10 +99,10 @@ export default function ChannelPage({ id }: { id: string }) {
                 {channelData.name}
               </h3>
               <TiStarFullOutline
-                onClick={() => setSubscribes(!subscribes)}
+                onClick={SubscribedHandler}
                 className={twMerge(
                   'ml-5 transition-colors hover:text-[var(--color-orange)]',
-                  subscribes
+                  isSubscribed
                     ? 'text-[var(--color-orange)]'
                     : 'text-[var(--color-gray4)]',
                 )}

@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChannelCard from '../components/ChannelCard';
 import type { Channel } from '../types/channel';
 import IsLoggedInModal from '../components/IsLoggedInModal';
 import { fetchChannels, deleteChannel } from '../services/channelApi';
 import { useAuthStore } from '../stores/authStore';
-import {
-  getSubscribedChannels,
-  setSubscribedChannels,
-} from '../utils/localSubscribe';
+import { setSubscribedChannels } from '../utils/localSubscribe';
 import CreateChannelForm from '../components/CreateChannelForm';
 import { FaTrashAlt } from 'react-icons/fa';
 import { createPortal } from 'react-dom';
@@ -16,6 +13,7 @@ import { getImagePreview, setImagePreview } from '../utils/localImage';
 import { channelData } from '../data/channelData';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
+import { customToast } from '../utils/customToast';
 
 export default function ChannelList() {
   const navigate = useNavigate();
@@ -33,6 +31,10 @@ export default function ChannelList() {
   const subscribes = useSubscriptionStore((state) => state.subscribes);
   const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
+  //다중 클릭 방지
+  const [subscribeLock, setSubscribeLock] = useState(false);
+  const subscribeTimeout = useRef<NodeJS.Timeout | null>(null);
+
   // 인덱스 매핑 테이블
   const [indexMapping, setIndexMapping] = useState<Record<string, number>>({});
 
@@ -41,6 +43,8 @@ export default function ChannelList() {
       setModalOpen(true);
       return;
     }
+    if (subscribeLock) return;
+    setSubscribeLock(true);
 
     const updatedSubscribes = subscribes.includes(id)
       ? subscribes.filter((sub) => sub !== id)
@@ -48,6 +52,14 @@ export default function ChannelList() {
 
     setSubscribes(updatedSubscribes);
     setSubscribedChannels(updatedSubscribes);
+    if (subscribes.includes(id)) {
+      customToast('구독이 취소되었습니다.', 'info');
+    } else {
+      customToast('채널을 구독하였습니다.', 'success');
+    }
+
+    if (subscribeTimeout.current) clearTimeout(subscribeTimeout.current);
+    subscribeTimeout.current = setTimeout(() => setSubscribeLock(false), 1000);
   };
 
   const onClickDeleteBtn = (id: string) => {
@@ -104,9 +116,6 @@ export default function ChannelList() {
         console.error('채널 불러오기 실패', error);
       }
     };
-
-    const initialSubscribedChannels = getSubscribedChannels();
-    setSubscribes(initialSubscribedChannels);
 
     fetchData();
   }, []);
