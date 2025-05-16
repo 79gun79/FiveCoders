@@ -84,24 +84,26 @@ export default function DFCard({ id, server }: DFCardProps) {
             alt=""
             className="dro absolute top-[-48px] left-[-18px] h-[200px] drop-shadow-[0_8px_16px_rgba(0,0,0,1)] select-none"
           />
-          <div className="absolute top-1/4 right-4 block content-center rounded-md bg-[var(--color-black)]/60 px-4 py-2 text-center">
-            <span className="textST1 block text-[var(--color-gray3)]">
-              Lv.{profile.level}
-            </span>
-            <span className="textT1 block text-[var(--color-white)]">
-              {profile.nickname}
-            </span>
-            <span className="textST1 block text-[var(--color-gray3)]">
-              {profile.job} | {profile.server}
-            </span>
-            <span className="textST1 flex justify-center text-[var(--color-main)]">
-              <img
-                src={fame}
-                alt=""
-                className="mt-[3px] mr-[2px] h-[13px] w-[15px]"
-              />
-              {profile.fame}
-            </span>
+          <div className="flex items-center">
+            <div className="absolute right-4 block content-center rounded-md bg-[var(--color-black)]/60 px-4 py-2 text-center">
+              <span className="textST1 block text-[var(--color-gray3)]">
+                Lv.{profile.level}
+              </span>
+              <span className="textT1 block text-[var(--color-white)]">
+                {profile.nickname}
+              </span>
+              <span className="textST1 block text-[var(--color-gray3)]">
+                {profile.job} | {profile.server}
+              </span>
+              <span className="textST1 flex justify-center text-[var(--color-main)]">
+                <img
+                  src={fame}
+                  alt=""
+                  className="mt-[3px] mr-[2px] h-[13px] w-[15px]"
+                />
+                {profile.fame}
+              </span>
+            </div>
           </div>
         </>
       )}
