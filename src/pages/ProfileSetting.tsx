@@ -141,11 +141,8 @@ export default function ProfileSetting() {
       setUsername(response.data.fullName),
       setUserEmail(response.data.email),
     ]);
-  }, [userData]);
-
-  const handleRemoveProf = () => {
-    setSaveImage(prof);
-  };
+    console.log(buttonDisabled);
+  }, [userData, buttonDisabled]);
 
   return (
     <>
@@ -158,7 +155,6 @@ export default function ProfileSetting() {
               changedImage={handleImageChange}
               userData={userData}
             />
-            <button onClick={handleRemoveProf}>제거</button>
           </div>
           <div className="mt-13.5">
             <div className="flex items-center">
@@ -200,7 +196,7 @@ export default function ProfileSetting() {
             />
           </div>
           <div className="mt-6.75 flex w-[100%] content-end items-end justify-end">
-            <Link to="/mypage">
+            <Link to={`/mypage/${userData}`} state={userData}>
               <Button className="cancel textT2">취소</Button>
             </Link>
             <Button

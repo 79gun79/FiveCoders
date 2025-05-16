@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import profile from '../assets/imgs/기본 프로필.png';
 import { client } from '../services/axios';
+import { useLocation, useParams } from 'react-router';
 
 export default function MyComment({
   userName,
@@ -10,24 +11,24 @@ export default function MyComment({
   userComment: CommentData[];
 }) {
   const [image, setImage] = useState('');
-  const [userData, setUserData] = useState<[]>([]);
-  const [postDate, setPostDate] = useState<[]>([]);
+  // const [userData, setUserData] = useState<[]>([]);
 
-  console.log(postDate);
+  // const location = useLocation();
 
-  client('/auth-user').then((response) => setUserData(response.data._id));
+  // const myId = location.state;
 
+  const userId = useParams();
   useEffect(() => {
-    client(`/users/${userData}`).then((response) => [
+    client(`/users/${userId.userId}`).then((response) => [
       setImage(response.data.image || profile),
-      setPostDate(response.data.comments),
     ]);
-  }, [userData]);
+    // setUserData(userId || myId);
+  }, [userId.userId, userName]);
 
   return (
     <>
       {userComment.map((v) => (
-        <div className="commentBox block">
+        <div className="commentBox block w-172">
           <div className="flex">
             <img
               src={image}

@@ -5,7 +5,7 @@ import MyPost from '../components/MyPost';
 // import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
 
@@ -16,17 +16,15 @@ export default function MyPage() {
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
-  const [userData, setUserData] = useState<[]>([]);
+  // const [userData, setUserData] = useState<UserData[]>([]);
   const [image, setImage] = useState('');
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
   const [loading, setLoading] = useState<boolean>(true);
-  const [myData, setMyData] = useState<[]>([]);
-  const [disabled, setDisabled] = useState(false);
+  const [myData, setMyData] = useState();
+  const [disabled, setDisabled] = useState<boolean>(false);
 
-  const location = useLocation();
-
-  const userId = location.state;
+  const userId = useParams();
 
   const buttonList = ['최신', '게시글', '댓글'];
 
@@ -41,26 +39,17 @@ export default function MyPage() {
       <MyPost userName={userName} myPost={userPost} />,
       <MyComment userName={userName} userComment={userComment} />,
     ],
-    게시글: <MyPost userName={userName} myPost={userPost} image={image} />,
+    게시글: <MyPost userName={userName} myPost={userPost} userData={userId} />,
     댓글: (
       <MyComment userName={userName} userComment={userComment} image={image} />
     ),
   };
 
-  const checkUser = () => {
-    if (userData !== myData) {
-      setDisabled(false);
-    } else if (userData === myData) {
-      setDisabled(true);
-    }
-  };
-  console.log(disabled);
-
-  console.log(userId);
+  console.log(userId, myData);
 
   useEffect(() => {
     client('/auth-user').then((response) => setMyData(response.data._id));
-    client(`/users/${userData}`).then(
+    client(`/users/${userId.userId}`).then(
       (response) => (
         setUserName(response.data.fullName),
         setUserPost(response.data.posts),
@@ -69,11 +58,18 @@ export default function MyPage() {
         setUserFollowing(response.data.following),
         setUserComment(response.data.comments),
         setImage(response.data.image || prof)
-        // checkUser()
       ),
     );
-    setUserData(userId);
-  }, [userData]);
+    checkUser();
+  }, [myData, userId.userId]);
+
+  const checkUser = () => {
+    if (myData !== userId.userId) {
+      setDisabled(false);
+    } else if (myData === userId.userId) {
+      setDisabled(true);
+    }
+  };
 
   setTimeout(() => {
     setLoading(false);

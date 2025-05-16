@@ -5,12 +5,15 @@ import { FaRegBell } from 'react-icons/fa';
 import NotificationDropdown from './NotificationDropdown';
 import { dummyNotifications } from '../data/dummyChannels';
 import { Notification } from '../types/notification';
+import { client } from '../services/axios';
 
 export default function HeaderLogin() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [notifications, setNotifications] =
     useState<Notification[]>(dummyNotifications);
+  const [myData, setMyData] = useState<[]>([]);
+  const [Image, setImage] = useState<string>('');
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +39,7 @@ export default function HeaderLogin() {
   };
 
   const handleClick = () => {
-    navigate(`/mypage`);
+    navigate(`/mypage/${myData}`, { state: myData });
   };
 
   useEffect(() => {
@@ -60,6 +63,15 @@ export default function HeaderLogin() {
     };
   }, [isDropdownOpen]);
 
+  client(`/users/${myData}`).then((response) =>
+    setImage(response.data.image || channelImg),
+  );
+
+  useEffect(() => {
+    client('/auth-user').then((response) => setMyData(response.data._id));
+    console.log('check');
+  }, [myData]);
+
   return (
     <div className="absolute right-6 flex items-center gap-4" ref={dropdownRef}>
       <div className="relative flex items-center">
@@ -81,9 +93,9 @@ export default function HeaderLogin() {
       <div>
         <img
           onClick={handleClick}
-          src={channelImg}
+          src={Image}
           alt="channelImg"
-          className="h-full w-full cursor-pointer rounded-full object-cover"
+          className="h-[38px] w-[38px] cursor-pointer rounded-full object-cover"
         />
       </div>
     </div>

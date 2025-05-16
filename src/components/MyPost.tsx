@@ -5,6 +5,7 @@ import { BiSolidLike } from 'react-icons/bi';
 import { postData } from '../data/PostData';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
+import { useParams } from 'react-router';
 
 export default function MyPost({
   userName,
@@ -16,9 +17,6 @@ export default function MyPost({
   // const [userName, setUserName] = useState();
   const [like, setLike] = useState(new Array(postData.length).fill(0));
   const [image, setImage] = useState('');
-  const [userData, setUserData] = useState<[]>([]);
-
-  client('/auth-user').then((response) => setUserData(response.data._id));
 
   const handlesetLike = (i) => {
     const copyLike = [...like];
@@ -30,11 +28,13 @@ export default function MyPost({
     setLike(copyLike);
   };
 
+  const userId = useParams();
+
   useEffect(() => {
-    client(`/users/${userData}`).then((response) =>
+    client(`/users/${userId.userId}`).then((response) =>
       setImage(response.data.image || prof),
     );
-  }, [userData]);
+  }, [userId.userId]);
 
   return (
     <>
