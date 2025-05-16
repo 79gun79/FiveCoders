@@ -83,7 +83,7 @@
     @apply text-[18px] font-bold;
   }
   .button {
-    @apply w-[80px] cursor-pointer border-b-2 text-[20px];
+    @apply w-[100px] cursor-pointer border-b-2 text-[20px];
   }
   .community-button {
     @apply mr-2 inline-flex;
