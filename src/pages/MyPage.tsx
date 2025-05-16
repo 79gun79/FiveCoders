@@ -13,10 +13,10 @@ export default function MyPage() {
   const [userName, setUserName] = useState<string>();
   const [userEmail, setUserEmail] = useState<string>();
   const [userPost, setUserPost] = useState<PostData[]>([]);
+  const [userLike, setUserLike] = useState<LikeData[]>([]);
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
-  // const [userData, setUserData] = useState<UserData[]>([]);
   const [image, setImage] = useState('');
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
@@ -36,10 +36,17 @@ export default function MyPage() {
 
   const selectComponent = {
     최신: [
-      <MyPost userName={userName} myPost={userPost} />,
+      <MyPost userName={userName} myPost={userPost} myLike={userLike} />,
       <MyComment userName={userName} userComment={userComment} />,
     ],
-    게시글: <MyPost userName={userName} myPost={userPost} userData={userId} />,
+    게시글: (
+      <MyPost
+        userName={userName}
+        myPost={userPost}
+        userData={userId}
+        myLike={userLike}
+      />
+    ),
     댓글: (
       <MyComment userName={userName} userComment={userComment} image={image} />
     ),
@@ -55,6 +62,7 @@ export default function MyPage() {
         setUserFollower(response.data.followers),
         setUserFollowing(response.data.following),
         setUserComment(response.data.comments),
+        setUserLike(response.data.likes),
         setImage(response.data.image || prof)
       ),
     );

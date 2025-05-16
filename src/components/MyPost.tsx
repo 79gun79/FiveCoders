@@ -6,35 +6,76 @@ import { postData } from '../data/PostData';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
 import { useParams } from 'react-router';
+import axios from 'axios';
+import { useAuthStore } from '../stores/authStore';
 
 export default function MyPost({
   userName,
   myPost,
+  myLike,
 }: {
   userName: string;
   myPost: PostData[];
+  myLike: LikeData[];
 }) {
   // const [userName, setUserName] = useState();
   const [like, setLike] = useState(new Array(postData.length).fill(0));
+  // const [liked, setLiked] = useState();
   const [image, setImage] = useState('');
 
-  const handlesetLike = (i) => {
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = useAuthStore.getState().accessToken;
+
+  // const copiedLike = (i) => {
+  //   if (myLike[i].post === myPost[i]._id) {
+  //     copyLike[i] = 1;
+  //   } else {
+  //     copyLike[i] = 0;
+  //   }
+  // };
+
+  const handlesetLike = async (i) => {
     const copyLike = [...like];
     if (copyLike[i] === 0) {
       copyLike[i] = copyLike[i] + 1;
+      console.log(myPost[i]._id);
+      try {
+        await axios.post(
+          `${API_URL}likes/create`,
+          {
+            postId: myPost[i]._id,
+          },
+          { headers: { Authorization: `Bearer ${token}` } },
+        );
+      } catch (error) {
+        console.log(error);
+      }
     } else if (copyLike[i] !== 0) {
       copyLike[i] = copyLike[i] - 1;
+      try {
+        const response = await axios.delete(`${API_URL}likes/delete`, {
+          data: { id: myLike[i]._id },
+        });
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
     }
     setLike(copyLike);
   };
 
+  // console.log(liked._id);
+
   const userId = useParams();
 
   useEffect(() => {
-    client(`/users/${userId.userId}`).then((response) =>
+    client(`/users/${userId.userId}`).then((response) => [
       setImage(response.data.image || prof),
-    );
+      // setLiked(response.data.likes),
+    ]);
   }, [userId.userId]);
+
+  // console.log(myLike);
 
   return (
     <>
@@ -50,6 +91,7 @@ export default function MyPost({
               <div className="ml-[8.12px] block">
                 <span className="textH3 block">{userName}</span>
                 <div className="h-[7px]"></div>
+                <span></span>
                 <span className="textST2 block">{v.title}</span>
               </div>
             </div>
@@ -58,7 +100,7 @@ export default function MyPost({
               <Button
                 className={
                   'textT2 flex w-80 cursor-pointer content-end justify-center hover:bg-[var(--color-gray1)]' +
-                  (like[i] > 0
+                  (like[i] > 0 || myLike[i].post === myPost[i]._id
                     ? ' text-[var(--color-main)]'
                     : ' text-[var(--color-gray5)]')
                 }

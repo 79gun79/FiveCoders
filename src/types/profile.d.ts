@@ -11,10 +11,18 @@ type UserData = {
 };
 
 type PostData = {
-  id: string;
+  lieks: LikeData[];
+  comments: CommentData[];
+  _id: string;
   author: string;
   title: string;
   update: string;
+};
+
+type LikeData = {
+  _id: string;
+  user: string;
+  post: string;
 };
 
 type CommentData = {

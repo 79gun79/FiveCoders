@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import profile from '../assets/imgs/기본 프로필.png';
 import { client } from '../services/axios';
-import { useLocation, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 export default function MyComment({
   userName,
@@ -11,11 +11,6 @@ export default function MyComment({
   userComment: CommentData[];
 }) {
   const [image, setImage] = useState('');
-  // const [userData, setUserData] = useState<[]>([]);
-
-  // const location = useLocation();
-
-  // const myId = location.state;
 
   const userId = useParams();
   useEffect(() => {
