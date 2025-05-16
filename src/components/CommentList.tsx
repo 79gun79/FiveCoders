@@ -4,6 +4,8 @@ import Button from './Button';
 import defaultProfileImage from '../assets/channelImg.svg';
 import { client } from '../services/axios';
 import { useRefreshStore } from '../stores/refreshStore';
+import { customToast } from '../utils/customToast';
+import { customConfirm } from '../utils/customConfirm';
 
 export default function CommentList({
   commentId,
@@ -24,11 +26,24 @@ export default function CommentList({
   const doRefresh = useRefreshStore((state) => state.do);
   const resetRefresh = useRefreshStore((state) => state.reset);
 
-  const commentDelete = () => {
+  const commentDelete = async () => {
+    const isConfirmed = await customConfirm('댓글을 삭제하시겠습니까?');
     const deleteComment = { id: `${commentId}` };
-    client
-      .delete(`/comments/delete`, { data: deleteComment })
-      .then(() => (refresh === 0 ? doRefresh() : resetRefresh()));
+    if (!isConfirmed) return;
+
+    try {
+      await client
+        .delete(`/comments/delete`, { data: deleteComment })
+        .then(() => (refresh === 0 ? doRefresh() : resetRefresh()));
+      customToast(
+        '댓글이 삭제되었습니다.',
+        'success',
+        <HiTrash className="text-[var(--color-sub)]" size={24} />,
+      );
+    } catch (error) {
+      customToast('댓글 삭제에 실패했습니다.', 'error');
+      throw error;
+    }
   };
 
   return (
