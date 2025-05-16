@@ -9,14 +9,8 @@ export type Channel = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  imageUrl: string;
-};
-
-export type ChannelItem = {
-  id: string;
-  name: string;
-  isSubscribe: boolean;
-  imageUrl: string;
+  bannerImg?: string;
+  channelId?: string;
 };
 
 type ChannelImg = {
