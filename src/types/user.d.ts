@@ -7,7 +7,7 @@ type User = {
   isOnline: boolean;
   posts: Post[];
   likes: Like[];
-  comments: string[];
+  comments: CommentType[];
   followers: [];
   following: [];
   notifications: [];

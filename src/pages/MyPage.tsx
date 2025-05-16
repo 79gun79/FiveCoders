@@ -2,7 +2,6 @@ import setting from '../assets/icons/Setting.svg';
 import { twMerge } from 'tailwind-merge';
 import MyInfo from '../components/MyInfo';
 import MyPost from '../components/MyPost';
-// import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
@@ -10,64 +9,45 @@ import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
 
 export default function MyPage() {
-  const [userName, setUserName] = useState<string>();
-  const [userEmail, setUserEmail] = useState<string>();
-  const [userPost, setUserPost] = useState<PostData[]>([]);
-  const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
-  const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
-  const [userComment, setUserComment] = useState<CommentData[]>([]);
-  // const [userData, setUserData] = useState<UserData[]>([]);
-  const [image, setImage] = useState('');
+  const [myUser, setMyUser] = useState<User | null>(null);
+  const [myId, setMyId] = useState('');
+
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
   const [loading, setLoading] = useState<boolean>(true);
-  const [myData, setMyData] = useState();
-  const [disabled, setDisabled] = useState<boolean>(false);
-
   const userId = useParams();
 
   const buttonList = ['최신', '게시글', '댓글'];
 
-  const handleContentButton = (e) => {
-    const { name } = e.target;
+  const handleContentButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const { name } = e.currentTarget;
     setContent(name);
     setSelectedBtn(e.currentTarget.innerText);
   };
 
-  const selectComponent = {
+  const selectComponent: Record<string, React.ReactNode | React.ReactNode[]> = {
     최신: [
-      <MyPost userName={userName} myPost={userPost} />,
-      <MyComment userName={userName} userComment={userComment} />,
+      <MyPost myPost={myUser?.posts ?? []} />,
+      <MyComment myComment={myUser?.comments ?? []} />,
     ],
-    게시글: <MyPost userName={userName} myPost={userPost} userData={userId} />,
-    댓글: (
-      <MyComment userName={userName} userComment={userComment} image={image} />
-    ),
+    게시글: <MyPost myPost={myUser?.posts ?? []} />,
+    댓글: <MyComment myComment={myUser?.comments ?? []} />,
   };
 
   useEffect(() => {
-    client('/auth-user').then((response) => setMyData(response.data._id));
-    client(`/users/${userId.userId}`).then(
-      (response) => (
-        setUserName(response.data.fullName),
-        setUserPost(response.data.posts),
-        setUserEmail(response.data.email),
-        setUserFollower(response.data.followers),
-        setUserFollowing(response.data.following),
-        setUserComment(response.data.comments),
-        setImage(response.data.image || prof)
-      ),
+    Promise.all([
+      client('/auth-user').then((response) => {
+        setMyId(response.data._id);
+      }),
+      client(`/users/${userId?.userId}`).then((response) => {
+        if (response?.data) {
+          setMyUser(response.data);
+        }
+      }),
+    ]).catch((error) =>
+      console.error('사용자 정보를 불러오지 못했습니다.', error),
     );
-    checkUser();
-  }, [myData, userId.userId]);
-
-  const checkUser = () => {
-    if (myData !== userId.userId) {
-      setDisabled(false);
-    } else if (myData === userId.userId) {
-      setDisabled(true);
-    }
-  };
+  }, [userId]);
 
   setTimeout(() => {
     setLoading(false);
@@ -75,27 +55,27 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mx-[160px] mt-[15px] flex flex-col items-center">
+      <div className="relative mx-[100px] mt-[15px] mb-[30px] flex flex-col items-center">
         {!loading && (
           <div>
             <div className="flex">
               <img
-                src={image}
+                src={myUser?.image || prof}
                 alt="profileImg"
-                className="mr-[18px] size-[80px] overflow-hidden rounded-full object-fill"
+                className="mr-[18px] h-20 w-20 overflow-hidden rounded-full object-fill"
               />
               <div className="left-[100px] inline-block content-center">
-                <span className="block text-[24px]">{userName}</span>
+                <span className="block text-[24px]">{myUser!.fullName}</span>
                 <span className="block text-[18px] text-[var(--color-gray7)]">
-                  {userEmail}
+                  {myUser!.email}
                 </span>
               </div>
               <MyInfo
-                myPost={userPost.length}
-                myFollowing={userFollowing.length}
-                myFollower={userFollower.length}
+                myPost={myUser!.posts.length}
+                myFollowing={myUser!.following.length}
+                myFollower={myUser!.followers.length}
               />
-              {disabled && (
+              {!loading && myId === userId.userId && (
                 <Link to="/setting">
                   <button className="ml-[81.62px] h-[32px] cursor-pointer select-none">
                     <img src={setting} alt="setting" />
@@ -106,9 +86,10 @@ export default function MyPage() {
             {/* 개인 프로필 정보 */}
             <div className="h-[53px]"></div>
             <div className="flex">
-              {buttonList.map((item) => {
+              {buttonList.map((item, index) => {
                 return (
                   <button
+                    key={index}
                     className={twMerge(
                       'button ' +
                         (item === selectedBtn

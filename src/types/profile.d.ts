@@ -17,14 +17,6 @@ type PostData = {
   update: string;
 };
 
-type CommentData = {
-  id: string;
-  author: string;
-  comment: string;
-  post: string;
-  update: string;
-};
-
 type MyFollowing = {
   id: string;
   user: string;
