@@ -34,6 +34,7 @@ export const customToast = (
     style: {
       color: color || '#000',
       backgroundColor: backgroundColor || '#fff',
+      whiteSpace: 'pre-wrap',
     },
   });
 };
