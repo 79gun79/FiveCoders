@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { customToast } from '../utils/customToast';
 import { HiTrash } from 'react-icons/hi';
 import { customConfirm } from '../utils/customConfirm';
+import defaultProfile from '../assets/channelImg.svg';
 
 export default function PostComponent({
   post,
@@ -69,7 +70,7 @@ export default function PostComponent({
       throw err;
     }
   };
-  const { head, body } = parseContent(post.title);
+  const { head, body } = parseContent(post?.title);
 
   return (
     <>
@@ -168,8 +169,14 @@ export default function PostComponent({
           </div>
 
           <div className="flex flex-col">
-            {comments.map((v) => (
-              <CommentList key={v.commentId} {...v} onDelete={deleteComment} />
+            {post.comments.map((v) => (
+              <CommentList
+                key={v._id}
+                commentId={v._id}
+                comment={v.comment}
+                userName={v.author.fullName}
+                profileImg={v.author.image}
+              />
             ))}
           </div>
           {isCmtForm && <CommentForm addComment={addComment} />}
