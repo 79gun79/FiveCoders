@@ -69,7 +69,7 @@ export default function ProfileUpload({
   // }, [Image, changedImage]);
 
   useEffect(() => {
-    if (userData.length > 0) {
+    if (userData.length !== 0) {
       client(`/users/${userData}`).then((response) =>
         setImage(response.data.image || prof),
       );
