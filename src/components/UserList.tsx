@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchUsers } from '../services/UserAPI';
+import { fetchUsers } from '../services/userApi';
 import { User } from '../types/user';
 import defaultProfileImg from '../assets/imgs/defaultProfileImg.png';
 
