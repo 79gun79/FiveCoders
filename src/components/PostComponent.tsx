@@ -18,7 +18,7 @@ import { customToast } from '../utils/customToast';
 import { HiTrash } from 'react-icons/hi';
 import { customConfirm } from '../utils/customConfirm';
 import { stateLike } from '../utils/stateLike';
-import defaultProfile from '../assets/channelImg.svg';
+// import defaultProfile from '../assets/channelImg.svg';
 
 export default function PostComponent({
   post,
@@ -32,7 +32,7 @@ export default function PostComponent({
   const [isCmtForm, setCmtForm] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { comments, addComment, deleteComment } = useCommentStore();
+  const { addComment } = useCommentStore();
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
