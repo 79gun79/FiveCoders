@@ -5,7 +5,6 @@ import Button from './Button';
 import { FaEllipsisV } from 'react-icons/fa';
 import { BiSolidLike } from 'react-icons/bi';
 import { AiFillMessage } from 'react-icons/ai';
-import { useCommentStore } from '../stores/commentStore';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import IsLoggedInModal from './IsLoggedInModal';
@@ -17,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { customToast } from '../utils/customToast';
 import { HiTrash } from 'react-icons/hi';
 import { customConfirm } from '../utils/customConfirm';
-import defaultProfile from '../assets/channelImg.svg';
+import { client } from '../services/axios';
 
 export default function PostComponent({
   post,
@@ -35,7 +34,7 @@ export default function PostComponent({
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
-  const { comments, addComment, deleteComment } = useCommentStore();
+  const [userData, setUserData] = useState<User>();
 
   // 외부 클릭 시 드롭메뉴 닫기
   const handleClickOutside = (e: MouseEvent) => {
@@ -49,6 +48,7 @@ export default function PostComponent({
   };
 
   useEffect(() => {
+    client('/auth-user').then((response) => setUserData(response.data));
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -70,7 +70,7 @@ export default function PostComponent({
       throw err;
     }
   };
-  const { head, body } = parseContent(post?.title);
+  const { head, body } = parseContent(post.title);
 
   return (
     <>
@@ -88,47 +88,49 @@ export default function PostComponent({
               </p>
 
               <div className="flex-grow"></div>
-              <div className="relative" ref={refDrop}>
-                <Button
-                  onClick={() => setShowDrop(!showDrop)}
-                  className={twMerge('btn-style-post', 'h-fit w-[37px]')}
-                >
-                  <FaEllipsisV size={13} />
-                </Button>
-
-                {showDrop && (
-                  <div
-                    className={twMerge(
-                      'postBorder',
-                      'absolute right-0 mt-2 w-20 overflow-hidden rounded-lg p-0',
-                      'bg-white',
-                    )}
+              {isLoggedIn && userData?._id === post.author._id && (
+                <div className="relative" ref={refDrop}>
+                  <Button
+                    onClick={() => setShowDrop(!showDrop)}
+                    className={twMerge('btn-style-post', 'h-fit w-[37px]')}
                   >
-                    {isLoggedIn ? (
-                      <Link to={`./update`} state={{ post }}>
-                        <Button className="btn-style-post2 text-black">
+                    <FaEllipsisV size={13} />
+                  </Button>
+
+                  {showDrop && (
+                    <div
+                      className={twMerge(
+                        'postBorder',
+                        'absolute right-0 mt-2 w-20 overflow-hidden rounded-lg p-0',
+                        'bg-white',
+                      )}
+                    >
+                      {isLoggedIn ? (
+                        <Link to={`./update`} state={{ post }}>
+                          <Button className="btn-style-post2 text-black">
+                            수정
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Button
+                          onClick={() => setIsOpen(true)}
+                          className="btn-style-post2 text-black"
+                        >
                           수정
                         </Button>
-                      </Link>
-                    ) : (
+                      )}
                       <Button
-                        onClick={() => setIsOpen(true)}
-                        className="btn-style-post2 text-black"
+                        onClick={() =>
+                          isLoggedIn ? handDelete() : setIsOpen(true)
+                        }
+                        className="btn-style-post2 text-[var(--color-red-caution)]"
                       >
-                        수정
+                        삭제
                       </Button>
-                    )}
-                    <Button
-                      onClick={() =>
-                        isLoggedIn ? handDelete() : setIsOpen(true)
-                      }
-                      className="btn-style-post2 text-[var(--color-red-caution)]"
-                    >
-                      삭제
-                    </Button>
-                  </div>
-                )}
-              </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="textH4 font-bold">{head}</div>
@@ -151,6 +153,7 @@ export default function PostComponent({
               className={`btn-style-post ${
                 liked ? 'text-[var(--color-main)]' : 'text-[var(--color-gray5)]'
               }`}
+              disabled={!isLoggedIn}
             >
               <BiSolidLike className="mr-2" size={13} />
               <span>좋아요</span>
@@ -162,6 +165,7 @@ export default function PostComponent({
                   ? 'text-[var(--color-main)]'
                   : 'text-[var(--color-gray5)]'
               }`}
+              disabled={!isLoggedIn}
             >
               <AiFillMessage className="mr-2" size={13} />
               <span>댓글 달기</span>
@@ -173,13 +177,17 @@ export default function PostComponent({
               <CommentList
                 key={v._id}
                 commentId={v._id}
+                authorId={v.author._id}
+                authorName={v.author.fullName || '(알 수 없음)'}
+                userId={userData?._id || ''}
                 comment={v.comment}
-                userName={v.author.fullName}
                 profileImg={v.author.image}
               />
             ))}
           </div>
-          {isCmtForm && <CommentForm addComment={addComment} />}
+          {isCmtForm && userData && (
+            <CommentForm postId={post._id} user={userData} />
+          )}
           {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
         </div>
       )}
