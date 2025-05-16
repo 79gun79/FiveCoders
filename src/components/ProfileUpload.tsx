@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
 import { client } from '../services/axios';
-
-import { useAuthStore } from '../stores/authStore';
 import { CiImageOn } from 'react-icons/ci';
 
 export default function ProfileUpload({
@@ -16,12 +14,13 @@ export default function ProfileUpload({
 }) {
   const [Image, setImage] = useState<File | undefined>();
   const fileInput = useRef<HTMLInputElement | null>(null);
-  // const token = useAuthStore.getState().accessToken;
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
     try {
       if (e.target.files[0]) {
         setImage(e.target.files[0]);
+      } else {
+        setImage(prof);
       }
       console.log(e.target.files[0]);
 
@@ -41,6 +40,7 @@ export default function ProfileUpload({
   useEffect(() => {
     if (Image instanceof File || Image === undefined) {
       changedImage(Image);
+      console.log(Image);
     }
   }, [Image, changedImage]);
 

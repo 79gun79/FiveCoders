@@ -5,7 +5,7 @@ import MyPost from '../components/MyPost';
 // import userData from '../data/UserData';
 import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
 
@@ -16,21 +16,17 @@ export default function MyPage() {
   const [userFollowing, setUserFollowing] = useState<MyFollowing[]>([]);
   const [userFollower, setUserFollower] = useState<MyFollower[]>([]);
   const [userComment, setUserComment] = useState<CommentData[]>([]);
-  const [userData, setUserData] = useState<[]>([]);
+  // const [userData, setUserData] = useState<UserData[]>([]);
   const [image, setImage] = useState('');
   const [content, setContent] = useState('최신');
   const [selectedBtn, setSelectedBtn] = useState('최신');
   const [loading, setLoading] = useState<boolean>(true);
+  const [myData, setMyData] = useState();
+  const [disabled, setDisabled] = useState<boolean>(false);
 
-  // const [disabled, setDisabled] = useState(false);
+  const userId = useParams();
 
-  client('/auth-user').then((response) => setUserData(response.data._id));
-
-  // const myUserId: string = '68240ae628cdb13ab4a83053';
-  // const userId: string = '681db16a890af552f3055777';
-  // userId를 불러오는 방법 찾기
-
-  const buttonList = ['최신', '내 글', '댓글'];
+  const buttonList = ['최신', '게시글', '댓글'];
 
   const handleContentButton = (e) => {
     const { name } = e.target;
@@ -43,23 +39,15 @@ export default function MyPage() {
       <MyPost userName={userName} myPost={userPost} />,
       <MyComment userName={userName} userComment={userComment} />,
     ],
-    '내 글': <MyPost userName={userName} myPost={userPost} image={image} />,
+    게시글: <MyPost userName={userName} myPost={userPost} userData={userId} />,
     댓글: (
       <MyComment userName={userName} userComment={userComment} image={image} />
     ),
   };
 
-  // const checkUser = () => {
-  //   if (userId !== myUserId) {
-  //     setDisabled(false);
-  //   } else if (userId === myUserId) {
-  //     setDisabled(true);
-  //   }
-  // };
-  // console.log(disabled);
-
   useEffect(() => {
-    client(`/users/${userData}`).then(
+    client('/auth-user').then((response) => setMyData(response.data._id));
+    client(`/users/${userId.userId}`).then(
       (response) => (
         setUserName(response.data.fullName),
         setUserPost(response.data.posts),
@@ -68,12 +56,20 @@ export default function MyPage() {
         setUserFollowing(response.data.following),
         setUserComment(response.data.comments),
         setImage(response.data.image || prof)
-        // checkUser()
       ),
     );
-  }, [userData]);
+    checkUser();
+  }, [myData, userId.userId]);
 
-  const timer = setTimeout(() => {
+  const checkUser = () => {
+    if (myData !== userId.userId) {
+      setDisabled(false);
+    } else if (myData === userId.userId) {
+      setDisabled(true);
+    }
+  };
+
+  setTimeout(() => {
     setLoading(false);
   }, 1000);
 
@@ -99,11 +95,13 @@ export default function MyPage() {
                 myFollowing={userFollowing.length}
                 myFollower={userFollower.length}
               />
-              <Link to="/setting">
-                <button className="ml-[81.62px] h-[32px] cursor-pointer select-none">
-                  <img src={setting} alt="setting" />
-                </button>
-              </Link>
+              {disabled && (
+                <Link to="/setting">
+                  <button className="ml-[81.62px] h-[32px] cursor-pointer select-none">
+                    <img src={setting} alt="setting" />
+                  </button>
+                </Link>
+              )}
             </div>
             {/* 개인 프로필 정보 */}
             <div className="h-[53px]"></div>
