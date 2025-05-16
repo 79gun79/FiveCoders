@@ -11,15 +11,21 @@ import { useAuthStore } from '../stores/authStore';
 import globeIcon from '../assets/globe.svg';
 import homeIcon from '../assets/home.svg';
 import { TiStarFullOutline } from 'react-icons/ti';
-import { getSubscribedChannels } from '../utils/localSubscribe';
+import { setSubscribedChannels } from '../utils/localSubscribe';
 import { getImagePreview } from '../utils/localImage';
+import UserList from './UserList';
+import { channelIndexMapping } from '../utils/channelIndexMapping';
+import { customToast } from '../utils/customToast';
+import { useSubscriptionStore } from '../stores/subscriptionStore';
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [channels, setChannels] = useState<Channel[]>([]);
-  const [subscribes, setSubscribes] = useState<string[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const [modalOpen, setModalOpen] = useState(false);
+  //구독 상태 전역 상태 관리
+  const subscribes = useSubscriptionStore((state) => state.subscribes);
+  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   //구독한 채널 목록
   const subscribedChannels = channels.filter((channel) =>
@@ -29,10 +35,11 @@ export default function Sidebar() {
   //채널 구독
   //로그인 O : 구독한 채널 있으면 채널 목록 표시 / 없으면 +커뮤니티 찾기 표시 -> /channels로 리다이렉트
   //로그인 X : + 커뮤니티 찾기 표시 -> 로그인하세요 모달
-  useEffect(() => {
-    setSubscribes(getSubscribedChannels);
-  }, []);
+  // useEffect(() => {
+  //   setSubscribes(getSubscribedChannels()); // 로컬에 저장
+  // }, [setSubscribes]);
 
+  //구독한 채널 목록 불러오기
   useEffect(() => {
     const getChannels = async () => {
       try {
@@ -45,9 +52,29 @@ export default function Sidebar() {
     getChannels();
   }, []);
 
+  //구독 취소 핸들러 (별 아이콘 클릭)
+  const unSubscribedHandler = (e: React.MouseEvent, channelId: string) => {
+    e.stopPropagation();
+    const update = subscribes.filter((id) => id !== channelId); //목록 갱신
+    setSubscribes(update);
+    setSubscribedChannels(update); //로컬 저장
+    customToast('구독이 취소되었습니다.', 'info');
+  };
+
   //모달 핸들러
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+
+  //채널 인덱스 저장
+  const indexMap = channelIndexMapping(channels);
+
+  //채널 이동 핸들러
+  const channelClickHandler = (chanelId: string) => {
+    const index = indexMap[chanelId];
+    navigate(`/channel/${index}`);
+  };
+
+  console.log(subscribes);
 
   return (
     <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">
@@ -97,6 +124,7 @@ export default function Sidebar() {
               <li
                 key={item._id}
                 className="flex cursor-pointer items-center rounded-xl px-5.5 py-2.5 text-[16px] hover:bg-[var(--color-gray2)]"
+                onClick={() => channelClickHandler(item._id)}
               >
                 <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
                   <img
@@ -106,7 +134,7 @@ export default function Sidebar() {
                   />
                 </div>
                 <span className="flex-1 text-sm">{item.name}</span>
-                <button>
+                <button onClick={(e) => unSubscribedHandler(e, item._id)}>
                   <TiStarFullOutline
                     className={`text-[20px] transition-colors ${'text-[var(--color-orange)] hover:text-[var(--color-gray3)]'}`}
                   />
@@ -117,6 +145,7 @@ export default function Sidebar() {
         )}
         {modalOpen && <IsLoggedInModal onClose={closeModal} />}
       </div>
+      <UserList />
     </aside>
   );
 }
