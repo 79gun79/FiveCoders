@@ -20,11 +20,11 @@ export const customConfirm = (message: string): Promise<boolean> => {
     toast(
       ({ closeToast }) => (
         <div
-          className="flex w-fit flex-col gap-4 p-2 text-black"
+          className="flex w-full flex-col gap-4 p-2 text-black"
           style={{ whiteSpace: 'pre-wrap' }}
         >
           <p>{message}</p>
-          <div className="flex justify-start gap-2">
+          <div className="flex justify-end gap-2">
             <Button
               className={twMerge(
                 'btn-style-comment',

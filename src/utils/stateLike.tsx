@@ -1,9 +1,10 @@
 import { startTransition, useOptimistic } from 'react';
 import { useState, useEffect } from 'react';
 import { createLike, deleteLike } from '../services/likesApi';
+import { client } from '../services/axios';
 
 export const stateLike = (initialPost: Post) => {
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<User['_id'] | null>(null);
   const [post, setPost] = useState<Post | null>(initialPost);
 
   const [optPostData, updateOptPost] = useOptimistic(
@@ -41,7 +42,9 @@ export const stateLike = (initialPost: Post) => {
   );
 
   useEffect(() => {
-    setCurrentUserId('6826bc37cbe4bb60dca4e6a7');
+    client('/auth-user').then((response) =>
+      setCurrentUserId(response.data._id),
+    );
   }, []);
 
   const isLiked =
