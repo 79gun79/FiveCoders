@@ -1,11 +1,3 @@
-type UserType = {
-  _id: string;
-  fullName: string;
-  email: string;
-  coverImage: string;
-  image: string;
-};
-
 type User = {
   coverImage: string; // 커버 이미지
   image: string; // 프로필 이미지

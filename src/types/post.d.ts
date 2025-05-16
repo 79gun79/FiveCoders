@@ -2,6 +2,7 @@ type CommentType = {
   _id: string;
   comment: string;
   author: {
+    _id: string;
     fullName: string;
     image: string;
   };

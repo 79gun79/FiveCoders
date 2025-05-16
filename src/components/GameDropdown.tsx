@@ -1,10 +1,12 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { FaSteam, FaDiscord } from 'react-icons/fa6';
+import dnfLogo from '../assets/dnf-small.png';
 
-type ServiceCode = 'steam' | 'discord';
+type ServiceCode = 'steam' | 'discord' | 'dnf';
 const ICONS: Record<ServiceCode, ReactNode> = {
   steam: <FaSteam className="mr-2 h-5 w-5 text-[#2a475e]" />,
   discord: <FaDiscord className="mr-2 h-5 w-5 text-[#5865F2]" />,
+  dnf: <img src={dnfLogo} alt="dnf" className="mr-1 h-6 w-6" />,
 };
 
 interface GameDropdownProps {
@@ -15,6 +17,7 @@ interface GameDropdownProps {
 const SERVICES: { code: ServiceCode; label: string }[] = [
   { code: 'steam', label: 'Steam' },
   { code: 'discord', label: 'Discord' },
+  { code: 'dnf', label: '던전앤파이터' },
 ];
 
 export default function GameDropdown({ value, onChange }: GameDropdownProps) {
@@ -34,7 +37,7 @@ export default function GameDropdown({ value, onChange }: GameDropdownProps) {
   }, []);
 
   return (
-    <div className="relative w-40" ref={ref}>
+    <div className="relative w-[230px]" ref={ref}>
       <button
         type="button"
         className="flex h-[40px] w-full cursor-pointer items-center justify-between rounded-lg border border-[var(--color-gray5)] bg-[var(--color-bg-white)] px-4 py-2 transition hover:bg-[var(--color-gray2)]"
