@@ -22,7 +22,7 @@ export default function Router() {
         <Route path="/" element={<Home />} />
         <Route path="/channel" element={<ChannelList />} />
         <Route path="/channel/*" element={<Channel />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/mypage/:userId" element={<MyPage />} />
         <Route path="/setting" element={<ProfileSetting />} />
         <Route path="/search" element={<Search />} />
       </Route>

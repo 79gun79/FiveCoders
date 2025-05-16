@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { client } from '../services/axios';
 
 import PostComponent from './PostComponent.tsx';
+import { useRefreshStore } from '../stores/refreshStore';
 
 export default function PostList({ channelId }: { channelId: string }) {
   // 상태 관리
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setLoading] = useState(true);
+
+  const refresh = useRefreshStore((state) => state.refresh);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -23,7 +26,7 @@ export default function PostList({ channelId }: { channelId: string }) {
       }
     };
     fetchPosts();
-  }, [channelId]);
+  }, [channelId, refresh]);
 
   if (isLoading) return <p>로딩 중입니다..</p>;
 

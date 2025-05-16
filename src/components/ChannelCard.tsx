@@ -15,7 +15,6 @@ type ChannelCardProps = Channel & {
 export default function ChannelCard({
   _id,
   name,
-  bannerImg,
   onClick,
   onBookmarkClick,
   isSubscribe = false,
@@ -28,6 +27,8 @@ export default function ChannelCard({
     if (preview) {
       setLocalImage(preview);
     }
+    console.log(_id);
+    console.log(preview);
   }, [_id]);
 
   return (
@@ -36,7 +37,7 @@ export default function ChannelCard({
       className="relative h-[180px] w-[260px] cursor-pointer overflow-hidden rounded-[12px] bg-[var(--color-bg-white)] shadow-md transition-shadow duration-300 hover:shadow-xl"
     >
       <img
-        src={localImage || bannerImg || defaultChannelImg}
+        src={localImage || defaultChannelImg}
         alt={name}
         className="h-[130px] w-full object-cover"
       />
@@ -62,7 +63,9 @@ export default function ChannelCard({
           />
         </button>
       </div>
-      {children && <div className="absolute right-2 top-2 z-10">{children}</div>}
+      {children && (
+        <div className="absolute top-2 right-2 z-10">{children}</div>
+      )}
     </div>
   );
 }

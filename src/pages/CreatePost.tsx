@@ -9,10 +9,11 @@ import { validateEmptyContent } from '../utils/validators';
 import ReactQuill from 'react-quill-new';
 import PostHeadInput from '../components/PostHeadInput';
 import { createPost } from '../services/postApi';
-import { channelData } from '../data/channelData';
 import { IoMdRemoveCircle } from 'react-icons/io';
 import { customToast } from '../utils/customToast';
 import { customConfirm } from '../utils/customConfirm';
+import { fetchChannels } from '../services/channelApi';
+import { getImagePreview } from '../utils/localImage';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -35,13 +36,26 @@ export default function CreatePost() {
   const { id } = useParams();
 
   useEffect(() => {
-    const currentChannel = channelData.find((v) => v.channelId === id);
-    if (currentChannel) {
-      setCName(currentChannel.name);
-      setCIcon(currentChannel.bannerImg);
-      setCLink(currentChannel.channelId);
-      setCId(currentChannel._id);
-    }
+    // 채널 목록 불러오기
+    const fetchChannelsData = async () => {
+      try {
+        const data = await fetchChannels();
+
+        const index = parseInt(id ?? '0', 10);
+        const currentChannel = data[index];
+
+        if (currentChannel) {
+          setCName(currentChannel.name);
+          setCIcon(getImagePreview(currentChannel._id) || '');
+          setCLink(String(index));
+          setCId(currentChannel._id);
+        }
+      } catch (error) {
+        console.error('채널 데이터를 불러오는 중 오류가 발생했습니다.', error);
+      }
+    };
+
+    fetchChannelsData();
   }, [id]);
 
   const handleChannelChange = (

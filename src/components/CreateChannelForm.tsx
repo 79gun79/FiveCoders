@@ -1,43 +1,45 @@
-import { useState } from 'react'
-import { createChannel } from '../services/channelApi'
-import { setImagePreview } from '../utils/localImage'
-import type { Channel } from '../types/channel'
-import { customToast } from '../utils/customToast'
+import { useState } from 'react';
+import { createChannel } from '../services/channelApi';
+import { setImagePreview } from '../utils/localImage';
+import type { Channel } from '../types/channel';
+import { customToast } from '../utils/customToast';
+import { blobToBase64 } from '../utils/imageConverter';
 
 interface CreateChannelFormProps {
-  onClose: () => void
-  onCreate: (channel: Channel, imagePreview: string | null) => void
+  onClose: () => void;
+  onCreate: (channel: Channel, imagePreview: string | null) => void;
 }
 
 export default function CreateChannelForm({
   onClose,
   onCreate,
 }: CreateChannelFormProps) {
-  const [channelName, setChannelName] = useState('')
-  const [channelDescription, setChannelDescription] = useState('')
-  const [, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreviewState] = useState<string | null>(null)
-  const [imageFileName, setImageFileName] = useState<string>('')
+  const [channelName, setChannelName] = useState('');
+  const [channelDescription, setChannelDescription] = useState('');
+  const [, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreviewState] = useState<string | null>(null);
+  const [imageFileName, setImageFileName] = useState<string>('');
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
     if (file) {
-      const previewUrl = URL.createObjectURL(file)
-      setImageFile(file)
-      setImagePreviewState(previewUrl)
-      setImageFileName(file.name)
+      setImageFile(file);
+      setImageFileName(file.name);
+
+      const base64Image = await blobToBase64(file);
+      setImagePreviewState(base64Image);
     } else {
-      setImageFileName('')
-      setImagePreviewState(null)
+      setImageFileName('');
+      setImagePreviewState(null);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!channelName.trim() || !channelDescription.trim()) {
-      customToast('채널 설명과 이름을 입력해주세요', 'error')
-      return
+      customToast('채널 설명과 이름을 입력해주세요', 'error');
+      return;
     }
 
     try {
@@ -45,18 +47,18 @@ export default function CreateChannelForm({
         name: channelName,
         description: channelDescription,
         authRequired: true,
-      })
+      });
 
       if (imagePreview) {
-        setImagePreview(newChannel._id, imagePreview)
+        setImagePreview(newChannel._id, imagePreview);
       }
 
-      onCreate(newChannel, imagePreview)
-      onClose()
+      onCreate(newChannel, imagePreview);
+      onClose();
     } catch (error) {
-      console.error('채널 생성 실패:', error)
+      console.error('채널 생성 실패:', error);
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -77,7 +79,7 @@ export default function CreateChannelForm({
               type="text"
               value={channelDescription}
               onChange={(e) => setChannelDescription(e.target.value)}
-              className="mt-2 block w-full rounded-md border border-[var(--color-gray3)] p-3 shadow-sm focus:border-[var(--color-main)] focus:outline-none focus:ring-0 focus:ring-[var(--color-main)] sm:text-sm"
+              className="mt-2 block w-full rounded-md border border-[var(--color-gray3)] p-3 shadow-sm focus:border-[var(--color-main)] focus:ring-0 focus:ring-[var(--color-main)] focus:outline-none sm:text-sm"
               placeholder="예: FPS, RPG, 등"
             />
           </div>
@@ -93,7 +95,7 @@ export default function CreateChannelForm({
               type="text"
               value={channelName}
               onChange={(e) => setChannelName(e.target.value)}
-              className="mt-2 block w-full rounded-md border border-[var(--color-gray3)] p-3 shadow-sm focus:border-[var(--color-main)] focus:outline-none focus:ring-0 focus:ring-[var(--color-main)] sm:text-sm"
+              className="mt-2 block w-full rounded-md border border-[var(--color-gray3)] p-3 shadow-sm focus:border-[var(--color-main)] focus:ring-0 focus:ring-[var(--color-main)] focus:outline-none sm:text-sm"
               placeholder="예: 오버워치, 리그오브레전드, 등"
             />
           </div>
@@ -139,7 +141,7 @@ export default function CreateChannelForm({
             </button>
             <button
               type="submit"
-              className="w-full rounded-md py-3 text-[var(--color-bg-white)] cursor-pointer bg-[var(--color-main)] hover:bg-[var(--color-sub)]"
+              className="w-full cursor-pointer rounded-md bg-[var(--color-main)] py-3 text-[var(--color-bg-white)] hover:bg-[var(--color-sub)]"
             >
               생성하기
             </button>
@@ -147,5 +149,5 @@ export default function CreateChannelForm({
         </form>
       </div>
     </div>
-  )
+  );
 }

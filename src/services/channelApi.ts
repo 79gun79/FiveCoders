@@ -6,7 +6,11 @@ export const fetchChannels = async (): Promise<Channel[]> => {
   return data;
 };
 
-export const createChannel = async (channelData: { authRequired: boolean, description: string, name: string }) => {
+export const createChannel = async (channelData: {
+  authRequired: boolean;
+  description: string;
+  name: string;
+}) => {
   const response = await client.post('/channels/create', channelData);
   return response.data;
 };
