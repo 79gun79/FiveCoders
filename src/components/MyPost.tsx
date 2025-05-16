@@ -8,6 +8,7 @@ import prof from '../assets/imgs/기본 프로필.png';
 import { useParams } from 'react-router';
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
+import { createLike, deleteLike } from '../services/likesApi';
 
 export default function MyPost({
   userName,
@@ -22,7 +23,6 @@ export default function MyPost({
   const [like, setLike] = useState(new Array(postData.length).fill(0));
   // const [liked, setLiked] = useState();
   const [image, setImage] = useState('');
-
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
 
@@ -38,28 +38,10 @@ export default function MyPost({
     const copyLike = [...like];
     if (copyLike[i] === 0) {
       copyLike[i] = copyLike[i] + 1;
-      console.log(myPost[i]._id);
-      try {
-        await axios.post(
-          `${API_URL}likes/create`,
-          {
-            postId: myPost[i]._id,
-          },
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
-      } catch (error) {
-        console.log(error);
-      }
+      createLike(i);
     } else if (copyLike[i] !== 0) {
       copyLike[i] = copyLike[i] - 1;
-      try {
-        const response = await axios.delete(`${API_URL}likes/delete`, {
-          data: { id: myLike[i]._id },
-        });
-        return response;
-      } catch (error) {
-        console.log(error);
-      }
+      deleteLike(i);
     }
     setLike(copyLike);
   };
