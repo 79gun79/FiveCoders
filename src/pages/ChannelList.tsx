@@ -57,7 +57,7 @@ export default function ChannelList() {
         customToast('구독이 취소되었습니다.', 'info');
       } else {
         await subscribeChannel(id);
-        customToast('구독되었습니다.', 'success');
+        customToast('채널을 구독하였습니다.', 'success');
       }
       await syncSubscribes(); //서버와 동기화
     } catch (error) {
