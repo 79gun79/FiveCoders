@@ -8,6 +8,7 @@ import { BiSolidLike } from 'react-icons/bi';
 export const stateLike = (initialPost: Post) => {
   const [currentUserId, setCurrentUserId] = useState<User['_id'] | null>(null);
   const [post, setPost] = useState<Post | null>(initialPost);
+  const [throttle, setThrottle] = useState(false);
 
   const [optPostData, updateOptPost] = useOptimistic(
     post,
@@ -63,7 +64,9 @@ export const stateLike = (initialPost: Post) => {
       (like) => like.user === currentUserId,
     );
 
-    if (userLike) {
+    if (userLike && !throttle) {
+      setThrottle(true);
+
       startTransition(() => {
         updateOptPost({
           type: 'remove',
@@ -81,8 +84,14 @@ export const stateLike = (initialPost: Post) => {
         }));
       } catch (err) {
         console.error('좋아요 삭제 실패:', err);
+      } finally {
+        setThrottle(false);
       }
-    } else {
+    }
+
+    if (!userLike && !throttle) {
+      setThrottle(true);
+
       startTransition(() => {
         updateOptPost({
           type: 'add',
@@ -105,6 +114,8 @@ export const stateLike = (initialPost: Post) => {
         );
       } catch (err) {
         console.error('좋아요 추가 실패:', err);
+      } finally {
+        setThrottle(false);
       }
     }
   };
