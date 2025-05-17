@@ -17,7 +17,7 @@ import { useImageStore, usePreviewImage } from '../stores/imageStore';
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-  const [userData, setUserData] = useState<[]>([]);
+  const [userData, setUserData] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -134,7 +134,7 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     client('/auth-user').then((response) => setUserData(response.data._id));
-    if (userData.length !== 0) {
+    if (userData) {
       client(`/users/${userData}`).then((response) => [
         setUsername(response.data.fullName),
         setUserEmail(response.data.email),
