@@ -11,12 +11,13 @@ import { useAuthStore } from '../stores/authStore';
 import globeIcon from '../assets/globe.svg';
 import homeIcon from '../assets/home.svg';
 import { TiStarFullOutline } from 'react-icons/ti';
-import { setSubscribedChannels } from '../utils/localSubscribe';
 import { getImagePreview } from '../utils/localImage';
 import UserList from './UserList';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { customToast } from '../utils/customToast';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
+import { unsubscribeChannel } from '../services/subscribeChannelApi';
+import { fetchCurrentUser } from '../services/userApi';
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Sidebar() {
   const [modalOpen, setModalOpen] = useState(false);
   //구독 상태 전역 상태 관리
   const subscribes = useSubscriptionStore((state) => state.subscribes);
-  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
+  //const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   //구독한 채널 목록
   const subscribedChannels = channels.filter((channel) =>
@@ -35,29 +36,36 @@ export default function Sidebar() {
   //채널 구독
   //로그인 O : 구독한 채널 있으면 채널 목록 표시 / 없으면 +커뮤니티 찾기 표시 -> /channels로 리다이렉트
   //로그인 X : + 커뮤니티 찾기 표시 -> 로그인하세요 모달
-  // useEffect(() => {
-  //   setSubscribes(getSubscribedChannels()); // 로컬에 저장
-  // }, [setSubscribes]);
 
-  //구독한 채널 목록 불러오기
+  // 채널/유저 힌 번에 목록 불러오기
   useEffect(() => {
-    const getChannels = async () => {
+    const loadAllData = async () => {
       try {
-        const data = await fetchChannels();
-        setChannels(data);
+        const [channelData, userData] = await Promise.all([
+          fetchChannels(),
+          fetchCurrentUser(),
+        ]);
+        setChannels(channelData);
+        useSubscriptionStore
+          .getState()
+          .setSubscribes(
+            userData.following?.map((follow) => follow.user) || [],
+          );
       } catch (error) {
         console.error('Error: ', error);
       }
     };
-    getChannels();
+    loadAllData();
   }, []);
 
   //구독 취소 핸들러 (별 아이콘 클릭)
-  const unSubscribedHandler = (e: React.MouseEvent, channelId: string) => {
+  const unSubscribedHandler = async (
+    e: React.MouseEvent,
+    channelId: string,
+  ) => {
     e.stopPropagation();
-    const update = subscribes.filter((id) => id !== channelId); //목록 갱신
-    setSubscribes(update);
-    setSubscribedChannels(update); //로컬 저장
+    await unsubscribeChannel(channelId);
+    await useSubscriptionStore.getState().syncSubscribes();
     customToast('구독이 취소되었습니다.', 'info');
   };
 
@@ -73,8 +81,6 @@ export default function Sidebar() {
     const index = indexMap[chanelId];
     navigate(`/channel/${index}`);
   };
-
-  //console.log(subscribes);
 
   return (
     <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">
@@ -131,7 +137,7 @@ export default function Sidebar() {
                 >
                   <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
                     <img
-                      src={getImagePreview(item._id)}
+                      src={getImagePreview(item._id) || ''}
                       alt="channelImg"
                       className="h-full w-full object-cover"
                     />
