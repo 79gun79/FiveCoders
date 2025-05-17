@@ -28,14 +28,6 @@ export default function ProfileSetting() {
   const updatedPrevImage = usePreviewImage((state) => state.previewImage);
   const setProfileImage = useImageStore((state) => state.setProfileImage);
 
-  // const handleImageChange = (imageFile: File | null | string) => {
-  //   if (imageFile) {
-  //     setSaveImage(imageFile);
-  //   } else {
-  //     setSaveImage(prof);
-  //   }
-  // };
-
   const validateConfirmPassword = (value: string) => {
     if (value !== password && value !== '') {
       return '비밀번호가 일치하지 않습니다.';
@@ -107,7 +99,6 @@ export default function ProfileSetting() {
         }
       }
       setLoading(true);
-      console.log(saveImage);
       if (saveImage !== '') {
         try {
           const formData = new FormData();
@@ -143,7 +134,6 @@ export default function ProfileSetting() {
 
   useEffect(() => {
     client('/auth-user').then((response) => setUserData(response.data._id));
-    console.log(userData);
     if (userData.length !== 0) {
       client(`/users/${userData}`).then((response) => [
         setUsername(response.data.fullName),
@@ -159,11 +149,7 @@ export default function ProfileSetting() {
         <div className="flex min-w-[850px] flex-col content-center justify-start">
           <span className="textH2">프로필 설정</span>
           <div className="mt-12.5 flex content-center items-center">
-            <ProfileUpload
-              userEmail={userEmail}
-              // changedImage={handleImageChange}
-              userData={userData}
-            />
+            <ProfileUpload userEmail={userEmail} userData={userData} />
           </div>
           <div className="mt-13.5">
             <div className="flex items-center">

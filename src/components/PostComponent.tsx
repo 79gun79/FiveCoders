@@ -20,9 +20,11 @@ import { stateLike } from '../utils/stateLike';
 import { client } from '../services/axios';
 
 export default function PostComponent({
+  id,
   post,
   userInfo,
 }: {
+  id: string;
   post: Post;
   userInfo?: User;
 }) {
@@ -75,7 +77,7 @@ export default function PostComponent({
   return (
     <>
       {!isDeleted && (
-        <div key={post._id} className="postShadow postBorder">
+        <div id={id} key={post._id} className="postShadow postBorder">
           <div className="postBottom pb-9">
             <div className="mb-4 flex items-center gap-[10px]">
               <img

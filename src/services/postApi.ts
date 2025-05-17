@@ -14,6 +14,16 @@ type PostUpdateReq = {
   channelId: string;
 };
 
+export const getPostById = async (postId: string) => {
+  try {
+    const res = await client.get(`/posts/${postId}`);
+    return res;
+  } catch (err) {
+    console.error('게시물 가져오기 실패:', err);
+    throw err;
+  }
+};
+
 export const createPost = async ({
   title,
   channelId,

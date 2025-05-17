@@ -1,130 +1,117 @@
-import Button from './Button';
 import { AiFillMessage } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
-import { postData } from '../data/PostData';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/기본 프로필.png';
-import { useParams } from 'react-router';
-import axios from 'axios';
-import { useAuthStore } from '../stores/authStore';
-import { createLike, deleteLike } from '../services/likesApi';
+import { Link, useParams } from 'react-router';
+import { parseContent } from '../utils/parseContent';
+import { cleanContent } from '../utils/cleanContent';
+import { twMerge } from 'tailwind-merge';
+import { fetchChannels } from '../services/channelApi';
+import { Channel } from '../types/channel';
+import { getImagePreview } from '../utils/localImage';
 
-export default function MyPost({
-  userName,
-  myPost,
-}: {
-  userName: string;
-  myPost: PostData[];
-}) {
-  // const [userName, setUserName] = useState();
-  const [like, setLike] = useState(new Array(postData.length).fill(0));
-  const [liked, setLiked] = useState<LikeData[]>([]);
+export default function MyPost({ myPost }: { myPost: Post[] }) {
   const [image, setImage] = useState('');
-  const [postLike, setPostLike] = useState<number>(0);
-  const API_URL = import.meta.env.VITE_API_URL;
-  const token = useAuthStore.getState().accessToken;
-
-  // const copiedLike = (i) => {
-  //   if (myLike[i].post === myPost[i]._id) {
-  //     copyLike[i] = 1;
-  //   } else {
-  //     copyLike[i] = 0;
-  //   }
-  // };
-
-  // console.log(like);
-
-  const handlesetLike = async (i) => {
-    console.log(like);
-    const copyLike = [...like];
-    console.log(liked[i].post);
-    setPostLike(myPost[i].likes.length);
-    if (liked[i].post !== myPost[i]._id) {
-      copyLike[i] = copyLike[i] + 1;
-      console.log(myPost[i].likes.length);
-      try {
-        await axios.post(
-          `${API_URL}likes/create`,
-          {
-            postId: myPost[i]._id,
-          },
-          { headers: { Authorization: `Bearer ${token}` } },
-        );
-        console.log('updated');
-      } catch (error) {
-        console.log(error);
-      }
-    } else if (liked[i].post === myPost[i]._id) {
-      copyLike[i] = copyLike[i] - 1;
-      // console.log(liked[i]._id);
-      try {
-        const response = await axios.delete(`${API_URL}likes/delete`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: { id: liked[i]._id },
-        });
-        return response;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    setLike(copyLike);
-  };
+  const [myName, setMyname] = useState('');
+  const [myId, setMyId] = useState('');
+  const [channels, setChannels] = useState<Channel[]>([]);
 
   // console.log(liked._id);
 
   const userId = useParams();
+  useEffect(() => {
+    const loadChannels = async () => {
+      try {
+        const ch = await fetchChannels();
+        setChannels(ch);
+      } catch (error) {
+        console.error('채널 정보를 불러오지 못했습니다.', error);
+      }
+    };
+
+    loadChannels();
+  }, []);
 
   useEffect(() => {
-    client(`/users/${userId.userId}`).then((response) => [
-      setImage(response.data.image || prof),
-      setLiked(response.data.likes),
-    ]);
-  }, [userId.userId, postLike]);
-
-  // console.log(myLike);
+    client('/auth-user').then((response) => {
+      setMyId(response.data._id);
+    });
+    client(`/users/${userId.userId}`).then((response) => {
+      setImage(response.data.image);
+      setMyname(response.data.fullName);
+    });
+  }, [userId.userId]);
 
   return (
-    <>
-      <div>
-        {myPost.map((v, i) => (
-          <div className="postBox block">
-            <div className="flex">
-              <img
-                src={image}
-                alt="프로필"
-                className="h-[50px] w-[50px] rounded-full"
-              />
-              <div className="ml-[8.12px] block">
-                <span className="textH3 block">{userName}</span>
-                <div className="h-[7px]"></div>
-                <span></span>
-                <span className="textST2 block">{v.title}</span>
+    <div>
+      {myPost.map((v: Post, i) => {
+        const { head, body } = parseContent(v.title);
+
+        const channelName =
+          channels.find((c) => c._id === v.channel)?.name ||
+          '존재하지 않은 채널';
+
+        const channelIndex = channels.findIndex(
+          (channel) => channel._id === v.channel,
+        );
+
+        return (
+          <Link to={`/channel/${channelIndex}#${v._id}`} key={v._id}>
+            <div key={i} className="postShadow postBorder mt-[30px]">
+              <div className="pb-9">
+                {myId !== userId.userId && (
+                  <div className="mb-4 flex items-center gap-[10px]">
+                    <img
+                      src={image || prof}
+                      alt="profile"
+                      className="postProfile"
+                    />
+                    <p className="text-base">{v.author.fullName || myName}</p>
+                    <div className="flex-grow"></div>
+                  </div>
+                )}
+                <div className="textH4 font-bold">{head}</div>
+                {v.image && (
+                  <img
+                    src={v.image}
+                    alt={v._id}
+                    className="mt-3 max-w-[564px] object-contain"
+                  />
+                )}
+                <div
+                  className="textT1 mt-3"
+                  dangerouslySetInnerHTML={{ __html: cleanContent(body) }}
+                ></div>
+              </div>
+              <div
+                className={twMerge(
+                  'flex items-center justify-start gap-2',
+                  'text-[var(--color-sub)]',
+                )}
+              >
+                <BiSolidLike size={20} />
+                <span className="mr-2 text-[var(--color-text-black)]">
+                  {v.likes.length}
+                </span>
+                <AiFillMessage size={20} />
+                <span className="mr-2 text-[var(--color-text-black)]">
+                  {v.comments.length}
+                </span>
+                <div className="flex-grow"></div>
+                <img
+                  src={getImagePreview(v.channel) || prof}
+                  alt="profile"
+                  className="postProfile"
+                />
+                <p className="text-base text-[var(--color-text-black)]">
+                  {v.author.fullName || channelName}
+                </p>
               </div>
             </div>
-            <div className="mt-[45px] border-1 border-[var(--color-gray3)]"></div>
-            <div className="mt-5 flex content-center justify-center">
-              <Button
-                className={
-                  'textT2 flex w-80 cursor-pointer content-end justify-center hover:bg-[var(--color-gray1)]' +
-                  (liked[i]?.post === myPost[i]?._id
-                    ? ' text-[var(--color-main)]'
-                    : ' text-[var(--color-gray5)]')
-                }
-                onClick={() => handlesetLike(i)}
-              >
-                <BiSolidLike className="mr-2 h-5" /> 좋아요 {postLike}
-              </Button>
-              <Button className="textT2 comment w-80 active:text-[var(--color-main)]">
-                <AiFillMessage className="mr-2 h-5" />
-                {myPost[i].comments.length}
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
+          </Link>
+        );
+      })}
+    </div>
   );
 }
