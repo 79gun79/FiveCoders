@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import profile from '../assets/imgs/기본 프로필.png';
+import profile from '../assets/imgs/defaultProfileImg.png';
 import { client } from '../services/axios';
 import { Link, useParams } from 'react-router';
 import { twMerge } from 'tailwind-merge';

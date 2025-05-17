@@ -11,8 +11,10 @@ import { client } from '../services/axios';
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 import ProfileUpload from '../components/ProfileUpload';
-import prof from '../assets/imgs/기본 프로필.png';
+
+import prof from '../assets/imgs/defaultProfileImg.png';
 import { useImageStore, usePreviewImage } from '../stores/imageStore';
+
 
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');

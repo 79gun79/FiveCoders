@@ -6,7 +6,7 @@ import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { client } from '../services/axios';
-import prof from '../assets/imgs/기본 프로필.png';
+import prof from '../assets/imgs/defaultProfileImg.png';
 
 export default function MyPage() {
   const [myUser, setMyUser] = useState<User | null>(null);
