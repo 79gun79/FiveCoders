@@ -22,6 +22,7 @@ export default function HeaderLogin() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const logout = useAuthStore((state) => state.logout);
+  // const isUpdate = useRef(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -80,11 +81,16 @@ export default function HeaderLogin() {
   };
 
   useEffect(() => {
-    client(`/users/${myData}`).then((response) =>
-      setImage(response.data.image || channelImg || updatedImage),
-    );
     client('/auth-user').then((response) => setMyData(response.data._id));
-  }, [myData, updatedImage]);
+  }, []);
+
+  useEffect(() => {
+    if (myData!.length !== 0) {
+      client(`/users/${myData}`).then((response) =>
+        setImage(response.data.image || channelImg || updatedImage),
+      );
+    }
+  }, [myData, Image, updatedImage]);
 
   return (
     <div className="absolute right-6 flex items-center gap-3">

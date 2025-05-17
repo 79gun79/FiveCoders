@@ -2,28 +2,30 @@ import { useEffect, useRef, useState } from 'react';
 import prof from '../assets/imgs/기본 프로필.png';
 import { client } from '../services/axios';
 import { CiImageOn } from 'react-icons/ci';
+import { usePreviewImage } from '../stores/imageStore';
 
 export default function ProfileUpload({
   userEmail,
-  changedImage,
   userData,
 }: {
   userEmail: string;
-  changedImage: (imageFile: File | undefined) => void;
   userData: [];
 }) {
-  const [Image, setImage] = useState<File | undefined>();
+  const [Image, setImage] = useState<string>('');
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const setPreviewImage = usePreviewImage((state) => state.setPrevImage);
 
   const isChanged = async (e: React.ChangeEvent<any>) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0] || prof);
+    setPreviewImage(e.target.files[0]);
+
     try {
       if (e.target.files[0]) {
         setImage(e.target.files[0]);
       } else {
         setImage(prof);
       }
-      console.log(e.target.files[0]);
-
       // 이미지 리더
       const reader = new FileReader();
       reader.onload = () => {
@@ -38,16 +40,11 @@ export default function ProfileUpload({
   };
 
   useEffect(() => {
-    if (Image instanceof File || Image === undefined) {
-      changedImage(Image);
-      console.log(Image);
+    if (userData.length !== 0) {
+      client(`/users/${userData}`).then((response) =>
+        setImage(response.data.image || prof),
+      );
     }
-  }, [Image, changedImage]);
-
-  useEffect(() => {
-    client(`/users/${userData}`).then((response) =>
-      setImage(response.data.image || prof),
-    );
   }, [userData]);
 
   return (

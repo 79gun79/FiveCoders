@@ -17,6 +17,8 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
   const [myId, setMyId] = useState('');
   const [channels, setChannels] = useState<Channel[]>([]);
 
+  // console.log(liked._id);
+
   const userId = useParams();
   useEffect(() => {
     const loadChannels = async () => {
