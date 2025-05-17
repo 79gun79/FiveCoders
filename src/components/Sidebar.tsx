@@ -74,8 +74,6 @@ export default function Sidebar() {
     navigate(`/channel/${index}`);
   };
 
-  console.log(subscribes);
-
   return (
     <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">
       <nav>

@@ -64,8 +64,6 @@ export default function DFCard({ id, server }: DFCardProps) {
     fetchData();
   }, [id, server]);
 
-  console.log(profile);
-
   return (
     <div
       className="relative flex h-[160px] w-[260px] justify-start overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat p-[10px]"

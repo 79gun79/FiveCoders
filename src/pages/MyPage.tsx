@@ -27,8 +27,8 @@ export default function MyPage() {
 
   const selectComponent: Record<string, React.ReactNode | React.ReactNode[]> = {
     최신: [
-      <MyPost myPost={myUser?.posts ?? []} />,
-      <MyComment myComment={myUser?.comments ?? []} />,
+      <MyPost key="myPostList" myPost={myUser?.posts ?? []} />,
+      <MyComment key="myCommentList" myComment={myUser?.comments ?? []} />,
     ],
     게시글: <MyPost myPost={myUser?.posts ?? []} />,
     댓글: <MyComment myComment={myUser?.comments ?? []} />,
@@ -55,7 +55,7 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mx-[100px] mt-[15px] mb-[30px] flex flex-col items-center">
+      <div className="relative mt-[15px] mb-[30px] flex min-w-[850px] flex-col items-center justify-center">
         {!loading && (
           <div>
             <div className="flex">

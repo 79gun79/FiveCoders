@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import ValidateNickNameInput from '../components/ValidateNickNameInput ';
 import { twMerge } from 'tailwind-merge';
 import ValidatePasswordInput from '../components/ValidatePasswordInput';
-import Tooltip from '../components/Tooltip';
+// import Tooltip from '../components/Tooltip';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import { client } from '../services/axios';
 import axios from 'axios';
@@ -145,10 +145,10 @@ export default function ProfileSetting() {
 
   return (
     <>
-      <div className="flex justify-center">
-        <div className="flex min-w-[850px] flex-col content-center justify-start">
+      <div className="flex min-w-[850px] justify-center">
+        <div className="flex flex-col content-center justify-start">
           <span className="textH2">프로필 설정</span>
-          <div className="mt-12.5 flex content-center items-center">
+          <div className="mt-12.5 flex">
             <ProfileUpload userEmail={userEmail} userData={userData} />
           </div>
           <div className="mt-13.5">
@@ -156,7 +156,7 @@ export default function ProfileSetting() {
               <span className="textST1 block text-[var(--color-gray7)]">
                 닉네임
               </span>
-              <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요" />
+              {/* <Tooltip content="닉네임을 변경하기 위해서는 현재 비밀번호를 함께 입력해주세요" /> */}
             </div>
             <ValidateNickNameInput
               value={username}
