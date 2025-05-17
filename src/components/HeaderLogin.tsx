@@ -9,6 +9,7 @@ import Button from './Button';
 import { client } from '../services/axios';
 import { useAuthStore } from '../stores/authStore';
 import { useImageStore } from '../stores/imageStore';
+import prof from '../assets/imgs/기본 프로필.png';
 
 export default function HeaderLogin() {
   const navigate = useNavigate();
@@ -119,7 +120,7 @@ export default function HeaderLogin() {
           className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full"
         >
           <img
-            src={Image}
+            src={Image || prof}
             alt="channelImg"
             className="h-10 w-10 object-cover"
           />

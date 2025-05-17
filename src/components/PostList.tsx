@@ -8,7 +8,6 @@ export default function PostList({ channelId }: { channelId: string }) {
   // 상태 관리
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setLoading] = useState(true);
-
   const refresh = useRefreshStore((state) => state.refresh);
 
   useEffect(() => {
@@ -27,6 +26,18 @@ export default function PostList({ channelId }: { channelId: string }) {
     };
     fetchPosts();
   }, [channelId, refresh]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      const targetId = window.location.hash.substring(1);
+      if (targetId) {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  }, [isLoading]); // 해당 포스트로 이동
 
   if (isLoading) {
     return (
@@ -55,7 +66,7 @@ export default function PostList({ channelId }: { channelId: string }) {
     <>
       {posts.length > 0 ? (
         posts.map((post) => {
-          return <PostComponent key={post._id} post={post} />;
+          return <PostComponent id={post._id} key={post._id} post={post} />;
         })
       ) : (
         <div className="flex h-[300px] items-center justify-center">
