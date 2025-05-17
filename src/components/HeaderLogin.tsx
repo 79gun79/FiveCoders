@@ -9,7 +9,7 @@ import Button from './Button';
 import { client } from '../services/axios';
 import { useAuthStore } from '../stores/authStore';
 import { useImageStore } from '../stores/imageStore';
-import prof from '../assets/imgs/기본 프로필.png';
+import prof from '../assets/imgs/defaultProfileImg.png';
 
 export default function HeaderLogin() {
   const navigate = useNavigate();
