@@ -24,6 +24,8 @@ export default function Home() {
   const [inputId, setInputId] = useState('');
   const [inputServer, setInputServer] = useState('');
   const addCardRef = useRef<HTMLDivElement>(null);
+  const getCardList = sessionStorage.getItem('CardList');
+  const getAuth = sessionStorage.getItem('auth-storage');
 
   //연동 카드 추가 닫기
   useEffect(() => {
@@ -41,8 +43,8 @@ export default function Home() {
   }, [showAddCard]);
 
   useEffect(() => {
-    if (sessionStorage.getItem('CardList') !== null) {
-      setCards(JSON.parse(sessionStorage.getItem('CardList')!));
+    if (getCardList !== null) {
+      setCards(JSON.parse(getCardList));
     }
   }, []);
 
@@ -54,14 +56,14 @@ export default function Home() {
   };
 
   const createCardHandler = () => {
-    if (selectedType === 'dnf') {
+    if (selectedType === 'dnf' && getAuth !== null) {
       if (inputId && inputServer) {
         setCards([...cards, { type: 'dnf', id: inputId, server: inputServer }]);
         setShowAddCard(false);
         setInputId('');
         setInputServer('');
       }
-    } else if (selectedType && inputId) {
+    } else if (selectedType && inputId && getAuth !== null) {
       setCards([...cards, { type: selectedType as CardType, id: inputId }]);
       setShowAddCard(false);
     }
