@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { User } from '../types/user';
 import defaultProfileImg from '../assets/imgs/defaultProfileImg.png';
 import { fetchUsers } from '../services/userApi';
+import { useNavigate } from 'react-router';
 
 export default function UserList() {
   const [users, setUsers] = useState<User[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers()
@@ -17,6 +19,11 @@ export default function UserList() {
     return (b.isOnline ? 1 : 0) - (a.isOnline ? 1 : 0);
   });
 
+  //유저 클릭 시 유저 페이지로 이동\
+  const userClickhandler = (userId: string) => {
+    navigate(`/mypage/${userId}`);
+  };
+
   return (
     <>
       <div>
@@ -28,6 +35,7 @@ export default function UserList() {
             <li
               key={user._id}
               className="flex cursor-pointer items-center rounded-xl px-5.5 py-2.5 text-[16px] hover:bg-[var(--color-gray2)]"
+              onClick={() => userClickhandler(user._id)}
             >
               <span
                 className={`mr-2 h-2 w-2 rounded-full ${
