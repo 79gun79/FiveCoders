@@ -40,6 +40,12 @@ export default function Home() {
     return () => document.removeEventListener('mousedown', handler);
   }, [showAddCard]);
 
+  useEffect(() => {
+    if (sessionStorage.getItem('CardList') !== null) {
+      setCards(JSON.parse(sessionStorage.getItem('CardList')!));
+    }
+  }, []);
+
   const addCardHandler = () => {
     setShowAddCard(true);
     //선택 항목의 기본 값은 steam
@@ -63,12 +69,15 @@ export default function Home() {
 
   const renderCard = (card: Card, idx: number) => {
     if (card.type === 'steam') {
+      sessionStorage.setItem('CardList', JSON.stringify(cards));
       return <SteamCard key={idx} id={card.id} />;
     }
     if (card.type === 'discord') {
+      sessionStorage.setItem('CardList', JSON.stringify(cards));
       return <DiscordCard key={idx} id={card.id} />;
     }
     if (card.type === 'dnf') {
+      sessionStorage.setItem('CardList', JSON.stringify(cards));
       return <DFCard key={idx} id={card.id} server={card.server!} />;
     }
     return null;
