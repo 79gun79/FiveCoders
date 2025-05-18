@@ -28,14 +28,13 @@ export default function Home() {
   const [inputId, setInputId] = useState('');
   const [inputServer, setInputServer] = useState('');
   const addCardRef = useRef<HTMLDivElement>(null);
-  const getCardList = sessionStorage.getItem('CardList');
   const [cardList, setCardList] = useState<string>('');
   const getAuth = sessionStorage.getItem('auth-storage');
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
   const [username, setUsername] = useState<string>('');
   const [userData, setUserData] = useState<string>('');
-  const logout = useAuthStore((state) => state.logout);
+  const isLogin = useAuthStore((state) => state.isLoggedIn);
   const [isOpen, setIsOpen] = useState(false);
 
   //연동 카드 추가 닫기
@@ -44,7 +43,7 @@ export default function Home() {
     const handler = (e: MouseEvent) => {
       if (
         addCardRef.current &&
-        !addCardRef.current.contains(e.target as Node)
+        !addCardRef.current.contains(e.target as Node) && isOpen !== true
       ) {
         setShowAddCard(false);
       }
@@ -54,8 +53,12 @@ export default function Home() {
   }, [showAddCard]);
 
   useEffect(() => {
-    if (cardList !== '' && cardList !== undefined) {
-      setCards(JSON.parse(cardList));
+    if (isLogin === true) {
+      if (cardList !== '' && cardList !== undefined) {
+        setCards(JSON.parse(cardList));
+      }
+    } else {
+      setCards([]);
     }
     client('/auth-user').then((response) => setUserData(response.data._id));
     if (userData) {
@@ -64,7 +67,7 @@ export default function Home() {
         setCardList(response.data.username),
       ]);
     }
-  }, [cardList, userData, getCardList, username, logout]);
+  }, [cardList, userData, username, isLogin]);
 
   const addCardHandler = () => {
     if (useAuthStore.getState().isLoggedIn !== true) {
@@ -110,7 +113,7 @@ export default function Home() {
   };
 
   const renderCard = (card: Card, idx: number) => {
-    if (username !== '') {
+    if (isLogin === true) {
       if (card.type === 'steam') {
         // sessionStorage.setItem('CardList', JSON.stringify(cards));
         saveCardData();

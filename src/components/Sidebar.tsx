@@ -24,8 +24,8 @@ export default function Sidebar() {
   //const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   //구독한 채널 목록
-  const subscribedChannels = channels.filter((channel) =>
-    subscribes.includes(channel._id),
+  const subscribedChannels = channels.filter(
+    (channel) => subscribes.includes(channel._id),
   );
 
   //채널 구독
