@@ -32,13 +32,6 @@ export default function Sidebar() {
     subscribes.includes(channel._id),
   );
 
-  //채널 구독
-  //로그인 O : 구독한 채널 있으면 채널 목록 표시 / 없으면 +커뮤니티 찾기 표시 -> /channels로 리다이렉트
-  //로그인 X : + 커뮤니티 찾기 표시 -> 로그인하세요 모달
-  // useEffect(() => {
-  //   setSubscribes(getSubscribedChannels()); // 로컬에 저장
-  // }, [setSubscribes]);
-
   //구독한 채널 목록 불러오기
   useEffect(() => {
     const getChannels = async () => {
@@ -74,25 +67,23 @@ export default function Sidebar() {
     navigate(`/channel/${index}`);
   };
 
-  //console.log(subscribes);
-
   return (
-    <aside className="sticky top-0 flex h-screen w-[280px] flex-col border-r border-[var(--color-gray4)] bg-white">
+    <aside className="sticky top-0 flex h-screen w-[70px] flex-col border-r border-[var(--color-gray4)] bg-white xl:w-[280px]">
       <nav className="my-2.5 h-[130px] flex-col items-center">
         <ul className="p-3">
           <li
-            className="flex cursor-pointer items-center rounded-xl px-6 py-3 hover:bg-[var(--color-gray2)]"
+            className="flex cursor-pointer items-center justify-center rounded-xl py-3 hover:bg-[var(--color-gray2)] xl:justify-start xl:px-6"
             onClick={() => navigate('/')}
           >
-            <img src={homeIcon} className="mr-[13px] h-5.5 w-5.5" />
-            <span className="font-bold">홈</span>
+            <img src={homeIcon} className="mb-2 h-5.5 w-5.5 xl:mr-[13px]" />
+            <span className="hidden font-bold xl:inline">홈</span>
           </li>
           <li
-            className="flex cursor-pointer items-center rounded-xl px-6 py-3 hover:bg-[var(--color-gray2)]"
+            className="flex cursor-pointer items-center justify-center rounded-xl py-3 hover:bg-[var(--color-gray2)] xl:justify-start xl:px-6"
             onClick={() => navigate('/channel')}
           >
-            <img src={globeIcon} className="mr-[13px] h-5.5 w-5.5" />
-            <span className="font-bold">커뮤니티</span>
+            <img src={globeIcon} className="h-5.5 w-5.5 xl:mr-[13px]" />
+            <span className="hidden font-bold xl:inline">커뮤니티</span>
           </li>
         </ul>
       </nav>
@@ -100,14 +91,14 @@ export default function Sidebar() {
       <div className="flex min-h-0 flex-1 flex-col">
         {/* 채널 목록 */}
         <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="flex items-center px-8">
+          <div className="flex items-center px-4 xl:px-8">
             <span className="h-px flex-1 bg-[var(--color-gray4)]" />
           </div>
-          <h2 className="mt-[25px] px-8 py-2 text-[16px] text-[var(--color-gray8)]">
+          <h2 className="mt-[25px] hidden px-8 py-2 text-[16px] text-[var(--color-gray8)] xl:block">
             즐겨찾는 커뮤니티
           </h2>
           {subscribedChannels.length <= 0 ? (
-            <div className="p-2.5">
+            <div className="p-3">
               <span
                 onClick={() => {
                   if (isLoggedIn) {
@@ -116,9 +107,22 @@ export default function Sidebar() {
                     openModal();
                   }
                 }}
-                className="block cursor-pointer px-8 py-2.5 text-[14px] text-[var(--color-gray6)] select-none hover:bg-[var(--color-gray2)]"
+                className="hidden cursor-pointer px-2 py-2.5 text-[14px] text-[var(--color-gray6)] select-none hover:bg-[var(--color-gray2)] xl:block xl:px-8"
               >
                 + 커뮤니티 찾기
+              </span>
+              <span
+                onClick={() => {
+                  if (isLoggedIn) {
+                    navigate('/channel');
+                  } else {
+                    openModal();
+                  }
+                }}
+                className="block cursor-pointer rounded-full p-2 text-center text-[24px] text-[var(--color-gray6)] hover:bg-[var(--color-gray2)] xl:hidden"
+                title="커뮤니티 찾기"
+              >
+                +
               </span>
             </div>
           ) : (
@@ -126,18 +130,23 @@ export default function Sidebar() {
               {subscribedChannels.map((item) => (
                 <li
                   key={item._id}
-                  className="flex cursor-pointer items-center rounded-xl px-5.5 py-2.5 text-[16px] hover:bg-[var(--color-gray2)]"
+                  className="flex cursor-pointer items-center justify-center rounded-xl py-2.5 hover:bg-[var(--color-gray2)] xl:justify-start xl:px-5.5"
                   onClick={() => channelClickHandler(item._id)}
                 >
-                  <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
+                  <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full xl:mr-3">
                     <img
                       src={getImagePreview(item._id)}
                       alt="channelImg"
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <span className="flex-1 text-sm">{item.name}</span>
-                  <button onClick={(e) => unSubscribedHandler(e, item._id)}>
+                  <span className="test-sm hidden flex-1 xl:inline">
+                    {item.name}
+                  </span>
+                  <button
+                    onClick={(e) => unSubscribedHandler(e, item._id)}
+                    className="hidden xl:block"
+                  >
                     <TiStarFullOutline
                       className={`text-[20px] transition-colors ${'text-[var(--color-orange)] hover:text-[var(--color-gray3)]'}`}
                     />
@@ -149,7 +158,7 @@ export default function Sidebar() {
           {modalOpen && <IsLoggedInModal onClose={closeModal} />}
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">
-          <div className="flex items-center px-6">
+          <div className="flex items-center px-2 xl:px-6">
             <span className="h-px flex-1 bg-[var(--color-gray4)]" />
           </div>
           <UserList />

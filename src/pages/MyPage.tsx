@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/defaultProfileImg.png';
+import { User } from '../types/user';
 
 export default function MyPage() {
   const [myUser, setMyUser] = useState<User | null>(null);
