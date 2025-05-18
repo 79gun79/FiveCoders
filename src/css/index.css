@@ -89,10 +89,10 @@
     @apply mr-2 inline-flex;
   }
   .community-tab {
-    @apply border-[var(--color-gray3)] hover:border-[var(--color-sub)];
+    @apply border-[var(--color-gray3)] transition-all duration-300 ease-in-out hover:border-[var(--color-sub)];
   }
   .community-tab-active {
-    @apply border-[var(--color-main)] text-[var(--color-main)] hover:border-[var(--color-sub)];
+    @apply border-[var(--color-main)] text-[var(--color-main)] transition-all duration-300 ease-in-out hover:border-[var(--color-sub)];
   }
   .input {
     @apply my-3.75 w-[80%] border-b-1 placeholder:text-[var(--color-gray4)] focus:outline-none;
@@ -149,3 +149,12 @@
   color: var(--color-gray4) !important;
 }
 /* 텍스트 에디터의 미리보기 글짜 적용을 위한 기본 CSS 사용 */
+
+/* 스크롤 바 숨기기 */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

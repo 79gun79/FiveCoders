@@ -9,7 +9,7 @@ export default function ProfileUpload({
   userData,
 }: {
   userEmail: string;
-  userData: [];
+  userData: string;
 }) {
   const [Image, setImage] = useState<string>('');
   const fileInput = useRef<HTMLInputElement | null>(null);
@@ -40,7 +40,7 @@ export default function ProfileUpload({
   };
 
   useEffect(() => {
-    if (userData.length !== 0) {
+    if (userData) {
       client(`/users/${userData}`).then((response) =>
         setImage(response.data.image || prof),
       );

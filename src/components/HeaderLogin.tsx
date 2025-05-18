@@ -13,7 +13,7 @@ import { fetchNotifications, seenNotifications } from '../services/notificationA
 
 export default function HeaderLogin() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [myData, setMyData] = useState<[]>([]);
+  const [myData, setMyData] = useState<string>('');
   const [Image, setImage] = useState<string>('');
   const updatedImage = useImageStore((state) => state.profileImage);
   const [profileDropdown, setProfileDropdown] = useState(false);
@@ -99,7 +99,7 @@ export default function HeaderLogin() {
   }, []);
 
   useEffect(() => {
-    if (myData!.length !== 0) {
+    if (myData) {
       client(`/users/${myData}`).then((response) =>
         setImage(response.data.image || channelImg || updatedImage),
       );

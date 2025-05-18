@@ -58,7 +58,7 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
 
         return (
           <Link to={`/channel/${channelIndex}#${v._id}`} key={v._id}>
-            <div key={i} className="postShadow postBorder mt-[30px]">
+            <div className="postShadow postBorder mt-[30px]">
               <div className="pb-9">
                 {myId !== userId.userId && (
                   <div className="mb-4 flex items-center gap-[10px]">
@@ -71,7 +71,9 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
                     <div className="flex-grow"></div>
                   </div>
                 )}
-                <div className="textH4 font-bold">{head}</div>
+                <div className="textH4 max-w-[640px] overflow-hidden font-bold text-ellipsis whitespace-nowrap">
+                  {head}
+                </div>
                 {v.image && (
                   <img
                     src={v.image}
@@ -80,7 +82,7 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
                   />
                 )}
                 <div
-                  className="textT1 mt-3"
+                  className="textT1 mt-3 line-clamp-4 min-w-[564px]"
                   dangerouslySetInnerHTML={{ __html: cleanContent(body) }}
                 ></div>
               </div>
