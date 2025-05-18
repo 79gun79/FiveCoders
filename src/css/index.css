@@ -149,3 +149,12 @@
   color: var(--color-gray4) !important;
 }
 /* 텍스트 에디터의 미리보기 글짜 적용을 위한 기본 CSS 사용 */
+
+/* 스크롤 바 숨기기 */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

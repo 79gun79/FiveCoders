@@ -134,7 +134,7 @@ export default function Home() {
   };
 
   return (
-    <div className="mx-auto flex max-w-[1020px] flex-col items-center justify-center">
+    <div className="mx-auto flex max-w-[1020px] flex-col items-center justify-center px-8 xl:px-4">
       <div className="w-full items-start">
         <div className="flex items-center">
           <img src={joystick} alt="icon" className="mr-2 h-[25px] w-[25px]" />
