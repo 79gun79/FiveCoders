@@ -123,7 +123,7 @@ export default function MyComment({ myComment }: { myComment: CommentType[] }) {
                   'min-w-[640px] overflow-hidden',
                 )}
               >
-                <p className="ml-2 max-w-[540px] overflow-hidden text-base text-ellipsis whitespace-nowrap text-[var(--color-gray8)]">
+                <p className="ml-2 max-w-[400px] overflow-hidden text-base text-ellipsis whitespace-nowrap text-[var(--color-gray8)]">
                   {v.comment}
                 </p>
                 <div className="flex-grow"></div>
