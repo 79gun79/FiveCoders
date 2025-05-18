@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import prof from '../assets/imgs/기본 프로필.png';
+import prof from '../assets/imgs/defaultProfileImg.png';
 import { client } from '../services/axios';
 import { CiImageOn } from 'react-icons/ci';
 import { usePreviewImage } from '../stores/imageStore';

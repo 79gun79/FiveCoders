@@ -6,7 +6,9 @@ import MyComment from '../components/MyComment';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { client } from '../services/axios';
-import prof from '../assets/imgs/기본 프로필.png';
+import prof from '../assets/imgs/defaultProfileImg.png';
+import { User } from '../types/user';
+import EmptyInfo from '../components/EmptyInfo';
 
 export default function MyPage() {
   const [myUser, setMyUser] = useState<User | null>(null);
@@ -27,13 +29,26 @@ export default function MyPage() {
 
   const selectComponent: Record<string, React.ReactNode | React.ReactNode[]> = {
     최신: [
-      <MyPost key="myPostList" myPost={myUser?.posts ?? []} />,
-      <MyComment key="myCommentList" myComment={myUser?.comments ?? []} />,
+      !myUser?.posts?.length && !myUser?.comments?.length ? (
+        <EmptyInfo info="게시글과 댓글" />
+      ) : (
+        <>
+          <MyPost myPost={myUser?.posts ?? []} />
+          <MyComment myComment={myUser?.comments ?? []} />
+        </>
+      ),
     ],
-    게시글: <MyPost myPost={myUser?.posts ?? []} />,
-    댓글: <MyComment myComment={myUser?.comments ?? []} />,
+    게시글: myUser?.posts?.length ? (
+      <MyPost myPost={myUser?.posts ?? []} />
+    ) : (
+      <EmptyInfo info="게시글" />
+    ),
+    댓글: myUser?.comments?.length ? (
+      <MyComment myComment={myUser?.comments ?? []} />
+    ) : (
+      <EmptyInfo info="댓글" />
+    ),
   };
-
   useEffect(() => {
     Promise.all([
       client('/auth-user').then((response) => {
@@ -55,7 +70,7 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mt-[15px] mb-[30px] flex min-w-[850px] flex-col items-center justify-center">
+      <div className="relative mx-[100px] mt-[15px] mb-[30px] flex min-w-[640px] flex-col items-center">
         {!loading && (
           <div>
             <div className="flex">

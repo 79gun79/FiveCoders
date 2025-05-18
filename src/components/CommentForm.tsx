@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import placeholderIcon from '../assets/channelImg.svg';
@@ -21,17 +21,24 @@ export default function CommentForm({
   const doRefresh = useRefreshStore((state) => state.do);
   const resetRefresh = useRefreshStore((state) => state.reset);
 
+  const [throttle, setThrottle] = useState(false);
+
   const postComment = () => {
     const commentData = {
       postId: `${postId}`,
       comment: `${comment}`,
     };
-    comment.length > 0
-      ? client
-          .post(`/comments/create`, commentData)
-          .then(() => (refresh === 0 ? doRefresh() : resetRefresh()))
-          .then(() => setComment(''))
-      : comment.length == 0 && customToast('댓글을 입력해주세요.', 'error');
+
+    if (comment.length > 0) {
+      setThrottle(true);
+      client
+        .post(`/comments/create`, commentData)
+        .then(() => (refresh === 0 ? doRefresh() : resetRefresh()))
+        .then(() => setComment(''))
+        .catch((error) => console.log(`에러 발생: ${error}`))
+        .finally(() => setThrottle(false));
+    } else customToast('댓글을 입력해주세요.', 'error');
+    // comment.length == 0 && customToast('댓글을 입력해주세요.', 'error');
   };
 
   const resizeComment = () => {
@@ -79,6 +86,7 @@ export default function CommentForm({
                 'bg-[var(--color-main)] text-[14px] text-white hover:bg-[var(--color-sub)]',
               )}
               onClick={postComment}
+              disabled={throttle}
             >
               게시
             </Button>

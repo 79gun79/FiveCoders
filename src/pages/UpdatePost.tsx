@@ -34,6 +34,9 @@ export default function UpdatePost() {
   const [titleError, setTitleError] = useState(false);
   const [contentError, setContentError] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // 게시글 수정 중복방지
+  const [isCancelling, setIsCancelling] = useState(false); // 수정 취소 중복방지
+
   const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
   const [cLink, setCLink] = useState('');
@@ -91,9 +94,15 @@ export default function UpdatePost() {
   };
 
   const handleCancel = async () => {
+    if (isCancelling) return;
+    setIsCancelling(true);
+
     if (!validateEmptyContent(content) || title) {
       const isConfirmed = await customConfirm('수정을 그만하시겠습니까?');
-      if (!isConfirmed) return;
+      if (!isConfirmed) {
+        setIsCancelling(false);
+        return;
+      }
     }
     try {
       await navigate(`/channel/${cLink}`);
@@ -102,15 +111,21 @@ export default function UpdatePost() {
         '동작 중에 오류가 발생했습니다. 다시 시도 해주세요!',
         'error',
       );
+    } finally {
+      setIsCancelling(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     let hasError = false;
 
     if (!cLink) {
       customToast('채널을 선택해주세요!', 'warning');
+      setIsSubmitting(false);
       return;
     }
 
@@ -132,9 +147,16 @@ export default function UpdatePost() {
       setContentError(false);
     }
 
-    if (hasError) return;
+    if (hasError) {
+      setIsSubmitting(false);
+      return;
+    }
+
     const isConfirmed = await customConfirm('게시글을 수정하시겠습니까?');
-    if (!isConfirmed) return;
+    if (!isConfirmed) {
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await updatePost({
@@ -153,6 +175,8 @@ export default function UpdatePost() {
     } catch (err) {
       customToast('게시글 수정에 실패했습니다.', 'error');
       throw err;
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -242,6 +266,7 @@ export default function UpdatePost() {
             type="reset"
             onClick={handleCancel}
             className={twMerge('btn-style-comment', 'textBasic h-10 px-5')}
+            disabled={isCancelling}
           >
             취소
           </Button>
@@ -252,8 +277,9 @@ export default function UpdatePost() {
               'btn-style-comment',
               'textBasic h-10 bg-[var(--color-orange)] text-white hover:bg-[var(--color-deep-orange)]',
             )}
+            disabled={isSubmitting}
           >
-            수정하기
+            {isSubmitting ? '수정 중...' : '수정하기'}
           </Button>
         </div>
       </form>

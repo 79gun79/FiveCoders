@@ -7,6 +7,7 @@ import Input from '../components/Input';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuthStore } from '../stores/authStore';
 import { client } from '../services/axios';
+import { customToast } from '../utils/customToast';
 
 export default function Login() {
   const login = useAuthStore((state) => state.login);
@@ -32,7 +33,7 @@ export default function Login() {
       navigate('/');
     } catch (error) {
       console.log(error);
-      alert('이메일/비밀번호를 확인하세요.');
+      customToast('이메일/비밀번호를 확인하세요.', 'error');
     }
   };
 

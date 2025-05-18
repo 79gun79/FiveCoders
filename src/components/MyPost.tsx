@@ -2,7 +2,6 @@ import { AiFillMessage } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import { BiSolidLike } from 'react-icons/bi';
 import { client } from '../services/axios';
-import prof from '../assets/imgs/기본 프로필.png';
 import { Link, useParams } from 'react-router';
 import { parseContent } from '../utils/parseContent';
 import { cleanContent } from '../utils/cleanContent';
@@ -10,6 +9,7 @@ import { twMerge } from 'tailwind-merge';
 import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import { getImagePreview } from '../utils/localImage';
+import prof from '../assets/imgs/defaultProfileImg.png';
 
 export default function MyPost({ myPost }: { myPost: Post[] }) {
   const [image, setImage] = useState('');
@@ -44,7 +44,7 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
   }, [userId.userId]);
 
   return (
-    <div>
+    <>
       {myPost.map((v: Post, i) => {
         const { head, body } = parseContent(v.title);
 
@@ -112,6 +112,6 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
           </Link>
         );
       })}
-    </div>
+    </>
   );
 }

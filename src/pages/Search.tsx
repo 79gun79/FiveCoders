@@ -3,6 +3,7 @@ import profileImg from '../assets/channelImg.svg';
 import { Link, useSearchParams } from 'react-router-dom';
 import { client } from '../services/axios';
 import SearchPost from '../components/SearchPost';
+import { User } from '../types/user';
 
 export default function Search() {
   const [searchParams] = useSearchParams();

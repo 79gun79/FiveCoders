@@ -7,7 +7,6 @@ import { BiSolidLike } from 'react-icons/bi';
 import { AiFillMessage } from 'react-icons/ai';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
-import IsLoggedInModal from './IsLoggedInModal';
 import { deletePost } from '../services/postApi';
 import { useAuthStore } from '../stores/authStore';
 import { parseContent } from '../utils/parseContent';
@@ -18,6 +17,8 @@ import { HiTrash } from 'react-icons/hi';
 import { customConfirm } from '../utils/customConfirm';
 import { stateLike } from '../utils/stateLike';
 import { client } from '../services/axios';
+import { User } from '../types/user';
+import { useModalStore } from '../stores/modalStore';
 
 export default function PostComponent({
   id,
@@ -30,12 +31,16 @@ export default function PostComponent({
 }) {
   const isLoggedIn = useAuthStore.getState().isLoggedIn; // 로그인 상태 확인
   const [isCmtForm, setCmtForm] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [showDrop, setShowDrop] = useState<boolean>(false); // 수정,삭제 메뉴 노출여부 상태관리
   const refDrop = useRef<HTMLDivElement>(null); // 수정,삭제 메뉴 클릭여부 상태관리
   const [isDeleted, setIsDeleted] = useState(false); // 삭제된 상태 관리
   const { isLiked, toggleLike, likes } = stateLike(post);
   const [userData, setUserData] = useState<User>();
+
+  const [isDeleting, setIsDeleting] = useState(false); // 삭제 중복 방지
+  const [isUpdating, setIsUpdating] = useState(false); // 수정 중복 방지
+  // 로그인 상태 모달창 전역 관리
+  const { isLogInModal } = useModalStore();
 
   // 외부 클릭 시 드롭메뉴 닫기
   const handleClickOutside = (e: MouseEvent) => {
@@ -55,9 +60,14 @@ export default function PostComponent({
   }, []);
 
   const handleDelete = async () => {
-    const isConfirmed = await customConfirm('해당 게시글을 삭제하시겠습니까?');
-    if (!isConfirmed) return;
+    if (isDeleting) return; // 이미 삭제중이면 중단
+    setIsDeleting(true);
 
+    const isConfirmed = await customConfirm('해당 게시글을 삭제하시겠습니까?');
+    if (!isConfirmed) {
+      setIsDeleting(false);
+      return;
+    }
     try {
       await deletePost(post._id);
       customToast(
@@ -69,6 +79,8 @@ export default function PostComponent({
     } catch (err) {
       customToast('게시글 삭제에 실패했습니다.', 'error');
       throw err;
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -109,13 +121,17 @@ export default function PostComponent({
                     >
                       {isLoggedIn ? (
                         <Link to={`./update`} state={{ post }}>
-                          <Button className="btn-style-post2 text-black">
+                          <Button
+                            className="btn-style-post2 text-black"
+                            onClick={() => setIsUpdating(true)}
+                            disabled={isUpdating}
+                          >
                             수정
                           </Button>
                         </Link>
                       ) : (
                         <Button
-                          onClick={() => setIsOpen(true)}
+                          onClick={() => isLogInModal(true)}
                           className="btn-style-post2 text-black"
                         >
                           수정
@@ -123,8 +139,9 @@ export default function PostComponent({
                       )}
                       <Button
                         onClick={() =>
-                          isLoggedIn ? handleDelete() : setIsOpen(true)
+                          isLoggedIn ? handleDelete() : isLogInModal(true)
                         }
+                        disabled={isDeleting}
                         className="btn-style-post2 text-[var(--color-red-caution)]"
                       >
                         삭제
@@ -192,7 +209,6 @@ export default function PostComponent({
           {isCmtForm && userData && (
             <CommentForm postId={post._id} user={userData} />
           )}
-          {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
         </div>
       )}
     </>
