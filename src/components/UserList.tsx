@@ -51,7 +51,7 @@ export default function UserList() {
                 alt={user.fullName}
                 className="mr-3 h-6 w-6 rounded-full border border-gray-200 object-cover"
               />
-              <span className="test-sm flex-1">{user.fullName}</span>
+              <span className="flex-1 text-sm">{user.fullName}</span>
             </li>
           ))}
         </ul>
