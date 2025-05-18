@@ -12,7 +12,7 @@ import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { customToast } from '../utils/customToast';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
 import { unsubscribeChannel } from '../services/subscribeChannelApi';
-import { fetchCurrentUser } from '../services/userApi';
+import { fetchCurrentUser } from '../services/userAPI';
 import { useModalStore } from '../stores/modalStore';
 
 export default function Sidebar() {
@@ -24,8 +24,8 @@ export default function Sidebar() {
   //const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   //구독한 채널 목록
-  const subscribedChannels = channels.filter(
-    (channel) => subscribes.includes(channel._id),
+  const subscribedChannels = channels.filter((channel) =>
+    subscribes.includes(channel._id),
   );
 
   //채널 구독
