@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { client } from '../services/axios';
 import prof from '../assets/imgs/defaultProfileImg.png';
+import { User } from '../types/user';
 
 export default function MyPage() {
   const [myUser, setMyUser] = useState<User | null>(null);
@@ -55,7 +56,7 @@ export default function MyPage() {
 
   return (
     <>
-      <div className="relative mx-[100px] mt-[15px] mb-[30px] flex flex-col items-center">
+      <div className="relative mx-[100px] mt-[15px] mb-[30px] flex min-w-[640px] flex-col items-center">
         {!loading && (
           <div>
             <div className="flex">
