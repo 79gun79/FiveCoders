@@ -30,14 +30,15 @@ export default function MyPage() {
   const selectComponent: Record<string, React.ReactNode | React.ReactNode[]> = {
     최신: [
       !myUser?.posts?.length && !myUser?.comments?.length ? (
-        <EmptyInfo info="게시글과 댓글" />
+        <EmptyInfo info="게시글과 댓글" key="empty" />
       ) : (
-        <>
-          <MyPost myPost={myUser?.posts ?? []} />
-          <MyComment myComment={myUser?.comments ?? []} />
-        </>
+        [
+          <MyPost myPost={myUser?.posts ?? []} key="post" />,
+          <MyComment myComment={myUser?.comments ?? []} key="comment" />,
+        ]
       ),
     ],
+
     게시글: myUser?.posts?.length ? (
       <MyPost myPost={myUser?.posts ?? []} />
     ) : (
@@ -88,7 +89,6 @@ export default function MyPage() {
               <MyInfo
                 myPost={myUser!.posts.length}
                 myFollowing={myUser!.following.length}
-                myFollower={myUser!.followers.length}
               />
               {!loading && myId === userId.userId && (
                 <Link to="/setting">
@@ -101,16 +101,16 @@ export default function MyPage() {
             {/* 개인 프로필 정보 */}
             <div className="h-[53px]"></div>
             <div className="flex">
-              {buttonList.map((item, index) => {
+              {buttonList.map((item) => {
                 return (
                   <button
-                    key={index}
                     className={twMerge(
                       'button ' +
                         (item === selectedBtn
                           ? 'community-tab-active'
                           : 'community-tab'),
                     )}
+                    key={item}
                     onClick={handleContentButton}
                     name={item}
                   >

@@ -58,7 +58,7 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
 
         return (
           <Link to={`/channel/${channelIndex}#${v._id}`} key={v._id}>
-            <div key={i} className="postShadow postBorder mt-[30px]">
+            <div className="postShadow postBorder mt-[30px]">
               <div className="pb-9">
                 {myId !== userId.userId && (
                   <div className="mb-4 flex items-center gap-[10px]">
