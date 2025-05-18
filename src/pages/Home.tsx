@@ -8,10 +8,10 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { useEffect, useRef, useState } from 'react';
 import Input from '../components/Input';
 import GameDropdown from '../components/GameDropdown';
-import IsLoggedInModal from '../components/IsLoggedInModal';
 import { useAuthStore } from '../stores/authStore';
 import axios from 'axios';
 import { client } from '../services/axios';
+import IsLoggedInModal from '../components/IsLoggedInModal';
 
 type CardType = 'steam' | 'discord' | 'dnf';
 
@@ -31,12 +31,12 @@ export default function Home() {
   const getCardList = sessionStorage.getItem('CardList');
   const [cardList, setCardList] = useState<string>('');
   const getAuth = sessionStorage.getItem('auth-storage');
-  const isLoggedIn = useAuthStore.getState().isLoggedIn;
-  const [isOpen, setIsOpen] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
   const token = useAuthStore.getState().accessToken;
   const [username, setUsername] = useState<string>('');
   const [userData, setUserData] = useState<string>('');
+  const logout = useAuthStore((state) => state.logout);
+  const [isOpen, setIsOpen] = useState(false);
 
   //연동 카드 추가 닫기
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Home() {
   }, [showAddCard]);
 
   useEffect(() => {
-    if (cardList !== '') {
+    if (cardList !== '' && cardList !== undefined) {
       setCards(JSON.parse(cardList));
     }
     client('/auth-user').then((response) => setUserData(response.data._id));
@@ -64,17 +64,16 @@ export default function Home() {
         setCardList(response.data.username),
       ]);
     }
-  }, [cardList, userData, getCardList, username]);
+  }, [cardList, userData, getCardList, username, logout]);
 
   const addCardHandler = () => {
-    if (isLoggedIn === false) {
+    if (useAuthStore.getState().isLoggedIn !== true) {
       setIsOpen(true);
-    } else {
-      setShowAddCard(true);
-      //선택 항목의 기본 값은 steam
-      setSelectedType('steam');
-      setInputId('');
     }
+    setShowAddCard(true);
+    //선택 항목의 기본 값은 steam
+    setSelectedType('steam');
+    setInputId('');
   };
 
   const saveCardData = () => {
