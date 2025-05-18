@@ -63,7 +63,7 @@ export default function SearchPost({ searchId }: { searchId: string }) {
     <>
       <div className="mb-5">
         <Link to={`/channel/${channelIndex}#${post._id}`} key={post._id}>
-          <div className="postShadow postBorder mt-[30px]">
+          <div className="postShadow postBorder mt-[30px] min-w-[640px]">
             <div className="pb-9">
               <div className="mb-4 flex items-center gap-[10px]">
                 <img
@@ -75,7 +75,9 @@ export default function SearchPost({ searchId }: { searchId: string }) {
                 <div className="flex-grow"></div>
               </div>
 
-              <div className="textH4 font-bold">{head}</div>
+              <div className="textH4 max-w-[640px] overflow-hidden font-bold text-ellipsis whitespace-nowrap">
+                {head}
+              </div>
               {post.image && (
                 <img
                   src={post.image}
@@ -84,7 +86,7 @@ export default function SearchPost({ searchId }: { searchId: string }) {
                 />
               )}
               <div
-                className="textT1 mt-3"
+                className="textT1 mt-3 line-clamp-4 min-w-[640px] overflow-hidden"
                 dangerouslySetInnerHTML={{ __html: cleanContent(body) }}
               ></div>
             </div>
