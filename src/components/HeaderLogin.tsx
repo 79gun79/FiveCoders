@@ -129,7 +129,7 @@ export default function HeaderLogin() {
                 <Link to={`/mypage/${myData}`} state={myData}>
                   <Button
                     onClick={() => setProfileDropdown(false)}
-                    className="w-full cursor-pointer rounded-t-xl px-4 py-3 text-center hover:bg-[var(--color-gray2)]"
+                    className="w-full cursor-pointer rounded-t-xl px-4 py-3 text-center text-[15px] hover:bg-[var(--color-gray2)]"
                   >
                     마이페이지
                   </Button>
