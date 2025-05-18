@@ -89,10 +89,10 @@
     @apply mr-2 inline-flex;
   }
   .community-tab {
-    @apply border-[var(--color-gray3)] hover:border-[var(--color-sub)];
+    @apply border-[var(--color-gray3)] transition-all duration-300 ease-in-out hover:border-[var(--color-sub)];
   }
   .community-tab-active {
-    @apply border-[var(--color-main)] text-[var(--color-main)] hover:border-[var(--color-sub)];
+    @apply border-[var(--color-main)] text-[var(--color-main)] transition-all duration-300 ease-in-out hover:border-[var(--color-sub)];
   }
   .input {
     @apply my-3.75 w-[80%] border-b-1 placeholder:text-[var(--color-gray4)] focus:outline-none;
