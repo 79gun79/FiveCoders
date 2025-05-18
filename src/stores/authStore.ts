@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { useSubscriptionStore } from './subscriptionStore';
 
 interface AuthStore {
   isLoggedIn: boolean;
@@ -17,8 +18,11 @@ export const useAuthStore = create<AuthStore>()(
       accessToken: null,
       login: (accessToken, isAdmin) =>
         set({ isLoggedIn: true, isAdmin, accessToken }),
-      logout: () =>
-        set({ isLoggedIn: false, isAdmin: false, accessToken: null }),
+      logout: () => {
+        set({ isLoggedIn: false, isAdmin: false, accessToken: null });
+        //구독 상태 초기화
+        useSubscriptionStore.getState().setSubscribes([]);
+      },
     }),
     {
       name: 'auth-storage', // sessionStorage 내 key 이름
