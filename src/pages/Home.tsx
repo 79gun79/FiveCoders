@@ -8,6 +8,10 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { useEffect, useRef, useState } from 'react';
 import Input from '../components/Input';
 import GameDropdown from '../components/GameDropdown';
+import IsLoggedInModal from '../components/IsLoggedInModal';
+import { useAuthStore } from '../stores/authStore';
+import axios from 'axios';
+import { client } from '../services/axios';
 
 type CardType = 'steam' | 'discord' | 'dnf';
 
@@ -25,7 +29,14 @@ export default function Home() {
   const [inputServer, setInputServer] = useState('');
   const addCardRef = useRef<HTMLDivElement>(null);
   const getCardList = sessionStorage.getItem('CardList');
+  const [cardList, setCardList] = useState<string>('');
   const getAuth = sessionStorage.getItem('auth-storage');
+  const isLoggedIn = useAuthStore.getState().isLoggedIn;
+  const [isOpen, setIsOpen] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
+  const token = useAuthStore.getState().accessToken;
+  const [username, setUsername] = useState<string>('');
+  const [userData, setUserData] = useState<string>('');
 
   //연동 카드 추가 닫기
   useEffect(() => {
@@ -43,16 +54,46 @@ export default function Home() {
   }, [showAddCard]);
 
   useEffect(() => {
-    if (getCardList !== null) {
-      setCards(JSON.parse(getCardList));
+    if (cardList !== '') {
+      setCards(JSON.parse(cardList));
     }
-  }, []);
+    client('/auth-user').then((response) => setUserData(response.data._id));
+    if (userData) {
+      client(`/users/${userData}`).then((response) => [
+        setUsername(response.data.fullName),
+        setCardList(response.data.username),
+      ]);
+    }
+  }, [cardList, userData, getCardList, username]);
 
   const addCardHandler = () => {
-    setShowAddCard(true);
-    //선택 항목의 기본 값은 steam
-    setSelectedType('steam');
-    setInputId('');
+    if (isLoggedIn === false) {
+      setIsOpen(true);
+    } else {
+      setShowAddCard(true);
+      //선택 항목의 기본 값은 steam
+      setSelectedType('steam');
+      setInputId('');
+    }
+  };
+
+  const saveCardData = () => {
+    try {
+      axios.put(
+        `${API_URL}settings/update-user`,
+        {
+          fullName: username,
+          username: JSON.stringify(cards),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const createCardHandler = () => {
@@ -70,17 +111,22 @@ export default function Home() {
   };
 
   const renderCard = (card: Card, idx: number) => {
-    if (card.type === 'steam') {
-      sessionStorage.setItem('CardList', JSON.stringify(cards));
-      return <SteamCard key={idx} id={card.id} />;
-    }
-    if (card.type === 'discord') {
-      sessionStorage.setItem('CardList', JSON.stringify(cards));
-      return <DiscordCard key={idx} id={card.id} />;
-    }
-    if (card.type === 'dnf') {
-      sessionStorage.setItem('CardList', JSON.stringify(cards));
-      return <DFCard key={idx} id={card.id} server={card.server!} />;
+    if (username !== '') {
+      if (card.type === 'steam') {
+        // sessionStorage.setItem('CardList', JSON.stringify(cards));
+        saveCardData();
+        return <SteamCard key={idx} id={card.id} />;
+      }
+      if (card.type === 'discord') {
+        // sessionStorage.setItem('CardList', JSON.stringify(cards));
+        saveCardData();
+        return <DiscordCard key={idx} id={card.id} />;
+      }
+      if (card.type === 'dnf') {
+        // sessionStorage.setItem('CardList', JSON.stringify(cards));
+        saveCardData();
+        return <DFCard key={idx} id={card.id} server={card.server!} />;
+      }
     }
     return null;
   };
@@ -130,7 +176,6 @@ export default function Home() {
                   onChange={(e) => setInputId(e.target.value)}
                 />
               )}
-
               <div className="my-3 flex w-full justify-center">
                 <button
                   className="cursor-pointer rounded bg-[var(--color-main)] px-3 py-2 text-white transition hover:bg-[var(--color-sub)]"
@@ -139,6 +184,7 @@ export default function Home() {
                   연동
                 </button>
               </div>
+              {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
             </div>
           ) : (
             <button
