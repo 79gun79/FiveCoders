@@ -56,7 +56,7 @@ export default function Search() {
 
   return (
     <>
-      <div className="mx-[200px]">
+      <div className="mx-[200px] min-w-[640px]">
         <div className="mb-9.5 text-xl">
           <button
             className="search-tab-style"

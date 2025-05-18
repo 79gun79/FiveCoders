@@ -21,7 +21,7 @@ export default function Header() {
         <img src={Logo} alt="Logo" className="w-40" />
       </Link>
       <form
-        className="relative my-4 flex w-[560px] items-center"
+        className="relative my-4 flex w-[45%] max-w-140 items-center max-md:w-[30%]"
         onSubmit={searchNavigate}
       >
         <Link
