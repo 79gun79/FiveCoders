@@ -27,6 +27,9 @@ export default function CreatePost() {
   const [titleError, setTitleError] = useState(false);
   const [contentError, setContentError] = useState(false);
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // 게시글 작성 중복방지
+  const [isCancelling, setIsCancelling] = useState(false); // 작성 취소 중복방지
+
   const [cName, setCName] = useState('');
   const [cIcon, setCIcon] = useState('');
   const [cLink, setCLink] = useState('');
@@ -85,11 +88,17 @@ export default function CreatePost() {
   };
 
   const handleCancel = async () => {
+    if (isCancelling) return;
+    setIsCancelling(true);
+
     if (!validateEmptyContent(content) || title) {
       const isConfirmed = await customConfirm(
         '작성 중인 내용이 있습니다.\n작성을 그만하시겠습니까?',
       );
-      if (!isConfirmed) return;
+      if (!isConfirmed) {
+        setIsCancelling(false);
+        return;
+      }
     }
     try {
       await navigate(`/channel/${id}`);
@@ -98,15 +107,21 @@ export default function CreatePost() {
         '동작 중에 오류가 발생했습니다. 다시 시도 해주세요!',
         'error',
       );
+    } finally {
+      setIsCancelling(false);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     let hasError = false;
 
     if (!cLink) {
       customToast('채널을 선택해주세요!', 'warning');
+      setIsSubmitting(false);
       return;
     }
 
@@ -128,9 +143,15 @@ export default function CreatePost() {
       setContentError(false);
     }
 
-    if (hasError) return;
+    if (hasError) {
+      setIsSubmitting(false);
+      return;
+    }
     const isConfirmed = await customConfirm('게시글을 등록하시겠습니까?');
-    if (!isConfirmed) return;
+    if (!isConfirmed) {
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       await createPost({
@@ -147,6 +168,8 @@ export default function CreatePost() {
     } catch (err) {
       customToast('게시글이 등록에 실패했습니다. 다시 시도해주세요.', 'error');
       throw err;
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -236,6 +259,7 @@ export default function CreatePost() {
             type="reset"
             onClick={handleCancel}
             className={twMerge('btn-style-comment', 'textBasic h-10 px-5')}
+            disabled={isCancelling}
           >
             취소
           </Button>
@@ -246,8 +270,9 @@ export default function CreatePost() {
               'btn-style-comment',
               'textBasic h-10 bg-[var(--color-main)] text-white hover:bg-[var(--color-sub)]',
             )}
+            disabled={isSubmitting}
           >
-            게시하기
+            {isSubmitting ? '게시 중...' : '게시하기'}
           </Button>
         </div>
       </form>

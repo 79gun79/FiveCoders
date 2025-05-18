@@ -6,46 +6,53 @@ import PostList from '../components/PostList';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import IsLoggedInModal from '../components/IsLoggedInModal';
 import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import { getImagePreview } from '../utils/localImage';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
-import { setSubscribedChannels } from '../utils/localSubscribe';
 import { customToast } from '../utils/customToast';
+import {
+  subscribeChannel,
+  unsubscribeChannel,
+} from '../services/subscribeChannelApi';
+import { useModalStore } from '../stores/modalStore';
 
 export default function ChannelPage({ id }: { id: string }) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn); // 로그인 상태 확인
-  const [isOpen, setIsOpen] = useState(false);
   const [channelData, setChannelData] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [subscribing, setSubscribing] = useState(false);
 
-  //구독 상태 전역 관리
+  //구독 상태 전역 관리 및 서버 동기화
   const subscribes = useSubscriptionStore((state) => state.subscribes);
-  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
+  const syncSubscribes = useSubscriptionStore((state) => state.syncSubscribes);
+
+  //로그인 모달 상태 전역 관리
+  const { isLogInModal } = useModalStore();
 
   const channelId = channelData?._id ?? '';
   const isSubscribed = subscribes.includes(channelId);
 
-  const SubscribedHandler = () => {
+  const SubscribedHandler = async () => {
     if (subscribing) return; // 1초 동안 클릭 막음
     setSubscribing(true);
 
     // 구독/구독취소 로직
-    let updated;
-    if (isSubscribed) {
-      updated = subscribes.filter((subId) => subId !== channelId);
-      customToast('구독이 취소되었습니다.', 'info');
-    } else {
-      updated = [...subscribes, channelId];
-      customToast('채널을 구독하였습니다.', 'success');
+    try {
+      if (isSubscribed) {
+        await unsubscribeChannel(channelId);
+        customToast('구독이 취소되었습니다.', 'info');
+      } else {
+        await subscribeChannel(channelId);
+        customToast('채널을 구독하였습니다.', 'success');
+      }
+      await syncSubscribes(); // 서버와 동기화
+    } catch (error) {
+      customToast('오류가 발생했습니다.', 'error');
+      console.error(error);
+    } finally {
+      setTimeout(() => setSubscribing(false), 1000);
     }
-    setSubscribes(updated);
-    setSubscribedChannels(updated);
-
-    // 1초 뒤에 다시 클릭 가능
-    setTimeout(() => setSubscribing(false), 1000);
   };
 
   useEffect(() => {
@@ -61,6 +68,10 @@ export default function ChannelPage({ id }: { id: string }) {
         } else {
           console.error(`해당 인덱스 ${id}에 채널이 없습니다.`);
         }
+
+        //구독 상태 서버 동기화
+        const { syncSubscribes } = useSubscriptionStore.getState();
+        await syncSubscribes();
       } catch (err) {
         console.error('채널 불러오기 실패:', err);
       } finally {
@@ -130,7 +141,7 @@ export default function ChannelPage({ id }: { id: string }) {
                 onClick={(e) => {
                   if (!isLoggedIn) {
                     e.preventDefault();
-                    setIsOpen(true);
+                    isLogInModal(true);
                   }
                 }}
               >
@@ -148,7 +159,6 @@ export default function ChannelPage({ id }: { id: string }) {
             </div>
           </div>
           <PostList key={channelData._id} channelId={channelData._id} />
-          {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
         </div>
       )}
       {!isLoading && !channelData && <p>채널 정보를 불러올 수 없습니다.</p>}

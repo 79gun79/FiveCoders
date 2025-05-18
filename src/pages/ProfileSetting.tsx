@@ -15,7 +15,6 @@ import ProfileUpload from '../components/ProfileUpload';
 import prof from '../assets/imgs/defaultProfileImg.png';
 import { useImageStore, usePreviewImage } from '../stores/imageStore';
 
-
 export default function ProfileSetting() {
   const [userEmail, setUserEmail] = useState<string>('');
   const [username, setUsername] = useState<string>('');

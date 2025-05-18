@@ -2,10 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ChannelCard from '../components/ChannelCard';
 import type { Channel } from '../types/channel';
-import IsLoggedInModal from '../components/IsLoggedInModal';
 import { fetchChannels, deleteChannel } from '../services/channelApi';
 import { useAuthStore } from '../stores/authStore';
-import { setSubscribedChannels } from '../utils/localSubscribe';
 import CreateChannelForm from '../components/CreateChannelForm';
 import { FaTrashAlt } from 'react-icons/fa';
 import { createPortal } from 'react-dom';
@@ -14,6 +12,11 @@ import { channelData } from '../data/channelData';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
 import { customToast } from '../utils/customToast';
+import {
+  subscribeChannel,
+  unsubscribeChannel,
+} from '../services/subscribeChannelApi';
+import { useModalStore } from '../stores/modalStore';
 
 export default function ChannelList() {
   const navigate = useNavigate();
@@ -21,7 +24,6 @@ export default function ChannelList() {
   //const [subscribes, setSubscribes] = useState<string[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isAdmin = useAuthStore((state) => state.isAdmin);
-  const [modalOpen, setModalOpen] = useState(false);
   const [createChannelModalOpen, setCreateChannelModalOpen] = useState(false);
 
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
@@ -29,7 +31,10 @@ export default function ChannelList() {
 
   //구독 상태 전역 상태 관리
   const subscribes = useSubscriptionStore((state) => state.subscribes);
-  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
+  const syncSubscribes = useSubscriptionStore((state) => state.syncSubscribes);
+
+  //모달 상태 전역 관리
+  const { isLogInModal } = useModalStore();
 
   //다중 클릭 방지
   const [subscribeLock, setSubscribeLock] = useState(false);
@@ -37,31 +42,36 @@ export default function ChannelList() {
 
   // 인덱스 매핑 테이블
   const [indexMapping, setIndexMapping] = useState<Record<string, number>>({});
-
   const [loading, setLoading] = useState(true);
 
-  const toggleSubscribe = (id: string) => {
+  //구독/구독취소 핸들러
+  const toggleSubscribe = async (id: string) => {
     if (!isLoggedIn) {
-      setModalOpen(true);
+      isLogInModal(true);
       return;
     }
     if (subscribeLock) return;
     setSubscribeLock(true);
 
-    const updatedSubscribes = subscribes.includes(id)
-      ? subscribes.filter((sub) => sub !== id)
-      : [...subscribes, id];
-
-    setSubscribes(updatedSubscribes);
-    setSubscribedChannels(updatedSubscribes);
-    if (subscribes.includes(id)) {
-      customToast('구독이 취소되었습니다.', 'info');
-    } else {
-      customToast('채널을 구독하였습니다.', 'success');
+    try {
+      if (subscribes.includes(id)) {
+        await unsubscribeChannel(id);
+        customToast('구독이 취소되었습니다.', 'info');
+      } else {
+        await subscribeChannel(id);
+        customToast('채널을 구독하였습니다.', 'success');
+      }
+      await syncSubscribes(); //서버와 동기화
+    } catch (error) {
+      customToast('오류가 발생했습니다.', 'error');
+      console.error(error);
+    } finally {
+      if (subscribeTimeout.current) clearTimeout(subscribeTimeout.current);
+      subscribeTimeout.current = setTimeout(
+        () => setSubscribeLock(false),
+        1000,
+      );
     }
-
-    if (subscribeTimeout.current) clearTimeout(subscribeTimeout.current);
-    subscribeTimeout.current = setTimeout(() => setSubscribeLock(false), 1000);
   };
 
   const onClickDeleteBtn = (id: string) => {
@@ -106,6 +116,11 @@ export default function ChannelList() {
         const mapping = channelIndexMapping(channels);
         setIndexMapping(mapping);
 
+        //구독 상태 동기화
+        const { syncSubscribes } = useSubscriptionStore.getState();
+        await syncSubscribes();
+
+        //이미지 프리뷰 설정
         channels.forEach((channel) => {
           const matchedChannel = channelData.find(
             (c) => c.name === channel.name,
@@ -210,8 +225,6 @@ export default function ChannelList() {
           ))}
         </div>
       )}
-
-      {modalOpen && <IsLoggedInModal onClose={() => setModalOpen(false)} />}
 
       {createChannelModalOpen && (
         <CreateChannelForm

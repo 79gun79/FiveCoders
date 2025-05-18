@@ -1,62 +1,67 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Channel } from '../types/channel';
-
-import IsLoggedInModal from './IsLoggedInModal';
-
 import { fetchChannels } from '../services/channelApi';
 import { useAuthStore } from '../stores/authStore';
-
 import globeIcon from '../assets/globe.svg';
 import homeIcon from '../assets/home.svg';
 import { TiStarFullOutline } from 'react-icons/ti';
-import { setSubscribedChannels } from '../utils/localSubscribe';
 import { getImagePreview } from '../utils/localImage';
 import UserList from './UserList';
 import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { customToast } from '../utils/customToast';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
+import { unsubscribeChannel } from '../services/subscribeChannelApi';
+import { fetchCurrentUser } from '../services/userApi';
+import { useModalStore } from '../stores/modalStore';
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [channels, setChannels] = useState<Channel[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const [modalOpen, setModalOpen] = useState(false);
   //구독 상태 전역 상태 관리
   const subscribes = useSubscriptionStore((state) => state.subscribes);
-  const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
+  //const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
 
   //구독한 채널 목록
   const subscribedChannels = channels.filter((channel) =>
     subscribes.includes(channel._id),
   );
 
-  //구독한 채널 목록 불러오기
+  // 채널/유저 힌 번에 목록 불러오기
   useEffect(() => {
-    const getChannels = async () => {
+    const loadAllData = async () => {
       try {
-        const data = await fetchChannels();
-        setChannels(data);
+        const [channelData, userData] = await Promise.all([
+          fetchChannels(),
+          fetchCurrentUser(),
+        ]);
+        setChannels(channelData);
+        useSubscriptionStore
+          .getState()
+          .setSubscribes(
+            userData.following?.map((follow) => follow.user) || [],
+          );
       } catch (error) {
         console.error('Error: ', error);
       }
     };
-    getChannels();
+    loadAllData();
   }, []);
 
   //구독 취소 핸들러 (별 아이콘 클릭)
-  const unSubscribedHandler = (e: React.MouseEvent, channelId: string) => {
+  const unSubscribedHandler = async (
+    e: React.MouseEvent,
+    channelId: string,
+  ) => {
     e.stopPropagation();
-    const update = subscribes.filter((id) => id !== channelId); //목록 갱신
-    setSubscribes(update);
-    setSubscribedChannels(update); //로컬 저장
+    await unsubscribeChannel(channelId);
+    await useSubscriptionStore.getState().syncSubscribes();
     customToast('구독이 취소되었습니다.', 'info');
   };
 
-  //모달 핸들러
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  //모달 상태 전역 관리
+  const { isLogInModal } = useModalStore();
 
   //채널 인덱스 저장
   const indexMap = channelIndexMapping(channels);
@@ -104,12 +109,25 @@ export default function Sidebar() {
                   if (isLoggedIn) {
                     navigate('/channel');
                   } else {
-                    openModal();
+                    isLogInModal(true);
                   }
                 }}
                 className="hidden cursor-pointer px-2 py-2.5 text-[14px] text-[var(--color-gray6)] select-none hover:bg-[var(--color-gray2)] xl:block xl:px-8"
               >
                 + 커뮤니티 찾기
+              </span>
+              <span
+                onClick={() => {
+                  if (isLoggedIn) {
+                    navigate('/channel');
+                  } else {
+                    openModal();
+                  }
+                }}
+                className="block cursor-pointer rounded-full p-2 text-center text-[24px] text-[var(--color-gray6)] hover:bg-[var(--color-gray2)] xl:hidden"
+                title="커뮤니티 찾기"
+              >
+                +
               </span>
               <span
                 onClick={() => {
@@ -135,7 +153,7 @@ export default function Sidebar() {
                 >
                   <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full xl:mr-3">
                     <img
-                      src={getImagePreview(item._id)}
+                      src={getImagePreview(item._id) || homeIcon}
                       alt="channelImg"
                       className="h-full w-full object-cover"
                     />
@@ -155,7 +173,6 @@ export default function Sidebar() {
               ))}
             </ul>
           )}
-          {modalOpen && <IsLoggedInModal onClose={closeModal} />}
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="flex items-center px-2 xl:px-6">
