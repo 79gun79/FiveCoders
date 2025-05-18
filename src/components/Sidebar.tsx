@@ -121,20 +121,7 @@ export default function Sidebar() {
                   if (isLoggedIn) {
                     navigate('/channel');
                   } else {
-                    openModal();
-                  }
-                }}
-                className="block cursor-pointer rounded-full p-2 text-center text-[24px] text-[var(--color-gray6)] hover:bg-[var(--color-gray2)] xl:hidden"
-                title="커뮤니티 찾기"
-              >
-                +
-              </span>
-              <span
-                onClick={() => {
-                  if (isLoggedIn) {
-                    navigate('/channel');
-                  } else {
-                    openModal();
+                    isLogInModal(true);
                   }
                 }}
                 className="block cursor-pointer rounded-full p-2 text-center text-[24px] text-[var(--color-gray6)] hover:bg-[var(--color-gray2)] xl:hidden"
