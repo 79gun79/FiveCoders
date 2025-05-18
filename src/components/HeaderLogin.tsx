@@ -9,6 +9,7 @@ import { client } from '../services/axios';
 import { useImageStore } from '../stores/imageStore';
 import prof from '../assets/imgs/defaultProfileImg.png';
 import { useModalStore } from '../stores/modalStore';
+import { fetchNotifications, seenNotifications } from '../services/notificationApi';
 
 export default function HeaderLogin() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -27,7 +28,7 @@ export default function HeaderLogin() {
 
   const markNotificationAsRead = (id: string) => {
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
+      prev.map((n) => (n.id === id ? { ...n, seen: true } : n))
     );
     setNotificationCount((prev) => Math.max(prev - 1, 0));
   };
@@ -48,11 +49,30 @@ export default function HeaderLogin() {
     });
   };
 
-  // 알림 api - PUT /notifications/seen 할 때 이어서 구현할 예정
-  const handleClear = () => {
-    setNotifications([]);
-    setNotificationCount(0);
+  const handleClear = async () => {
+    try {
+      await seenNotifications();
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setNotificationCount(0);
+    } catch (error) {
+      console.error('알림 모두 읽기 실패', error);
+    }
   };
+
+  const loadNotifications = async () => {
+    try {
+      const data = await fetchNotifications();
+      setNotifications(data);
+      const unreadCount = data.filter((n) => !n.isRead).length;
+      setNotificationCount(unreadCount);
+    } catch (error) {
+      console.error('알림 목록 불러오기 실패', error);
+    }
+  };
+
+  useEffect(() => {
+    loadNotifications();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
