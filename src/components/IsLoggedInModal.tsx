@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 export default function IsLoggedInModal({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const handleConfirm = () => {
+    onClose();
     navigate('/login');
   };
 
