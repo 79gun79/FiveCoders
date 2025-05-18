@@ -9,7 +9,7 @@ import { client } from '../services/axios';
 import { useImageStore } from '../stores/imageStore';
 import prof from '../assets/imgs/defaultProfileImg.png';
 import { useModalStore } from '../stores/modalStore';
-import { fetchNotifications, seenNotifications } from '../services/notificationApi';
+import { fetchNotifications, seenNotifications } from '../services/notificationApi'; // seenNotification 추가
 
 export default function HeaderLogin() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -21,16 +21,19 @@ export default function HeaderLogin() {
   const [notificationCount, setNotificationCount] = useState(0);
   const { isLogOutModal } = useModalStore();
 
-  // const isUpdate = useRef(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const markNotificationAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, seen: true } : n))
-    );
-    setNotificationCount((prev) => Math.max(prev - 1, 0));
+  const markNotificationAsRead = async (id: string) => {
+    try {
+      await seenNotifications(id);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+      );
+      setNotificationCount((prev) => Math.max(prev - 1, 0));
+    } catch (error) {
+      console.error('알림 읽음 처리 실패', error);
+    }
   };
 
   const toggleNotificationDropdown = (e: React.MouseEvent) => {

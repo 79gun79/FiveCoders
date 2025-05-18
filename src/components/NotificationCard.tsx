@@ -38,25 +38,24 @@ export default function NotificationCard({
     if (notificationType === 'like') {
       return `${author.fullName}님이 회원님의 게시글을 좋아합니다.`;
     } else if (notificationType === 'comment') {
-      return `${author.fullName}님이 댓글을 남겼습니다: ${comment}`;
+      return `${author.fullName}님이 댓글을 남겼습니다: ${comment?.comment ?? ''}`;
     }
     return '';
   };
 
   return (
     <div
-      className="flex cursor-pointer items-center gap-3 px-4 py-3 hover:bg-[var(--color-gray1)]"
+      className="flex cursor-pointer items-start gap-1 px-4 py-3 hover:bg-[var(--color-gray1)]"
       onClick={handleClick}
     >
-
-      <div className="flex h-full items-center justify-center w-5">
+      <div className="flex items-center justify-center w-5 h-full mt-3">
         <span
           className={`h-2 w-2 rounded-full ${isRead ? 'bg-[var(--color-gray3)]' : 'bg-[var(--color-red-caution)]'
             }`}
         />
       </div>
 
-      <div className="h-8 w-8 shrink-0">
+      <div className="h-8 w-8 shrink-0 mr-2">
         <img
           src={author.image ?? defaultProfileImg}
           alt="profile"
@@ -64,11 +63,11 @@ export default function NotificationCard({
         />
       </div>
 
-      <div className="flex flex-col text-sm max-w-[230px]">
-        <p className="truncate text-[14px] text-[var(--color-gray6)]">
+      <div className="flex flex-col text-sm w-[230px]">
+        <p className="line-clamp-2 text-[13px] text-[var(--color-gray6)] break-words">
           {renderContent()}
         </p>
-        <p className="mt-1 text-xs text-[var(--color-gray4)]">
+        <p className="mt-1 text-[11px] text-[var(--color-gray4)]">
           {formatDate(createdAt)}
         </p>
       </div>

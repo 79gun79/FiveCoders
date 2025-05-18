@@ -27,6 +27,7 @@ export const createNotification = async (
     createdAt: data.createdAt,
     isRead: !data.seen ? false : true,
     postId: data.post,
+    channelId: data.channel,
     comment: data.comment ?? '',
     notificationType: data.notificationType,
     author: {
@@ -36,7 +37,7 @@ export const createNotification = async (
   };
 };
 
-export const seenNotifications = async (): Promise<Notification[]> => {
+export const seenNotifications = async (id: string): Promise<Notification[]> => {
   const { data } = await client.put('/notifications/seen');
   return data;
 };

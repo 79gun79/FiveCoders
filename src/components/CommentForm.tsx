@@ -5,6 +5,7 @@ import placeholderIcon from '../assets/channelImg.svg';
 import { client } from '../services/axios';
 import { customToast } from '../utils/customToast';
 import { useRefreshStore } from '../stores/refreshStore';
+import { createNotification } from '../services/notificationApi';
 
 export default function CommentForm({
   postId,
@@ -13,9 +14,9 @@ export default function CommentForm({
   postId: string;
   user: User;
 }) {
-  const [comment, setComment] = useState(''); // 댓글 입력 내용
-  const [isFocused, setFocused] = useState(false); // 댓글 창 포커스 상태
-  const commentRef = useRef<HTMLTextAreaElement>(null); // 댓글 입력 내용 줄 수 확인 용도
+  const [comment, setComment] = useState('');
+  const [isFocused, setFocused] = useState(false);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
 
   const refresh = useRefreshStore((state) => state.refresh);
   const doRefresh = useRefreshStore((state) => state.do);
@@ -24,28 +25,47 @@ export default function CommentForm({
   const [throttle, setThrottle] = useState(false);
 
   const postComment = () => {
-    const commentData = {
-      postId: `${postId}`,
-      comment: `${comment}`,
-    };
+    if (comment.trim().length === 0) {
+      customToast('댓글을 입력해주세요.', 'error');
+      return;
+    }
 
-    if (comment.length > 0) {
-      setThrottle(true);
-      client
-        .post(`/comments/create`, commentData)
-        .then(() => (refresh === 0 ? doRefresh() : resetRefresh()))
-        .then(() => setComment(''))
-        .catch((error) => console.log(`에러 발생: ${error}`))
-        .finally(() => setThrottle(false));
-    } else customToast('댓글을 입력해주세요.', 'error');
-    // comment.length == 0 && customToast('댓글을 입력해주세요.', 'error');
+    setThrottle(true);
+
+    client
+      .post(`/comments/create`, {
+        postId,
+        comment,
+      })
+      .then((res) => {
+        const commentId = res.data._id;
+        const postIdFromRes = res.data.post;
+
+        return client.get(`/posts/${postIdFromRes}`).then((postRes) => {
+          const postAuthorId = postRes.data.author;
+
+          if (user._id !== postAuthorId) {
+            return createNotification({
+              notificationType: 'comment',
+              notificationTypeId: commentId,
+              userId: postAuthorId,
+              postId: postIdFromRes,
+              comment,
+            });
+          }
+        });
+      })
+      .then(() => (refresh === 0 ? doRefresh() : resetRefresh()))
+      .then(() => setComment(''))
+      .catch((error) => console.log(`에러 발생: ${error}`))
+      .finally(() => setThrottle(false));
   };
 
   const resizeComment = () => {
     if (commentRef.current) {
       commentRef.current.style.height = 'auto';
       commentRef.current.style.height = `${commentRef.current.scrollHeight}px`;
-    } // 댓글 입력 내용에 따라 입력창 크기 변화
+    }
   };
 
   return (
