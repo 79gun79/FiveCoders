@@ -1,27 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import channelImg from '../assets/channelImg.svg';
 import { FaRegBell } from 'react-icons/fa';
 import NotificationDropdown from './NotificationDropdown';
 import { Notification } from '../types/notification';
-import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import { client } from '../services/axios';
-import { useAuthStore } from '../stores/authStore';
 import { useImageStore } from '../stores/imageStore';
 import prof from '../assets/imgs/defaultProfileImg.png';
+import { useModalStore } from '../stores/modalStore';
 
 export default function HeaderLogin() {
-  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [myData, setMyData] = useState<[]>([]);
   const [Image, setImage] = useState<string>('');
   const updatedImage = useImageStore((state) => state.profileImage);
   const [profileDropdown, setProfileDropdown] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notificationCount, setNotificationCount] = useState(0);
-  const logout = useAuthStore((state) => state.logout);
+  const { isLogOutModal } = useModalStore();
+
   // const isUpdate = useRef(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,13 +70,6 @@ export default function HeaderLogin() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
-
-  const logoutHandler = () => {
-    client.post('/logout');
-    logout();
-    setModalOpen(false);
-    navigate('/');
-  };
 
   useEffect(() => {
     client('/auth-user').then((response) => setMyData(response.data._id));
@@ -136,56 +127,29 @@ export default function HeaderLogin() {
             <ul className="text-[14px] text-[var(--color-text-black)]">
               <li className="border-b border-[var(--color-gray2)]">
                 <Link to={`/mypage/${myData}`} state={myData}>
-                  <button
+                  <Button
                     onClick={() => setProfileDropdown(false)}
-                    className="w-full cursor-pointer rounded-t-xl px-4 py-3 text-center hover:bg-[var(--color-gray2)]"
+                    className="w-full cursor-pointer rounded-t-xl px-4 py-3 text-center text-[15px] hover:bg-[var(--color-gray2)]"
                   >
                     마이페이지
-                  </button>
+                  </Button>
                 </Link>
               </li>
               <li>
-                <button
+                <Button
                   onClick={() => {
                     setProfileDropdown(false);
-                    setModalOpen(true);
+                    isLogOutModal(true);
                   }}
                   className="w-full cursor-pointer rounded-b-xl px-4 py-3 text-center text-[var(--color-red-caution)] hover:bg-[var(--color-gray2)]"
                 >
                   로그아웃
-                </button>
+                </Button>
               </li>
             </ul>
           </div>
         )}
       </div>
-
-      {modalOpen && (
-        <>
-          <div className="fixed inset-0 z-100 bg-[var(--color-text-black)] opacity-50"></div>
-          <div className="fixed inset-0 z-150 flex items-center justify-center">
-            <div className="w-[400px] rounded-[8px] bg-white p-8 text-center shadow-lg">
-              <p className="mb-[32px] text-[18px] font-medium">
-                로그아웃 하시겠습니까?
-              </p>
-              <div className="flex justify-center gap-4">
-                <Button
-                  className={twMerge(
-                    'btn-style-modal',
-                    'border border-[var(--color-gray4)] bg-white text-[var(--color-text-black)] hover:bg-[var(--color-gray1)]',
-                  )}
-                  onClick={() => setModalOpen(false)}
-                >
-                  아니오
-                </Button>
-                <Button className="btn-style-modal" onClick={logoutHandler}>
-                  예
-                </Button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }

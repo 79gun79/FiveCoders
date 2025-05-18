@@ -6,7 +6,6 @@ import PostList from '../components/PostList';
 import Button from '../components/Button';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
-import IsLoggedInModal from '../components/IsLoggedInModal';
 import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import { getImagePreview } from '../utils/localImage';
@@ -16,10 +15,10 @@ import {
   subscribeChannel,
   unsubscribeChannel,
 } from '../services/subscribeChannelApi';
+import { useModalStore } from '../stores/modalStore';
 
 export default function ChannelPage({ id }: { id: string }) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn); // 로그인 상태 확인
-  const [isOpen, setIsOpen] = useState(false);
   const [channelData, setChannelData] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [subscribing, setSubscribing] = useState(false);
@@ -27,6 +26,9 @@ export default function ChannelPage({ id }: { id: string }) {
   //구독 상태 전역 관리 및 서버 동기화
   const subscribes = useSubscriptionStore((state) => state.subscribes);
   const syncSubscribes = useSubscriptionStore((state) => state.syncSubscribes);
+
+  //로그인 모달 상태 전역 관리
+  const { isLogInModal } = useModalStore();
 
   const channelId = channelData?._id ?? '';
   const isSubscribed = subscribes.includes(channelId);
@@ -139,7 +141,7 @@ export default function ChannelPage({ id }: { id: string }) {
                 onClick={(e) => {
                   if (!isLoggedIn) {
                     e.preventDefault();
-                    setIsOpen(true);
+                    isLogInModal(true);
                   }
                 }}
               >
@@ -157,7 +159,6 @@ export default function ChannelPage({ id }: { id: string }) {
             </div>
           </div>
           <PostList key={channelData._id} channelId={channelData._id} />
-          {isOpen && <IsLoggedInModal onClose={() => setIsOpen(false)} />}
         </div>
       )}
       {!isLoading && !channelData && <p>채널 정보를 불러올 수 없습니다.</p>}

@@ -1,8 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import IsLoggedInModal from '../components/IsLoggedInModal';
+import { useModalStore } from '../stores/modalStore';
+import IsLoggedOutModal from '../components/IsLoggedOutModal';
 
 export default function Layout() {
+  const { isLogInOpen, isLogOutOpen, isLogInModal, isLogOutModal } =
+    useModalStore();
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -11,6 +16,12 @@ export default function Layout() {
         <main className="w-full pt-[50px]">
           <div className="mx-auto w-full">
             <Outlet />
+            {isLogInOpen && (
+              <IsLoggedInModal onClose={() => isLogInModal(false)} />
+            )}
+            {isLogOutOpen && (
+              <IsLoggedOutModal onClose={() => isLogOutModal(false)} />
+            )}
           </div>
         </main>
       </div>

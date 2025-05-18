@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { Channel } from '../types/channel';
-
-import IsLoggedInModal from './IsLoggedInModal';
-
 import { fetchChannels } from '../services/channelApi';
 import { useAuthStore } from '../stores/authStore';
-
 import globeIcon from '../assets/globe.svg';
 import homeIcon from '../assets/home.svg';
 import { TiStarFullOutline } from 'react-icons/ti';
@@ -18,12 +13,12 @@ import { customToast } from '../utils/customToast';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
 import { unsubscribeChannel } from '../services/subscribeChannelApi';
 import { fetchCurrentUser } from '../services/userApi';
+import { useModalStore } from '../stores/modalStore';
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const [channels, setChannels] = useState<Channel[]>([]);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  const [modalOpen, setModalOpen] = useState(false);
   //구독 상태 전역 상태 관리
   const subscribes = useSubscriptionStore((state) => state.subscribes);
   //const setSubscribes = useSubscriptionStore((state) => state.setSubscribes);
@@ -69,9 +64,8 @@ export default function Sidebar() {
     customToast('구독이 취소되었습니다.', 'info');
   };
 
-  //모달 핸들러
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  //모달 상태 전역 관리
+  const { isLogInModal } = useModalStore();
 
   //채널 인덱스 저장
   const indexMap = channelIndexMapping(channels);
@@ -119,7 +113,7 @@ export default function Sidebar() {
                   if (isLoggedIn) {
                     navigate('/channel');
                   } else {
-                    openModal();
+                    isLogInModal(true);
                   }
                 }}
                 className="block cursor-pointer px-8 py-2.5 text-[14px] text-[var(--color-gray6)] select-none hover:bg-[var(--color-gray2)]"
@@ -137,7 +131,7 @@ export default function Sidebar() {
                 >
                   <div className="mr-3 h-6 w-6 flex-shrink-0 overflow-hidden rounded-full">
                     <img
-                      src={getImagePreview(item._id) || ''}
+                      src={getImagePreview(item._id) || homeIcon}
                       alt="channelImg"
                       className="h-full w-full object-cover"
                     />
@@ -152,7 +146,6 @@ export default function Sidebar() {
               ))}
             </ul>
           )}
-          {modalOpen && <IsLoggedInModal onClose={closeModal} />}
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="flex items-center px-6">
