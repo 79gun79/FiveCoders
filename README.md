@@ -31,6 +31,7 @@
 ## <span id="1">🚩 1. 프로젝트 소개</span>
 
 **Notion**: [프로젝트 노션 링크](https://www.notion.so/2-Gammue-1f8871ecd4fe80a085fcd94e50857de5?pvs=4)
+
 **PPT**: [프로젝트 발표 자료](https://www.figma.com/slides/V98IsZ9y8YXsbMxkMaBr78/-FE5--2%EC%B0%A8-5%ED%8C%80-FiveCoders-%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C?node-id=1-553&t=6wXqQv7l6L50ZQI0-1)
 
 React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 서비스를 구현.
