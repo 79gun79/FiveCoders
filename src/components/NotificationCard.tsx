@@ -1,6 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Notification } from '../types/notification';
 import defaultProfileImg from '../assets/imgs/defaultProfileImg.png';
+import { useEffect, useState } from 'react';
+import { getPostById } from '../services/postApi';
+import { fetchChannels } from '../services/channelApi';
+import { Channel } from '../types/channel';
+import LoadingUI from './LoadingUI';
 
 type NotificationCardProps = Notification & {
   onRead: (id: string) => void;
@@ -17,10 +22,16 @@ export default function NotificationCard({
   onRead,
 }: NotificationCardProps) {
   const navigate = useNavigate();
+  const [post, setPost] = useState<Post | null>(null);
+  const [channels, setChannels] = useState<Channel[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const handleClick = () => {
     onRead(id);
-    navigate(`/channel/${3}#${postId}`);
+    const channelIndex = channels.findIndex(
+      (channel) => channel._id === post?.channel._id,
+    );
+    navigate(`/channel/${channelIndex}#${postId}`);
   };
 
   const formatDate = (dateString: string) => {
@@ -43,6 +54,38 @@ export default function NotificationCard({
     }
     return '';
   };
+
+  useEffect(() => {
+    const loadChannels = async () => {
+      try {
+        const ch = await fetchChannels();
+        setChannels(ch);
+      } catch (error) {
+        console.error('채널 정보를 불러오지 못했습니다.', error);
+      }
+    };
+    loadChannels();
+  }, []);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      setLoading(true); // 로딩 시작
+
+      try {
+        const response = await getPostById(postId);
+        setPost(response.data);
+      } catch (err) {
+        console.error(`게시물 정보를 불러오지 못했습니다.`, err);
+      } finally {
+        setLoading(false); // 로딩 종료
+      }
+    };
+    fetchPost();
+  }, [postId]);
+
+  if (loading) {
+    return <LoadingUI />;
+  }
 
   return (
     <div

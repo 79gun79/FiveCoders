@@ -12,6 +12,8 @@ import { useAuthStore } from '../stores/authStore';
 import axios from 'axios';
 import { client } from '../services/axios';
 import IsLoggedInModal from '../components/IsLoggedInModal';
+import TodayBestPost from '../components/TodayBestPost';
+import { BsFire } from 'react-icons/bs';
 
 type CardType = 'steam' | 'discord' | 'dnf';
 
@@ -249,6 +251,15 @@ export default function Home() {
         <div className="m-[20px] w-[960px]">
           <GameCarousel />
         </div>
+      </div>
+      <div className="mt-2.5 w-full items-start">
+        <div className="mt-5 flex items-center">
+          <BsFire className="mr-3 text-[25px] text-orange-400" />
+          <h1 className="py-2 text-[25px] font-bold text-[var(--color-main)]">
+            오늘의 인기글
+          </h1>
+        </div>
+        <TodayBestPost />
       </div>
     </div>
   );

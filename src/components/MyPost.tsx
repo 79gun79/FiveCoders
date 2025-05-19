@@ -45,7 +45,7 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
 
   return (
     <>
-      {myPost.map((v: Post, i) => {
+      {myPost.map((v: Post) => {
         const { head, body } = parseContent(v.title);
 
         const channelName =
