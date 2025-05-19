@@ -1,5 +1,4 @@
 import { client } from './axios';
-import { comment } from '../types/comment';
 import {
   Notification,
   RawNotification,
@@ -14,8 +13,20 @@ export const fetchNotifications = async (): Promise<Notification[]> => {
     isRead: !item.seen ? false : true,
     postId: item.post,
     channelId: item.channel,
-    comment: item.comment ?? '',
     notificationType: item.comment ? 'comment' : 'like',
+    comment: item.comment
+      ? {
+          id: '',
+          comment: item.comment,
+          authorId: '',
+          createdAt: item.createdAt,
+        }
+      : {
+          id: '',
+          comment: '',
+          authorId: '',
+          createdAt: item.createdAt,
+        },
     author: {
       fullName: item.author?.fullName ?? '',
       image: item.author?.image,
@@ -33,8 +44,20 @@ export const createNotification = async (
     isRead: !data.seen ? false : true,
     postId: data.post,
     channelId: data.channel,
-    comment: data.comment ?? '',
     notificationType: data.notificationType,
+    comment: data.comment
+      ? {
+          id: '',
+          comment: data.comment,
+          authorId: '',
+          createdAt: data.createdAt,
+        }
+      : {
+          id: '',
+          comment: '',
+          authorId: '',
+          createdAt: data.createdAt,
+        },
     author: {
       fullName: data.author?.fullName ?? '',
       image: data.author?.image,
