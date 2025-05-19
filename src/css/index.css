@@ -1,1 +1,164 @@
+<<<<<<< HEAD
 @import "./tailwind.css";
+=======
+@import './tailwind.css';
+@import './root.css';
+@import './font.css';
+
+@layer components {
+  .postBottom {
+    @apply w-full border-b border-[#d9d9d9] sm:min-w-[396px] md:min-w-[480px] lg:min-w-[564px];
+  }
+  .postBorder {
+    @apply border border-[#d9d9d9] p-[36px] sm:p-[24px] md:p-[30px] lg:p-[36px];
+  }
+  .postBorder2 {
+    @apply rounded-3xl border border-[#d9d9d9] p-[36px] shadow-md sm:p-[24px] md:p-[30px] lg:p-[36px];
+  }
+  .postProfile {
+    @apply h-8 w-8 rounded-full object-cover;
+  }
+  .postShadow {
+    @apply transition-shadow duration-500 hover:shadow-md;
+  }
+  .listBorder {
+    @apply h-[fit] w-[fit] rounded-lg border border-[var(--color-gray3)] bg-white p-[10px] shadow-md;
+  }
+  .textBasic {
+    @apply text-[14px] text-[var(--color-text-black)];
+  }
+  .textH1 {
+    @apply text-[32px] font-bold text-[var(--color-text-black)];
+  }
+  .textH2 {
+    @apply text-[28px] font-bold text-[var(--color-text-black)];
+  }
+  .textH3 {
+    @apply text-[24px] font-medium text-[var(--color-text-black)];
+  }
+  .textH4 {
+    @apply text-[20px] font-medium text-[var(--color-text-black)];
+  }
+  .textT1 {
+    @apply text-[18px] text-[var(--color-text-black)];
+  }
+  .textST1 {
+    @apply text-[14px] text-[var(--color-text-black)];
+  }
+  .item-middle {
+    @apply flex min-h-screen items-center justify-center;
+  }
+
+  .btn-style {
+    @apply flex h-11 w-full cursor-pointer items-center justify-center rounded-full bg-[var(--color-main)] p-3 px-3 font-semibold text-white hover:bg-[#539995];
+  }
+
+  .input-style {
+    @apply h-11 w-full rounded-4xl border border-[#E5EBEE] bg-[#E5EBEE] p-3 px-4 focus:border-[#51B8B2] focus:outline-1 focus:outline-[#51B8B2];
+  }
+
+  .btn-style-post {
+    @apply flex h-[54px] w-full cursor-pointer items-center justify-center bg-white py-[12px] text-[var(--color-gray5)] hover:bg-[var(--color-gray1)] disabled:cursor-default disabled:bg-white;
+  }
+  .btn-style-post2 {
+    @apply cursor-pointer bg-white px-6 py-2 text-center hover:bg-[var(--color-gray1)];
+  }
+  .btn-style-comment {
+    @apply cursor-pointer rounded-full bg-[var(--color-gray3)] px-3 py-1 text-[var(--color-gray7)] hover:bg-[var(--color-gray4)];
+  }
+  .btn-style-modal {
+    @apply h-[40px] w-[120px] cursor-pointer items-center justify-center rounded-[5px] bg-[var(--color-main)] text-white hover:bg-[var(--color-sub)];
+  }
+  .btn-style-channelList {
+    @apply flex h-[44px] w-[193px] cursor-pointer items-center justify-center rounded-3xl border border-[var(--color-main)] bg-white text-[var(--color-gray7)] hover:bg-[var(--color-gray1)];
+  }
+
+  .input-style-head {
+    @apply h-[54px] w-full rounded-xl border border-[var(--color-gray4)] bg-white placeholder-[var(--color-gray5)] focus:border-[var(--color-main)] focus:outline-1 focus:outline-[var(--color-main)];
+  }
+  .comment {
+    @apply flex w-100 cursor-pointer content-center justify-center text-[var(--color-gray5)] hover:bg-[var(--color-gray1)];
+  }
+  .commentBorder {
+    @apply border-[#51B8B2] outline-1 outline-[#51B8B2];
+  }
+  .number {
+    @apply text-[18px] font-bold;
+  }
+  .button {
+    @apply w-[100px] cursor-pointer border-b-2 text-[20px];
+  }
+  .community-button {
+    @apply mr-2 inline-flex;
+  }
+  .community-tab {
+    @apply border-[var(--color-gray3)] transition-all duration-300 ease-in-out hover:border-[var(--color-sub)];
+  }
+  .community-tab-active {
+    @apply border-[var(--color-main)] text-[var(--color-main)] transition-all duration-300 ease-in-out hover:border-[var(--color-sub)];
+  }
+  .input {
+    @apply my-3.75 w-[80%] border-b-1 placeholder:text-[var(--color-gray4)] focus:outline-none;
+  }
+  .cancel {
+    @apply cursor-pointer rounded-full bg-[var(--color-gray3)] px-5 py-2.5 hover:bg-[var(--color-gray5)];
+  }
+  .apply {
+    @apply cursor-pointer rounded-full bg-[var(--color-main)] px-3.25 py-2.5 text-[var(--color-white)] hover:bg-[var(--color-sub)];
+  }
+  .commentBox {
+    @apply mt-[40px] h-[136px] w-[100%] border-[1px] border-[#d9d9d9] px-[23.35px] pt-[20px];
+  }
+  .postBox {
+    @apply mt-[40px] h-[196px] w-[100%] border-[1px] border-[#d9d9d9] px-[23.35px] pt-[20px];
+  }
+
+  .search-tab-style {
+    @apply w-[50%] cursor-pointer border-b-2 border-b-[var(--color-gray3)] disabled:cursor-default disabled:border-b-4 disabled:border-b-[var(--color-main)] disabled:font-bold disabled:text-[var(--color-main)];
+  }
+  .tooltip-wrapper {
+    display: inline-block;
+    position: relative;
+  }
+
+  .tooltip-content {
+    position: absolute;
+    top: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 14px;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .cautionMsg {
+    @apply mt-[-20px] text-sm text-[var(--color-red-caution)];
+  }
+  .removeImgBtn {
+    @apply flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white text-[var(--color-red-caution)] shadow-md;
+  }
+}
+/* 자주쓰는 tailwindcss모음 + 글짜크기 지정 */
+
+.ql-editor::before {
+  font-style: normal !important;
+  color: var(--color-gray4) !important;
+}
+/* 텍스트 에디터의 미리보기 글짜 적용을 위한 기본 CSS 사용 */
+
+/* 스크롤 바 숨기기 */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+>>>>>>> dev

@@ -1,0 +1,8 @@
+@import './tailwind.css';
+
+@layer base {
+  body {
+    font-family: 'Pretendard', sans-serif;
+  }
+}
+/* 프리텐다드 폰트 적용 */
