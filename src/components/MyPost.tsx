@@ -11,6 +11,7 @@ import { Channel } from '../types/channel';
 import { getImagePreview } from '../utils/localImage';
 import prof from '../assets/imgs/defaultProfileImg.png';
 import { Post } from '../types/post';
+import { channelData } from '../data/channelData';
 
 export default function MyPost({ myPost }: { myPost: Post[] }) {
   const [image, setImage] = useState('');
@@ -56,6 +57,11 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
         const channelIndex = channels.findIndex(
           (channel) => channel._id === v.channel,
         );
+
+        const matchedChannel = channelData.find(
+          (channel) => channel.name === channelName,
+        );
+        const bannerImg = matchedChannel?.bannerImg || '/gammue.ico';
 
         return (
           <Link to={`/channel/${channelIndex}#${v._id}`} key={v._id}>
@@ -103,7 +109,7 @@ export default function MyPost({ myPost }: { myPost: Post[] }) {
                 </span>
                 <div className="flex-grow"></div>
                 <img
-                  src={getImagePreview(v.channel) || prof}
+                  src={bannerImg || getImagePreview(v.channel) || prof}
                   alt="profile"
                   className="postProfile"
                 />

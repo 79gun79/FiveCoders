@@ -14,6 +14,7 @@ import { useSubscriptionStore } from '../stores/subscriptionStore';
 import { unsubscribeChannel } from '../services/subscribeChannelApi';
 import { fetchCurrentUser } from '../services/userApi';
 import { useModalStore } from '../stores/modalStore';
+import { channelData } from '../data/channelData';
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -140,7 +141,13 @@ export default function Sidebar() {
                 >
                   <div className="h-8 w-8 flex-shrink-0 overflow-hidden rounded-full xl:mr-3">
                     <img
-                      src={getImagePreview(item._id) || homeIcon}
+                      src={
+                        channelData.find(
+                          (channel) => channel.name === item.name,
+                        )?.bannerImg ||
+                        getImagePreview(item._id) ||
+                        homeIcon
+                      }
                       alt="channelImg"
                       className="h-full w-full object-cover"
                     />
