@@ -43,7 +43,8 @@ export default function Home() {
     const handler = (e: MouseEvent) => {
       if (
         addCardRef.current &&
-        !addCardRef.current.contains(e.target as Node) && isOpen !== true
+        !addCardRef.current.contains(e.target as Node) &&
+        isOpen !== true
       ) {
         setShowAddCard(false);
       }
@@ -98,6 +99,7 @@ export default function Home() {
     }
   };
 
+  //카드 추가
   const createCardHandler = () => {
     if (selectedType === 'dnf' && getAuth !== null) {
       if (inputId && inputServer) {
@@ -112,22 +114,61 @@ export default function Home() {
     }
   };
 
+  //카드 삭제
+  const deleteCardHandler = (cardId: string) => {
+    const updatedCards = cards.filter((card) => card.id !== cardId);
+    setCards(updatedCards);
+
+    try {
+      axios.put(
+        `${API_URL}settings/update-user`,
+        {
+          fullName: username,
+          username: JSON.stringify(updatedCards), // cards 대신 updatedCards로 저장
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const renderCard = (card: Card, idx: number) => {
     if (isLogin === true) {
       if (card.type === 'steam') {
-        // sessionStorage.setItem('CardList', JSON.stringify(cards));
         saveCardData();
-        return <SteamCard key={idx} id={card.id} />;
+        return (
+          <SteamCard
+            key={idx}
+            id={card.id}
+            onDelete={() => deleteCardHandler(card.id)}
+          />
+        );
       }
       if (card.type === 'discord') {
-        // sessionStorage.setItem('CardList', JSON.stringify(cards));
         saveCardData();
-        return <DiscordCard key={idx} id={card.id} />;
+        return (
+          <DiscordCard
+            key={idx}
+            id={card.id}
+            onDelete={() => deleteCardHandler(card.id)}
+          />
+        );
       }
       if (card.type === 'dnf') {
-        // sessionStorage.setItem('CardList', JSON.stringify(cards));
         saveCardData();
-        return <DFCard key={idx} id={card.id} server={card.server!} />;
+        return (
+          <DFCard
+            key={idx}
+            id={card.id}
+            server={card.server!}
+            onDelete={() => deleteCardHandler(card.id)}
+          />
+        );
       }
     }
     return null;
