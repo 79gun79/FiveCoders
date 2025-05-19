@@ -6,6 +6,7 @@ import { getPostById } from '../services/postApi';
 import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import LoadingUI from './LoadingUI';
+import { Post } from '../types/post';
 
 type NotificationCardProps = Notification & {
   onRead: (id: string) => void;

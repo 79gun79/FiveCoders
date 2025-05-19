@@ -19,6 +19,7 @@ import { stateLike } from '../utils/stateLike';
 import { client } from '../services/axios';
 import { User } from '../types/user';
 import { useModalStore } from '../stores/modalStore';
+import { Post } from '../types/post';
 
 export default function PostComponent({
   id,

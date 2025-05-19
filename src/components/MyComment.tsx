@@ -8,6 +8,7 @@ import { parseContent } from '../utils/parseContent';
 import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import LoadingUI from './LoadingUI';
+import { Post } from '../types/post';
 
 export default function MyComment({ myComment }: { myComment: CommentType[] }) {
   const [image, setImage] = useState('');
