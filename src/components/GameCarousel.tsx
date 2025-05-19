@@ -24,7 +24,7 @@ export default function GameCarousel() {
   const next = () => setCurrnet((next) => (next + 1) % length);
 
   return (
-    <div className="relative mx-auto w-full max-w-[960px]">
+    <div className="relative mx-auto w-full max-w-[960px] z-0">
       <div className="relative h-[335px] overflow-hidden rounded-[10px]">
         {gameNewsData.map((item, idx) => (
           <div
