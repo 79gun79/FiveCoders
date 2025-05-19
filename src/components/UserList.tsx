@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { User } from '../types/user';
 import defaultProfileImg from '../assets/imgs/defaultProfileImg.png';
-import { fetchUsers } from '../services/userAPI';
+import { fetchUsers } from '../services/userApi';
 import { useNavigate } from 'react-router';
 
 export default function UserList() {
