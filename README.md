@@ -5,7 +5,7 @@
 <h1><b>Gammue - 게임 커뮤니티</b></h1>
 <h3><b>프로그래머스 4기 5회차 소셜 네트워크 프로젝트</b></h3>
 
-🔗 [배포 링크](https://)
+🔗 [배포 링크](https://funny-speculoos-61daf9.netlify.app/)
 
 <img src="./src/assets/GammueLogo.png" alt="겜뮤로고이미지"/>
 
