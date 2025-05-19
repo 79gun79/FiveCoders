@@ -4,6 +4,7 @@ import { createLike, deleteLike } from '../services/likesApi';
 import { client } from '../services/axios';
 import { customToast } from './customToast';
 import { BiSolidLike } from 'react-icons/bi';
+import { createNotification } from '../services/notificationApi';
 
 export const stateLike = (initialPost: Post) => {
   const [currentUserId, setCurrentUserId] = useState<User['_id'] | null>(null);
@@ -107,6 +108,16 @@ export const stateLike = (initialPost: Post) => {
           ...post!,
           likes: [...post!.likes, newLike],
         }));
+
+        if (post && post.author._id !== currentUserId) {
+          await createNotification({
+            notificationType: 'like',
+            notificationTypeId: newLike._id,
+            userId: post.author._id,
+            postId: post._id,
+          });
+        }
+
         customToast(
           `${post?.author.fullName}님의\n게시글에 좋아요를 눌렀습니다!`,
           'success',

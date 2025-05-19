@@ -152,19 +152,19 @@ export default function PostComponent({
               )}
             </div>
 
-            <div className="textH4 font-bold">{head}</div>
-            {post.image && (
-              <img
-                src={post.image}
-                alt={post._id}
-                className="mt-3 max-w-[564px] object-contain"
-              />
-            )}
-            <div
-              className="textT1 mt-3"
-              dangerouslySetInnerHTML={{ __html: cleanContent(body) }}
-            ></div>
-          </div>
+          <div className="textH4 font-bold">{head}</div>
+          {post.image && (
+            <img
+              src={post.image}
+              alt={post._id}
+              className="mt-3 max-w-[564px] object-contain"
+            />
+          )}
+          <div
+            className="textT1 mt-3"
+            dangerouslySetInnerHTML={{ __html: cleanContent(body) }}
+          ></div>
+        </div>
 
           <div className="postBottom flex items-center justify-around">
             <Button

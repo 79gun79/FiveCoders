@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Notification } from '../types/notification';
+import defaultProfileImg from '../assets/imgs/defaultProfileImg.png';
 
 type NotificationCardProps = Notification & {
   onRead: (id: string) => void;
@@ -7,19 +8,19 @@ type NotificationCardProps = Notification & {
 
 export default function NotificationCard({
   id,
-  name,
-  nickname,
-  profileImg,
   createdAt,
-  content,
   isRead,
+  notificationType,
+  postId,
+  author,
+  comment,
   onRead,
 }: NotificationCardProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     onRead(id);
-    navigate(`/channel/${id}`);
+    navigate(`/channel/${3}#${postId}`);
   };
 
   const formatDate = (dateString: string) => {
@@ -29,34 +30,48 @@ export default function NotificationCard({
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
-
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+  };
+
+  const renderContent = () => {
+    if (notificationType === 'like') {
+      return `${author.fullName}님이 회원님의 게시글을 좋아합니다.`;
+    } else if (notificationType === 'comment') {
+      return `${author.fullName}님이 댓글을 남겼습니다:${
+        comment?.comment ? ' ' + comment.comment : ''
+      }`;
+    }
+    return '';
   };
 
   return (
     <div
-      className="flex cursor-pointer items-start gap-4 border-b px-7 py-3 last:border-none hover:bg-[var(--color-gray1)]"
+      className="flex cursor-pointer items-start gap-3 px-4 py-3 hover:bg-[var(--color-gray1)]"
       onClick={handleClick}
     >
-      {profileImg && (
-        <div className="relative mt-1 aspect-square h-6 w-6">
-          <img
-            src={profileImg}
-            alt="profile"
-            className="ml-1 h-full w-full rounded-full object-cover"
-          />
-          {!isRead && (
-            <span className="absolute top-2 -left-3 inline-flex h-1.5 w-1.5 rounded-full bg-[var(--color-red-caution)]" />
-          )}
-        </div>
-      )}
-      <div className="w-full max-w-[250px] text-sm">
-        <p className="truncate font-medium">{name}</p>
-        <p className="truncate font-medium">{nickname}</p>
-        <p className="truncate text-[14px] text-[var(--color-gray6)]">
-          {content}
+      <div className="pt-3">
+        <span
+          className={`block h-2 w-2 rounded-full ${
+            isRead
+              ? 'bg-[var(--color-gray3)]'
+              : 'bg-[var(--color-red-caution)]'
+          }`}
+        />
+      </div>
+
+      <div className="h-8 w-8 shrink-0">
+        <img
+          src={author.image ?? defaultProfileImg}
+          alt="profile"
+          className="h-full w-full rounded-full object-cover"
+        />
+      </div>
+
+      <div className="flex max-w-[230px] flex-col text-sm">
+        <p className="line-clamp-2 break-words text-[13px] text-[var(--color-gray6)]">
+          {renderContent()}
         </p>
-        <p className="mt-1 text-xs text-[var(--color-gray4)]">
+        <p className="mt-1 text-[11px] text-[var(--color-gray4)]">
           {formatDate(createdAt)}
         </p>
       </div>
