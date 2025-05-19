@@ -45,4 +45,12 @@ export const channelData: ChannelImg[] = [
     name: '엘든 링',
     bannerImg: '/channelImages/elden_ring.jpg',
   },
+  {
+    name: '던전앤파이터',
+    bannerImg: '/channelImages/df.jpg',
+  },
+  {
+    name: '스타듀밸리',
+    bannerImg: '/channelImages/stardewvalley.jpg',
+  },
 ];
