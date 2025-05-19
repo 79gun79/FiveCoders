@@ -24,10 +24,7 @@
 7. [브랜치 및 디렉토리 구조](#7)
 8. [주요 기능 소개](#8)
 9. [상세 담당 업무](#9)
-10. [주요 코드 ](#10)
-11. [트러블 슈팅](#11)
-12. [프로젝트 회고](#12)
-13. [시작 가이드](#13)
+10. [시작 가이드](#10)
 
 <br />
 
@@ -48,7 +45,7 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 | <img src="https://img.shields.io/badge/Project_Leader-FF5733" />  | <img src="https://img.shields.io/badge/Design_Leader-blue" /> | <img src="https://img.shields.io/badge/Tech_Leader-%2300264B" /> | <img src="https://img.shields.io/badge/Design_Leader-blue" /> | <img src="https://img.shields.io/badge/Tech_Leader-%2300264e" /> |
 | :---------------------------------------------------------------: | :-----------------------------------------------------------: | :--------------------------------------------------------------: | :-----------------------------------------------------------: | :--------------------------------------------------------------: |
-| <img src="https://github.com/79gun79" width="120px;" alt="재건"/> |    <img src="https://github.com/" width="120px;" alt=""/>     |      <img src="https://github.com/" width="120px;" alt=""/>      |    <img src="https://github.com/" width="120px;" alt=""/>     |      <img src="https://github.com/" width="120px;" alt=""/>      |
+| <img src="https://github.com/79gun79" width="120px;" alt="재건"/> |  <img src="https://github.com/" width="120px;" alt="은지"/>   |    <img src="https://github.com/" width="120px;" alt="은서"/>    |  <img src="https://github.com/" width="120px;" alt="지윤"/>   |    <img src="https://github.com/" width="120px;" alt="원일"/>    |
 |               [이재건](https://github.com/79gun79)                |            [김은지](https://github.com/keemeunji)             |               [박은서](https://github.com/snowari)               |              [이지윤](https://github.com/wolwha)              |              [최원일](https://github.com/won431236)              |
 |                  팀장, 게시글 & 좋아요 구현 구현                  |                 디자인, 커뮤니티 & 알림 구현                  |       외부 API 연결, 인증 & 사이드바 & 구독 & 인기글 구현        |               디자인, 외부 API 연결, 회원 구현                |                         검색 & 댓글 구현                         |
 
@@ -88,11 +85,11 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 ### Project Management
 
-![Github Pull requests](https://github.com/79gun79/FiveCoders/pulls?q=is%3Apr+is%3Aclosed)
+[Github Pull requests](https://github.com/79gun79/FiveCoders/pulls?q=is%3Apr+is%3Aclosed)
 
 ### Design
 
-![Figma](https://www.figma.com/design/Cf8QG5w2iMudMXxj9y0w64/-FE5--2%EC%B0%A8-5%ED%8C%80-FiveCoders-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=178-95&t=Iqhom9eQW8S5DTvP-1)
+[Figma](https://www.figma.com/design/Cf8QG5w2iMudMXxj9y0w64/-FE5--2%EC%B0%A8-5%ED%8C%80-FiveCoders-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=178-95&t=Iqhom9eQW8S5DTvP-1)
 
 ### Hosting
 
@@ -219,23 +216,21 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 ## <span id="8">8. 💻 주요 기능 소개</span>
 
-프로젝트의 주요 기능을 GIF를 첨부하여 설명해주세요.
-
 ### 1) 홈
 
-| - 화면                                            | - 화면                                            | - 화면                                            |
+| 메인 화면                                         | 검색 화면                                         | 내 정보 화면                                      |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
 | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> |
 
 ### 2) 게시글
 
-| 상세페이지 화면                                   | 게시물 작성 - ??                                  | 게시물 작성 - ??                                  |
+| 커뮤니티 리스트                                   | 특정 커뮤니티                                     | 게시물 작성                                       |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
 | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> |
 
-### 3) 404 & 로딩 화면
+### 3) 기타
 
-| - 화면                                            | - 화면                                            | - 화면                                            |
+| 로그인 화면                                       | 채널 생성 화면                                    | 404 화면                                          |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
 | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> |
 
@@ -248,29 +243,26 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 ## <span id="9">9. 📄 상세 담당 업무</span>
 
-### 1) 팀원1 이름
+### 1) 이재건
 
-- **🎨 디자인**
+- **✨ 팀장**
 
-  - 로고 디자인 및 이미지 제작
+  - 프로젝트 초기 세팅 및 관리
+  - 노션페이지 작성 및 회의 진행
 
 - **💻 화면 개발**
 
-  - 로그인 화면
-  - 검색 화면
-  - 채팅 화면
+  - 각 커뮤니티 화면
+  - 게시글 작성, 수정 화면
+  - 댓글 작성, 좋아요 화면
 
-- **🧑‍💻 구현 기능**
+- **🛠 구현 기능**
 
-  - 로딩 페이지
-    - 회원가입 후 로그인 모달이 올라오는 로딩페이지
-  - 팔로워 목록 및 팔로워 취소&팔로우
-    - 팔로워 목록을 getFollowerList로 서버에 요청하여 리스트 출력
+  - 게시글 작성 및 수정
+  - 내 게시글, 검색 게시글 바로가기
+  - 좋아요 기능
 
-- **♻️ 리팩토링**
-  - 관련 설명
-
-### 2) 팀원2 이름
+### 2) 김은지
 
 - **🎨 디자인**
 
@@ -278,82 +270,74 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 - **💻 화면 개발**
 
-  - 공통 헤더 네브바
-  - 공통 푸터 네브바
-  - 삭제 / 신고 모달창
+  - 커뮤니티 목록 화면
+  - 커뮤니티 생성 화면(관리자)
+  - 알림 팝업창 화면
 
-- **👩‍💻 구현 기능**
+- **🛠 구현 기능**
 
-  - 라우터 초기 셋팅
-  - 게시물 등록
-    - 토글 Open, Close에 따라 인풋창 높이 자동 조절
-    - api 전송 한계로 인해 한 공간에 저장하여 보낼 수 있게, 데이터를 연산자로 구분하여 한줄로 전송
-      이미지 추가 및 삭제 가능
-  - 게시글 삭제 / 신고
-    - userId를 통해 유저를 구별하여 타인의 경우 신고 기능, 본인일 경우 삭제 기능 구현
+  - 커뮤니티 생성 기능
+  - 좋아요와 댓글 알림 기능
 
-- **♻️ 리팩토링**
-  - 관련 설명
+### 3) 박은서
 
-<br>
+- **📑 문서 관리**
 
-<!-- Top Button -->
-<p style='background: black; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-left: auto;'><a href="#top" style='color: white; '>▲</a></p>
+  - 프로젝트 초기 세팅 및 관리
+  - 와이어프레임 및 피그마 제작
 
-<br>
+- **💻 화면 개발**
 
-## <span id="10">✨ 10. 주요 코드</span>
+  - 로그인, 회원 가입 화면
+  - 사이드바 화면(반응형 제작)
+  - 홈 외부 API, 인기글 화면
+  - 404 오류 화면
 
-<details>
-<summary> 주요 코드에 대한 설명을 입력하세요. </summary>
+- **🛠 구현 기능**
 
-<div>
-설명
+  - 로그인, 회원 가입 기능
+  - 커뮤니티 구독 기능
+  - 모든 유저 표시(로그인 표시)
+  - 외부 API 연결 (스팀, 디스코드)
+  - 뉴스 캐로셀
+  - 오늘의 인기글 표시 기능
 
-```tsx
+### 4) 이지윤
 
-```
+- **🎨 디자인**
 
-</div>
-</details>
+  - 전체적인 UI 디자인
 
-<br>
+- **💻 화면 개발**
 
-<details>
-<summary> 주요 코드에 대한 설명을 입력하세요. </summary>
+  - 사용자 프로필 화면
+  - 프로필 수정 화면
+  - 홈 외부 API 화면
 
-<div>
-설명
+- **🛠 구현 기능**
 
-```tsx
+  - 사용자 프로필 수정 기능
+  - 사용자 아이디, 비밀번호 설정 기능
+  - 타 사용자 프로필 확인 기능
+  - 외부 API 연결(던전앤파이터)
 
-```
+### 5) 최원일
 
-</div>
-</details>
+- **📑 문서 관리**
 
-<br>
+  - 프로젝트 발표 자료 작성
 
-<!-- Top Button -->
-<p style='background: black; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-left: auto;'><a href="#top" style='color: white; '>▲</a></p>
+- **💻 화면 개발**
 
-<br>
+  - 검색 바를 포함한 상단 바
+  - 비어있는 컨텐츠 화면
+  - 검색 결과 화면
 
-## <span id="11">🚦 11. 트러블 슈팅</span>
+- **🛠 구현 기능**
 
-<details>
-<summary> 트러블 슈팅을 입력하세요. </summary>
-
-<div>
-
-1. 문제 상황 <br />
-
-2. 시도 <br />
-
-3. 해결방안 <br />
-
-</div>
-</details>
+  - 게시글, 사용자 검색 기능
+  - 댓글 작성, 조회, 삭제 기능
+  - 다중 클릭 방지 기능
 
 <br>
 
@@ -362,18 +346,7 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 <br>
 
-## <span id="12">12. 📝 프로젝트 회고</span>
-
-프로젝트 진행 후 느낀 점과 개선할 점을 적어주세요. 블로그에 작성하셨다면 블로그 링크를 첨부해주세요.
-
-<br>
-
-<!-- Top Button -->
-<p style='background: black; width: 32px; height: 32px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-left: auto;'><a href="#top" style='color: white; '>▲</a></p>
-
-<br>
-
-## <span id="13">13. 🛠️ 시작 가이드</span>
+## <span id="10">10. 🛠️ 시작 가이드</span>
 
 ### Installation
 
