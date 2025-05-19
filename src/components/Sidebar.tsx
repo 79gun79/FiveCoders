@@ -12,7 +12,7 @@ import { channelIndexMapping } from '../utils/channelIndexMapping';
 import { customToast } from '../utils/customToast';
 import { useSubscriptionStore } from '../stores/subscriptionStore';
 import { unsubscribeChannel } from '../services/subscribeChannelApi';
-import { fetchCurrentUser } from '../services/userAPI';
+import { fetchCurrentUser } from '../services/userApi';
 import { useModalStore } from '../stores/modalStore';
 
 export default function Sidebar() {

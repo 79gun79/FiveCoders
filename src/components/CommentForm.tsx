@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import Button from './Button';
 import placeholderIcon from '../assets/channelImg.svg';
@@ -6,6 +6,7 @@ import { client } from '../services/axios';
 import { customToast } from '../utils/customToast';
 import { useRefreshStore } from '../stores/refreshStore';
 import { createNotification } from '../services/notificationApi';
+import { User } from '../types/user';
 
 export default function CommentForm({
   postId,

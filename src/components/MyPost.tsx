@@ -10,6 +10,7 @@ import { fetchChannels } from '../services/channelApi';
 import { Channel } from '../types/channel';
 import { getImagePreview } from '../utils/localImage';
 import prof from '../assets/imgs/defaultProfileImg.png';
+import { Post } from '../types/post';
 
 export default function MyPost({ myPost }: { myPost: Post[] }) {
   const [image, setImage] = useState('');

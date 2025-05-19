@@ -16,6 +16,7 @@ import { FaRotate } from 'react-icons/fa6';
 import { customConfirm } from '../utils/customConfirm';
 import { getImagePreview } from '../utils/localImage';
 import { fetchChannels } from '../services/channelApi';
+import { Post } from '../types/post';
 
 export default function UpdatePost() {
   const navigate = useNavigate();

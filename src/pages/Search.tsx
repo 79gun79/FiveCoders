@@ -4,6 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { client } from '../services/axios';
 import SearchPost from '../components/SearchPost';
 import { User } from '../types/user';
+import { Post } from '../types/post';
 
 export default function Search() {
   const [searchParams] = useSearchParams();

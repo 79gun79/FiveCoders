@@ -4,6 +4,7 @@ import { client } from '../services/axios';
 import PostComponent from './PostComponent.tsx';
 import { useRefreshStore } from '../stores/refreshStore';
 import LoadingUI from './LoadingUI.tsx';
+import { Post } from '../types/post';
 
 export default function PostList({ channelId }: { channelId: string }) {
   // 상태 관리
