@@ -14,7 +14,7 @@ export default function Layout() {
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <main className="w-full pt-[50px]">
+        <main className="w-full">
           <div className="mx-auto w-full">
             <Outlet />
             {isLogInOpen && (
