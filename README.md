@@ -47,12 +47,17 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 ## <span id="2">🏃 2. 팀원 소개</span>
 
 <div align="center">
-| <img src="https://img.shields.io/badge/Project_Leader-FF5733" /> | <img src="https://img.shields.io/badge/Tech_Leader-%2300264B" /> | <img src="https://img.shields.io/badge/Documentation_Leader-%2310069F%20" /> | <img src="https://img.shields.io/badge/Design_Leader-blue" /> | <img src="https://img.shields.io/badge/Design_Leader-blue" /> |
-| :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------------------: | :-----------------------------------------------------------: | :-----------------------------------------------------------: |
-|      <img src="https://github.com/79gun79" width="120px;" alt=""/>      |      <img src="https://github.com/" width="120px;" alt=""/>      |            <img src="https://github.com/" width="120px;" alt=""/>            |    <img src="https://github.com/" width="120px;" alt=""/>     |   <img src="https://github.com/" width="120px;" alt=""/>     |
-|           [이재건](https://github.com/79gun79)           |           [김은지](https://github.com/keemeunji)            |                 [박은서](https://github.com/snowari)                 |         [이지윤](https://github.com/wolwha)           |          [최원일](https://github.com/won431236)         |
-|                            기능1 설명                            |                            기능2 설명                            |                                  기능3 설명                                  |                          기능4 설명                            |                       기능5 설명                             |
+| <img src="https://img.shields.io/badge/Project_Leader-FF5733" /> | <img src="https://img.shields.io/badge/Tech_Leader-%2300264B" /> | <img src="https://img.shields.io/badge/Documentation_Leader-%2310069F%20" /> |
+| :--------------------------------------------------------------: | :--------------------------------------------------------------: | :--------------------------------------------------------------------------: |
+|  <img src="https://github.com/79gun79" width="120px;" alt=""/>   |      <img src="https://github.com/" width="120px;" alt=""/>      |            <img src="https://github.com/" width="120px;" alt=""/>            |
+|           [이재건](https://github.com/79gun79)                   |           [김은지](https://github.com/keemeunji)                 |                 [박은서](https://github.com/snowari)                         |
+|                            기능1 설명                            |                            기능2 설명                            |                                  기능3 설명                                  |
 
+| <img src="https://img.shields.io/badge/Design_Leader-blue" /> | <img src="https://img.shields.io/badge/Design_Leader-blue" /> |
+| :-----------------------------------------------------------: | :-----------------------------------------------------------: |
+|    <img src="https://github.com/" width="120px;" alt=""/>     |   <img src="https://github.com/" width="120px;" alt=""/>      |
+|             [이지윤](https://github.com/wolwha)               |          [최원일](https://github.com/won431236)               |
+|                         기능4 설명                            |                       기능5 설명                              |
 
 </div>
 
