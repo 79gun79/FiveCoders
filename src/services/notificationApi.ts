@@ -37,7 +37,7 @@ export const createNotification = async (
   };
 };
 
-export const seenNotifications = async (id: string): Promise<Notification[]> => {
+export const seenNotifications = async (): Promise<Notification[]> => {
   const { data } = await client.put('/notifications/seen');
   return data;
 };

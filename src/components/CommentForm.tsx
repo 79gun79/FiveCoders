@@ -42,7 +42,7 @@ export default function CommentForm({
         const postIdFromRes = res.data.post;
 
         return client.get(`/posts/${postIdFromRes}`).then((postRes) => {
-          const postAuthorId = postRes.data.author;
+          const postAuthorId = postRes.data.author._id;
 
           if (user._id !== postAuthorId) {
             return createNotification({

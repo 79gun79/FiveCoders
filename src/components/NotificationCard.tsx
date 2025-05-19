@@ -18,7 +18,6 @@ export default function NotificationCard({
 }: NotificationCardProps) {
   const navigate = useNavigate();
 
-  // 알림 누르면 해당 글로 이동하는 부분 구현 못하겟슴다. . .
   const handleClick = () => {
     onRead(id);
     navigate(`/channel/${3}#${postId}`);
@@ -38,24 +37,29 @@ export default function NotificationCard({
     if (notificationType === 'like') {
       return `${author.fullName}님이 회원님의 게시글을 좋아합니다.`;
     } else if (notificationType === 'comment') {
-      return `${author.fullName}님이 댓글을 남겼습니다: ${comment?.comment ?? ''}`;
+      return `${author.fullName}님이 댓글을 남겼습니다:${
+        comment?.comment ? ' ' + comment.comment : ''
+      }`;
     }
     return '';
   };
 
   return (
     <div
-      className="flex cursor-pointer items-start gap-1 px-4 py-3 hover:bg-[var(--color-gray1)]"
+      className="flex cursor-pointer items-start gap-3 px-4 py-3 hover:bg-[var(--color-gray1)]"
       onClick={handleClick}
     >
-      <div className="flex items-center justify-center w-5 h-full mt-3">
+      <div className="pt-3">
         <span
-          className={`h-2 w-2 rounded-full ${isRead ? 'bg-[var(--color-gray3)]' : 'bg-[var(--color-red-caution)]'
-            }`}
+          className={`block h-2 w-2 rounded-full ${
+            isRead
+              ? 'bg-[var(--color-gray3)]'
+              : 'bg-[var(--color-red-caution)]'
+          }`}
         />
       </div>
 
-      <div className="h-8 w-8 shrink-0 mr-2">
+      <div className="h-8 w-8 shrink-0">
         <img
           src={author.image ?? defaultProfileImg}
           alt="profile"
@@ -63,8 +67,8 @@ export default function NotificationCard({
         />
       </div>
 
-      <div className="flex flex-col text-sm w-[230px]">
-        <p className="line-clamp-2 text-[13px] text-[var(--color-gray6)] break-words">
+      <div className="flex max-w-[230px] flex-col text-sm">
+        <p className="line-clamp-2 break-words text-[13px] text-[var(--color-gray6)]">
           {renderContent()}
         </p>
         <p className="mt-1 text-[11px] text-[var(--color-gray4)]">
