@@ -5,6 +5,7 @@ import { IoIosList } from 'react-icons/io';
 import { Channel } from '../types/channel';
 import { fetchChannels } from '../services/channelApi';
 import { getImagePreview } from '../utils/localImage';
+import { channelData } from '../data/channelData';
 
 export default function ChooseCommunity({
   onChange,
@@ -50,7 +51,11 @@ export default function ChooseCommunity({
         </div>
         <ul className="gap-[7px] px-1 pb-[10px] text-[13px] font-normal">
           {channels.map((v, index) => {
-            const bannerImg = getImagePreview(v._id) || '';
+            const bannerImg =
+              channelData.find((channel) => channel.name === v.name)
+                ?.bannerImg ||
+              getImagePreview(v._id) ||
+              '';
             return (
               <li
                 key={v._id}

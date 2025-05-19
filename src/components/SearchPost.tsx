@@ -13,6 +13,7 @@ import { AiFillMessage } from 'react-icons/ai';
 import { getImagePreview } from '../utils/localImage';
 import LoadingUI from './LoadingUI';
 import { Post } from '../types/post';
+import { channelData } from '../data/channelData';
 
 export default function SearchPost({ searchId }: { searchId: string }) {
   const [post, setPost] = useState<Post>();
@@ -59,6 +60,10 @@ export default function SearchPost({ searchId }: { searchId: string }) {
   const channelIndex = channels.findIndex(
     (channel) => channel._id === post.channel._id,
   );
+  const matchedChannel = channelData.find(
+    (channel) => channel.name === post.channel.name,
+  );
+  const bannerImg = matchedChannel?.bannerImg || '/gammue.ico';
 
   return (
     <>
@@ -107,7 +112,7 @@ export default function SearchPost({ searchId }: { searchId: string }) {
               </span>
               <div className="flex-grow"></div>
               <img
-                src={getImagePreview(post.channel._id) || prof}
+                src={bannerImg || getImagePreview(post.channel._id) || prof}
                 alt="profile"
                 className="postProfile"
               />

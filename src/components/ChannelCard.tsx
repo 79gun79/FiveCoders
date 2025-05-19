@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import type { Channel } from '../types/channel';
 import defaultChannelImg from '../assets/channelImg.svg';
 import { getImagePreview } from '../utils/localImage';
+import { channelData } from '../data/channelData';
 
 type ChannelCardProps = Channel & {
   onClick?: () => void;
@@ -31,13 +32,16 @@ export default function ChannelCard({
     //console.log(preview);
   }, [_id]);
 
+  const matchedChannel = channelData.find((channel) => channel.name === name);
+  const bannerImg = matchedChannel?.bannerImg || defaultChannelImg;
+
   return (
     <div
       onClick={onClick}
       className="relative h-[180px] w-[260px] cursor-pointer overflow-hidden rounded-[12px] bg-[var(--color-bg-white)] shadow-md transition-shadow duration-300 hover:shadow-xl"
     >
       <img
-        src={localImage || defaultChannelImg}
+        src={localImage || bannerImg}
         alt={name}
         className="h-[130px] w-full object-cover"
       />

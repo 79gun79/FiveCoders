@@ -17,10 +17,11 @@ import {
 } from '../services/subscribeChannelApi';
 import { useModalStore } from '../stores/modalStore';
 import LoadingUI from '../components/LoadingUI';
+import { channelData } from '../data/channelData';
 
 export default function ChannelPage({ id }: { id: string }) {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn); // 로그인 상태 확인
-  const [channelData, setChannelData] = useState<Channel | null>(null);
+  const [channelInfo, setChannelInfo] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [subscribing, setSubscribing] = useState(false);
 
@@ -31,7 +32,7 @@ export default function ChannelPage({ id }: { id: string }) {
   //로그인 모달 상태 전역 관리
   const { isLogInModal } = useModalStore();
 
-  const channelId = channelData?._id ?? '';
+  const channelId = channelInfo?._id ?? '';
   const isSubscribed = subscribes.includes(channelId);
 
   const SubscribedHandler = async () => {
@@ -65,7 +66,7 @@ export default function ChannelPage({ id }: { id: string }) {
         // ✅ 인덱스를 기준으로 채널 정보 가져오기
         const index = parseInt(id, 10);
         if (data[index]) {
-          setChannelData(data[index]);
+          setChannelInfo(data[index]);
         } else {
           console.error(`해당 인덱스 ${id}에 채널이 없습니다.`);
         }
@@ -82,11 +83,17 @@ export default function ChannelPage({ id }: { id: string }) {
 
     fetchChannelData();
   }, [id]);
-  const bannerImage = channelData ? getImagePreview(channelData._id) : '';
+  const bannerImage = channelInfo ? getImagePreview(channelInfo._id) : '';
+
+  const matchedChannel = channelData.find(
+    (channel) => channel.name === channelInfo?.name,
+  );
+  const bannerImg = matchedChannel?.bannerImg || '/gammue.ico';
+
   return (
     <>
       {isLoading && <LoadingUI />}
-      {!isLoading && channelData && (
+      {!isLoading && channelInfo && (
         <div className="container mx-auto mb-[50px] flex flex-col gap-[30px]">
           <div className="postShadow w-full items-center justify-center">
             <div
@@ -97,7 +104,7 @@ export default function ChannelPage({ id }: { id: string }) {
             >
               <img
                 className="h-[155px] w-full object-cover"
-                src={bannerImage || '/gammue.ico'}
+                src={bannerImage || bannerImg}
               />
             </div>
             <div
@@ -107,7 +114,7 @@ export default function ChannelPage({ id }: { id: string }) {
               )}
             >
               <h3 className={twMerge('textH3', 'font-bold')}>
-                {channelData.name}
+                {channelInfo.name}
               </h3>
               <TiStarFullOutline
                 onClick={SubscribedHandler}
@@ -143,10 +150,10 @@ export default function ChannelPage({ id }: { id: string }) {
               </Link>
             </div>
           </div>
-          <PostList key={channelData._id} channelId={channelData._id} />
+          <PostList key={channelInfo._id} channelId={channelInfo._id} />
         </div>
       )}
-      {!isLoading && !channelData && <p>채널 정보를 불러올 수 없습니다.</p>}
+      {!isLoading && !channelInfo && <p>채널 정보를 불러올 수 없습니다.</p>}
     </>
   );
 }
