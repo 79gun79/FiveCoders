@@ -15,7 +15,7 @@ export default function Layout() {
       <div className="flex flex-1">
         <Sidebar />
         <main className="w-full">
-          <div className="mx-auto w-full">
+          <div className="mx-auto mt-10 w-full">
             <Outlet />
             {isLogInOpen && (
               <IsLoggedInModal onClose={() => isLogInModal(false)} />
