@@ -183,7 +183,7 @@ export default function UpdatePost() {
   return (
     <>
       <form
-        className="mb-[50px] flex min-w-[656px] flex-col items-start justify-center gap-[26px]"
+        className="container mx-auto mb-[50px] flex flex-col items-start justify-center gap-[26px]"
         onSubmit={handleSubmit}
       >
         <h2 className="textH2">게시글 수정</h2>
