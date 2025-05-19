@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import DiscordBig from '../assets/discord-big.svg';
 import DiscordSmall from '../assets/discord-small.svg';
 import { getDiscordUser } from '../services/discordApi';
+import { IoCloseCircle } from 'react-icons/io5';
 
-//const discordId = '593372604933341210';
 interface DiscordProfile {
   userid: string;
   avatar: string;
@@ -11,11 +11,13 @@ interface DiscordProfile {
 
 interface DiscordCardProps {
   id: string;
+  onDelete: (id: string) => void;
 }
 
-export default function DiscordCard({ id }: DiscordCardProps) {
+export default function DiscordCard({ id, onDelete }: DiscordCardProps) {
   const [card, setCard] = useState<DiscordProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +40,11 @@ export default function DiscordCard({ id }: DiscordCardProps) {
   }, [id]);
   return (
     <>
-      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#7289D9] via-[#2C2F34] to-[#1E2124]">
+      <div
+        className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#7289D9] via-[#2C2F34] to-[#1E2124]"
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
         <div className="flex items-center px-4 py-4">
           <img
             src={DiscordSmall}
@@ -54,6 +60,17 @@ export default function DiscordCard({ id }: DiscordCardProps) {
           className="absolute top-0 left-[107px] h-[174px] w-[174px] select-none"
           draggable={false}
         />
+        {isHover && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(id);
+            }}
+            className="z-50p-1 absolute top-1 right-2 transition-opacity"
+          >
+            <IoCloseCircle className="h-7 w-7 text-[var(--color-red-caution)] hover:text-[#9B2424]" />
+          </button>
+        )}
         {card && (
           <img
             className="ml-[27px] h-[64px] w-[64px] rounded-xl"

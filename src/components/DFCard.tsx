@@ -3,10 +3,12 @@ import { getUser } from '../services/dfAPI';
 import logo_small from '../assets/dnf-small.png';
 import dnfBg from '../assets/dnfBg.png';
 import fame from '../assets/fame.png';
+import { IoCloseCircle } from 'react-icons/io5';
 
 interface DFCardProps {
   id: string;
   server: string;
+  onDelete: (id: string) => void;
 }
 
 interface DFProfile {
@@ -34,9 +36,10 @@ const getServerCode = (server: string) => {
   return serverKorToEng[server] || server;
 };
 
-export default function DFCard({ id, server }: DFCardProps) {
+export default function DFCard({ id, server, onDelete }: DFCardProps) {
   const [profile, setProfile] = useState<DFProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     const code = getServerCode(server);
@@ -68,13 +71,25 @@ export default function DFCard({ id, server }: DFCardProps) {
     <div
       className="relative flex h-[160px] w-[260px] justify-start overflow-hidden rounded-xl bg-cover bg-center bg-no-repeat p-[10px]"
       style={{ backgroundImage: `url(${dnfBg})` }}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
     >
       <img
         src={logo_small}
         className="absolute w-[35px] select-none"
         alt="dnf-icon"
       />
-
+      {isHover && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(id);
+          }}
+          className="z-50p-1 absolute top-1 right-2 transition-opacity"
+        >
+          <IoCloseCircle className="h-7 w-7 text-[var(--color-red-caution)] hover:text-[#9B2424]" />
+        </button>
+      )}
       {profile && (
         <>
           <img
