@@ -42,7 +42,7 @@ export default function SignUp() {
   const signUpHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await client.post('/signup', {
+      await client.post('/signup', {
         fullName: username,
         email,
         password,

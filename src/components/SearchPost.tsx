@@ -12,6 +12,7 @@ import { BiSolidLike } from 'react-icons/bi';
 import { AiFillMessage } from 'react-icons/ai';
 import { getImagePreview } from '../utils/localImage';
 import LoadingUI from './LoadingUI';
+import { Post } from '../types/post';
 
 export default function SearchPost({ searchId }: { searchId: string }) {
   const [post, setPost] = useState<Post>();

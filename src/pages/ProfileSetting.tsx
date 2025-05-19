@@ -33,6 +33,7 @@ export default function ProfileSetting() {
     if (value !== password && value !== '') {
       return '비밀번호가 일치하지 않습니다.';
     }
+    return '';
   };
 
   const validateNewPassword = (value: string) => {
@@ -40,6 +41,7 @@ export default function ProfileSetting() {
     if (isPassword === '8~16자, 영문 숫자 특수문자 모두 포함' && value !== '') {
       return '8~16자, 영문 대소문자와 숫자, 특수문자 모두 포함해주세요';
     }
+    return '';
   };
 
   const validateNickName = (value: string) => {
@@ -49,6 +51,7 @@ export default function ProfileSetting() {
     } else if (isNickName === '2~8자 이내 영문 또는 한글' && value === '') {
       return '변경하실 닉네임을 입력해 주세요';
     }
+    return '';
   };
 
   const isFormValid =

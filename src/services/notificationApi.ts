@@ -1,4 +1,5 @@
 import { client } from './axios';
+import { comment } from '../types/comment';
 import {
   Notification,
   RawNotification,
