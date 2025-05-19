@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import SteamIconBig from '../assets/steam-big.svg';
 import SteamIconSm from '../assets/steam-small.svg';
 import { getOwnedGames, getPlayerSummaries } from '../services/steamApi';
+import { IoCloseCircle } from 'react-icons/io5';
 
 interface SteamPlayer {
   steamid: string;
@@ -19,15 +20,15 @@ interface GameInfo {
 
 interface SteamCardProps {
   id: string;
+  onDelete: (id: string) => void;
 }
 
-//const steamId = '76561198972680084';
-
-export default function SteamCard({ id }: SteamCardProps) {
+export default function SteamCard({ id, onDelete }: SteamCardProps) {
   const [card, setCard] = useState<SteamPlayer | null>(null);
   const [games, setGames] = useState<number>(0);
   const [totalPlaytime, setTotalPlaytime] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +61,11 @@ export default function SteamCard({ id }: SteamCardProps) {
   //if (!card) return <div>Loading...</div>;
   return (
     <>
-      <div className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#141E30] to-[#243B55]">
+      <div
+        className="relative h-[160px] w-[260px] overflow-hidden rounded-xl bg-gradient-to-r from-[#141E30] to-[#243B55]"
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+      >
         <div className="flex items-center px-4 py-4">
           <img
             src={SteamIconSm}
@@ -76,6 +81,17 @@ export default function SteamCard({ id }: SteamCardProps) {
           className="absolute top-0 left-[107px] h-[174px] w-[174px] select-none"
           draggable={false}
         />
+        {isHover && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete(id);
+            }}
+            className="z-50p-1 absolute top-1 right-2 transition-opacity"
+          >
+            <IoCloseCircle className="h-7 w-7 text-[var(--color-red-caution)] hover:text-[#9B2424]" />
+          </button>
+        )}
         {card && (
           <img
             className="ml-[27px] h-[64px] w-[64px] rounded-xl"
