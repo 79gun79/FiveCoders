@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-@import "./tailwind.css";
-=======
 @import './tailwind.css';
 @import './root.css';
-@import './font.css';
 
 @layer components {
   .postBottom {
@@ -161,4 +157,3 @@
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
->>>>>>> dev
