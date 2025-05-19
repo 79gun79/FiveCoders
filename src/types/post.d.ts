@@ -1,4 +1,4 @@
-type Post = {
+export type Post = {
   _id: string;
   image: string;
   imagePublicId: string;
