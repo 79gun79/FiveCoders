@@ -53,7 +53,7 @@ export default function Home() {
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
-  }, [showAddCard]);
+  }, [showAddCard, isOpen]);
 
   useEffect(() => {
     if (isLogin === true) {

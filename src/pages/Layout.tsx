@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import IsLoggedInModal from '../components/IsLoggedInModal';
 import { useModalStore } from '../stores/modalStore';
 import IsLoggedOutModal from '../components/IsLoggedOutModal';
+import Footer from '../components/Footer';
 
 export default function Layout() {
   const { isLogInOpen, isLogOutOpen, isLogInModal, isLogOutModal } =
@@ -25,6 +26,7 @@ export default function Layout() {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 }
