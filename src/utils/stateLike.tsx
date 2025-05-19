@@ -4,6 +4,7 @@ import { createLike, deleteLike } from '../services/likesApi';
 import { client } from '../services/axios';
 import { customToast } from './customToast';
 import { BiSolidLike } from 'react-icons/bi';
+import { User } from '../types/user';
 import { createNotification } from '../services/notificationApi';
 
 export const stateLike = (initialPost: Post) => {

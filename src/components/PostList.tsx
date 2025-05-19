@@ -47,9 +47,11 @@ export default function PostList({ channelId }: { channelId: string }) {
   return (
     <>
       {posts.length > 0 ? (
-        posts.map((post) => {
-          return <PostComponent id={post._id} key={post._id} post={post} />;
-        })
+        <div className="flex w-full flex-col gap-6">
+          {posts.map((post) => {
+            return <PostComponent id={post._id} key={post._id} post={post} />;
+          })}
+        </div>
       ) : (
         <div className="flex h-[300px] items-center justify-center">
           <div className="text-[18px] font-medium text-[var(--color-gray4)]">

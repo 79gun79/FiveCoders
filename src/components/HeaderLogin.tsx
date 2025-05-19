@@ -6,7 +6,10 @@ import NotificationDropdown from './NotificationDropdown';
 import { Notification } from '../types/notification';
 import Button from './Button';
 import { client } from '../services/axios';
-import { fetchNotifications, seenNotifications } from '../services/notificationApi';
+import {
+  fetchNotifications,
+  seenNotifications,
+} from '../services/notificationApi';
 import { useImageStore } from '../stores/imageStore';
 import prof from '../assets/imgs/defaultProfileImg.png';
 import { useModalStore } from '../stores/modalStore';
@@ -28,7 +31,7 @@ export default function HeaderLogin() {
     try {
       await seenNotifications();
       setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
       );
       setNotificationCount((prev) => Math.max(prev - 1, 0));
     } catch (error) {

@@ -18,10 +18,10 @@ export default function Header() {
   return (
     <header className="z-10 flex items-center justify-center border-b border-[var(--color-gray4)] bg-white">
       <Link to={'/'} className="absolute left-8 cursor-pointer">
-        <img src={Logo} alt="Logo" className="w-40" />
+        <img src={Logo} alt="Logo" className="w-28 md:w-40" />
       </Link>
       <form
-        className="relative my-4 flex w-[45%] max-w-140 items-center max-md:w-[30%]"
+        className="relative my-4 flex w-[50%] max-w-140 items-center max-md:w-55 max-sm:w-20"
         onSubmit={searchNavigate}
       >
         <Link
