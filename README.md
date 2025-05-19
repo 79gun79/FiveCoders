@@ -7,7 +7,7 @@
 
 🔗 [배포 링크](https://)
 
-<img src="" alt="intro title image"/>
+<img src="./src/assets/GammueLogo.png" alt="intro title image"/>
 
 </div>
 
