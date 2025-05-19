@@ -6,7 +6,6 @@ import { Post } from '../types/post';
 import { Channel } from '../types/channel';
 import sanitize from 'sanitize-html';
 import { useNavigate } from 'react-router';
-import { channelIndexMapping } from '../utils/channelIndexMapping';
 
 function getTodayString() {
   // 오늘 날짜 :  YYYY-MM-DD
@@ -121,7 +120,7 @@ export default function TodayBestPost() {
               <div className="mb-3 flex items-center justify-between">
                 <div className="flex items-center">
                   <img
-                    src={post.author?.image || 'https://via.placeholder.com/40'}
+                    src={post.author?.image || ''}
                     alt="프로필"
                     className="mr-2 h-10 w-10 rounded-full"
                   />
