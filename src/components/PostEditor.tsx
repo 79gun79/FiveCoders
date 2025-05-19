@@ -98,7 +98,7 @@ const PostEditor = forwardRef<ReactQuill, PostEditorProps>(
     return (
       <>
         <div
-          className={`mx-auto w-full min-w-[654px] rounded-xl transition-all ${
+          className={`container mx-auto w-full rounded-xl transition-all ${
             isFocused ? 'commentBorder' : ''
           }`}
         >

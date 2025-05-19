@@ -6,6 +6,10 @@ import NotificationDropdown from './NotificationDropdown';
 import { Notification } from '../types/notification';
 import Button from './Button';
 import { client } from '../services/axios';
+import {
+  fetchNotifications,
+  seenNotifications,
+} from '../services/notificationApi';
 import { useImageStore } from '../stores/imageStore';
 import prof from '../assets/imgs/defaultProfileImg.png';
 import { useModalStore } from '../stores/modalStore';
@@ -20,16 +24,29 @@ export default function HeaderLogin() {
   const [notificationCount, setNotificationCount] = useState(0);
   const { isLogOutModal } = useModalStore();
 
-  // const isUpdate = useRef(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  const markNotificationAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
-    );
-    setNotificationCount((prev) => Math.max(prev - 1, 0));
+  const markNotificationAsRead = async (id: string) => {
+    try {
+      await seenNotifications();
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)),
+      );
+      setNotificationCount((prev) => Math.max(prev - 1, 0));
+    } catch (error) {
+      console.error('알림 읽음 처리 실패', error);
+    }
+  };
+
+  const handleClear = async () => {
+    try {
+      await seenNotifications();
+      setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+      setNotificationCount(0);
+    } catch (error) {
+      console.error('알림 모두 읽기 실패', error);
+    }
   };
 
   const toggleNotificationDropdown = (e: React.MouseEvent) => {
@@ -48,12 +65,6 @@ export default function HeaderLogin() {
     });
   };
 
-  // 알림 api - PUT /notifications/seen 할 때 이어서 구현할 예정
-  const handleClear = () => {
-    setNotifications([]);
-    setNotificationCount(0);
-  };
-
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
@@ -66,13 +77,28 @@ export default function HeaderLogin() {
         setProfileDropdown(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   useEffect(() => {
-    client('/auth-user').then((response) => setMyData(response.data._id));
+    const loadNotifications = async () => {
+      try {
+        const notis = await fetchNotifications();
+        setNotifications(notis);
+        const unreadCount = notis.filter((n) => !n.isRead).length;
+        setNotificationCount(unreadCount);
+      } catch (e) {
+        console.error('알림 불러오기 실패', e);
+      }
+    };
+    loadNotifications();
+  }, []);
+
+  useEffect(() => {
+    client('/auth-user')
+      .then((response) => setMyData(response.data._id))
+      .catch(() => setMyData(''));
   }, []);
 
   useEffect(() => {
@@ -90,6 +116,7 @@ export default function HeaderLogin() {
           onClick={toggleNotificationDropdown}
           type="button"
           className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full"
+          aria-label="알림"
         >
           <FaRegBell className="h-7 w-7 text-[var(--color-main)]" />
           {notificationCount > 0 && (
@@ -102,9 +129,9 @@ export default function HeaderLogin() {
           <div className="absolute right-0 z-50 mt-2">
             <NotificationDropdown
               isOpen={isDropdownOpen}
-              onClear={handleClear}
               notifications={notifications}
               onRead={markNotificationAsRead}
+              onClear={handleClear}
             />
           </div>
         )}
@@ -115,10 +142,11 @@ export default function HeaderLogin() {
           type="button"
           onClick={toggleProfileDropdown}
           className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full"
+          aria-label="프로필"
         >
           <img
             src={Image || prof}
-            alt="channelImg"
+            alt="프로필 이미지"
             className="h-10 w-10 object-cover"
           />
         </button>

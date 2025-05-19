@@ -19,7 +19,7 @@ export default function NotificationDropdown({
   const hasNotifications = notifications.length > 0;
 
   return (
-    <div className="absolute top-full -right-[55px] z-50 mt-4 max-h-[400px] w-[340px] overflow-x-hidden overflow-y-auto rounded-xl border border-[var(--color-gray2)] bg-[var(--color-bg-white)]">
+    <div className="absolute top-full -right-[55px] z-50 mt-0 max-h-[400px] w-[320px] overflow-x-hidden overflow-y-auto rounded-xl border border-[var(--color-gray2)] bg-[var(--color-bg-white)]">
       <div className="flex justify-between px-4 pt-4 pb-2 font-bold">
         <span className="text-[16px]">알림</span>
         {hasNotifications && (
@@ -32,7 +32,9 @@ export default function NotificationDropdown({
         )}
       </div>
 
-      <div className="flex min-h-[300px] flex-col justify-center">
+      <div
+        className={`flex min-h-[290px] flex-col ${!hasNotifications ? 'justify-center' : ''}`}
+      >
         {!hasNotifications ? (
           <span className="mb-8 text-center text-[14px] text-[var(--color-gray6)]">
             새로운 알림이 없습니다.
@@ -40,10 +42,7 @@ export default function NotificationDropdown({
         ) : (
           <ul>
             {notifications.map((notification) => (
-              <li
-                key={notification.id}
-                className="border-b border-[var(--color-gray2)] last:border-none hover:bg-[var(--color-gray5)]"
-              >
+              <li key={notification.id}>
                 <NotificationCard {...notification} onRead={onRead} />
               </li>
             ))}

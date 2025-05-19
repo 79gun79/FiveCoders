@@ -4,13 +4,13 @@
 
 @layer components {
   .postBottom {
-    @apply min-w-[564px] border-b border-[#d9d9d9];
+    @apply w-full border-b border-[#d9d9d9] sm:min-w-[396px] md:min-w-[480px] lg:min-w-[564px];
   }
   .postBorder {
-    @apply border border-[#d9d9d9] p-[36px];
+    @apply border border-[#d9d9d9] p-[36px] sm:p-[24px] md:p-[30px] lg:p-[36px];
   }
   .postBorder2 {
-    @apply rounded-3xl border border-[#d9d9d9] p-[36px] shadow-md;
+    @apply rounded-3xl border border-[#d9d9d9] p-[36px] shadow-md sm:p-[24px] md:p-[30px] lg:p-[36px];
   }
   .postProfile {
     @apply h-8 w-8 rounded-full object-cover;

@@ -8,6 +8,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useAuthStore } from '../stores/authStore';
 import { client } from '../services/axios';
 import { customToast } from '../utils/customToast';
+import background from '../assets/imgs/tile.png';
 
 export default function Login() {
   const login = useAuthStore((state) => state.login);
@@ -39,7 +40,15 @@ export default function Login() {
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center bg-gray-400">
+      <div
+        className="flex min-h-screen items-center justify-center"
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundSize: 'auto',
+          backgroundPosition: 'top left',
+          backgroundRepeat: 'repeat',
+        }}
+      >
         <div className="w-full max-w-md rounded-3xl bg-white p-10 shadow-lg">
           <h1 className="mb-8 text-center text-3xl font-extrabold">로그인</h1>
           <form className="space-y-4" onSubmit={loginHandler}>

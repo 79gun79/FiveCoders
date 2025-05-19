@@ -10,6 +10,7 @@ import PasswordInput from '../components/PasswordInput';
 import ValidateInput from '../components/ValidateInput';
 import { client } from '../services/axios';
 import axios from 'axios';
+import background from '../assets/imgs/tile.png';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
@@ -67,7 +68,15 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="flex min-h-screen items-center justify-center bg-gray-400">
+      <div
+        className="flex min-h-screen items-center justify-center"
+        style={{
+          backgroundImage: `url(${background})`,
+          backgroundSize: 'auto',
+          backgroundPosition: 'top left',
+          backgroundRepeat: 'repeat',
+        }}
+      >
         <div className="w-full max-w-md rounded-3xl bg-white p-10 shadow-lg">
           <h1 className="mb-8 text-center text-3xl font-extrabold">
             회원 가입
