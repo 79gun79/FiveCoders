@@ -45,7 +45,7 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 | <img src="https://img.shields.io/badge/Project_Leader-FF5733" />  | <img src="https://img.shields.io/badge/Design_Leader-blue" /> | <img src="https://img.shields.io/badge/Tech_Leader-%2300264B" /> | <img src="https://img.shields.io/badge/Design_Leader-blue" /> | <img src="https://img.shields.io/badge/Tech_Leader-%2300264e" /> |
 | :---------------------------------------------------------------: | :-----------------------------------------------------------: | :--------------------------------------------------------------: | :-----------------------------------------------------------: | :--------------------------------------------------------------: |
-| <img src="https://github.com/user-attachments/assets/1f7daee0-2292-41fd-8d6e-35155b9a81ee" width="120px;" alt="재건"/> |  <img src="https://github.com/" width="120px;" alt="은지"/>   |    <img src="https://github.com/" width="120px;" alt="은서"/>    |  <img src="https://github.com/" width="120px;" alt="지윤"/>   |    <img src="https://github.com/" width="120px;" alt="원일"/>    |
+| <img src="https://github.com/user-attachments/assets/edcafb1c-578a-4833-974b-1af848abe95a" width="120px;" alt="재건"/> |  <img src="https://github.com/user-attachments/assets/df18f9a7-7a09-4ef6-823e-0df08efaa56a" width="120px;" alt="은지"/>   |    <img src="https://github.com/user-attachments/assets/407743e7-eb5b-436d-b406-7bfa30f2e965" width="120px;" alt="은서"/>    |  <img src="https://github.com/user-attachments/assets/c4bf637c-38bb-4997-b6d4-8b90eeb47cb9" width="120px;" alt="지윤"/>   |    <img src="https://github.com/user-attachments/assets/51c9b311-1d3b-4b62-ad47-1dd6992ed587" width="120px;" alt="원일"/>    |
 |               [이재건](https://github.com/79gun79)                |            [김은지](https://github.com/keemeunji)             |               [박은서](https://github.com/snowari)               |              [이지윤](https://github.com/wolwha)              |              [최원일](https://github.com/won431236)              |
 |                  팀장, 게시글 & 좋아요 구현 구현                  |                 디자인, 커뮤니티 & 알림 구현                  |       외부 API 연결, 인증 & 사이드바 & 구독 & 인기글 구현        |               디자인, 외부 API 연결, 회원 구현                |                         검색 & 댓글 구현                         |
 
@@ -220,19 +220,19 @@ React + TypeScript를 활용하여 게임 커뮤니티용 소셜 네트워크 �
 
 | 메인 화면                                         | 검색 화면                                         | 내 정보 화면                                      |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
-| <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> |
+| <img src="https://github.com/user-attachments/assets/1a03ed28-df70-4ceb-990e-39bada054f35" alt="-화면" width="288" height="608"> | <img src="https://github.com/user-attachments/assets/0461184a-f439-4e44-87ee-6b4c3acf308f" alt="-화면" width="288" height="608"> | <img src="https://github.com/user-attachments/assets/169e4f4a-9f10-47e3-8e03-7ee24064980e" alt="-화면" width="288" height="608"> |
 
 ### 2) 게시글
 
 | 커뮤니티 리스트                                   | 특정 커뮤니티                                     | 게시물 작성                                       |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
-| <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> |
+| <img src="https://github.com/user-attachments/assets/5807f8b2-8ce3-4c86-9ad3-b99920d488cb" alt="-화면" width="288" height="608"> | <img src="https://github.com/user-attachments/assets/14be34c5-6820-446d-a194-48c38ad97d37" alt="-화면" width="288" height="608"> | <img src="https://github.com/user-attachments/assets/8fc56943-c398-4849-a255-bd66647adc42" alt="-화면" width="288" height="608"> |
 
 ### 3) 기타
 
 | 로그인 화면                                       | 채널 생성 화면                                    | 404 화면                                          |
 | ------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------- |
-| <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> | <img src="" alt="-화면" width="288" height="608"> |
+| <img src="https://github.com/user-attachments/assets/bb2fac1f-db5b-474b-af08-c62e60257017" alt="-화면" width="288" height="608"> | <img src="https://github.com/user-attachments/assets/83200da6-7a65-46be-a74b-d1c13ef6f1b5" alt="-화면" width="288" height="608"> | <img src="https://github.com/user-attachments/assets/5d9c9153-0204-438c-b185-a946d64e0d97" alt="-화면" width="288" height="608"> |
 
 <br>
 
