@@ -52,9 +52,7 @@ export default function NotificationCard({
       <div className="pt-3">
         <span
           className={`block h-2 w-2 rounded-full ${
-            isRead
-              ? 'bg-[var(--color-gray3)]'
-              : 'bg-[var(--color-red-caution)]'
+            isRead ? 'bg-[var(--color-gray3)]' : 'bg-[var(--color-red-caution)]'
           }`}
         />
       </div>
@@ -68,7 +66,7 @@ export default function NotificationCard({
       </div>
 
       <div className="flex max-w-[230px] flex-col text-sm">
-        <p className="line-clamp-2 break-words text-[13px] text-[var(--color-gray6)]">
+        <p className="line-clamp-2 text-[13px] break-words text-[var(--color-gray6)]">
           {renderContent()}
         </p>
         <p className="mt-1 text-[11px] text-[var(--color-gray4)]">

@@ -10,7 +10,7 @@ export type Notification = {
   createdAt: string;
   isRead: boolean;
   notificationType: 'like' | 'comment';
-  postId: string;   
+  postId: string;
   channelId: string;
   author: {
     fullName: string;

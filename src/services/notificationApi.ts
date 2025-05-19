@@ -1,5 +1,9 @@
 import { client } from './axios';
-import { Notification, RawNotification, CreateNotificationParams } from '../types/notification';
+import {
+  Notification,
+  RawNotification,
+  CreateNotificationParams,
+} from '../types/notification';
 
 export const fetchNotifications = async (): Promise<Notification[]> => {
   const { data } = await client.get<RawNotification[]>('/notifications');
